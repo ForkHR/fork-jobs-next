@@ -3,7 +3,7 @@ import ListingPageClient from './listingPageClient';
 import { getCompanyAndListingCached } from '../../../lib/jobBoardData';
 
 export async function generateMetadata({ params }) {
-  const { companyPublicUrl, listingId } = await params;
+  const { companyPublicUrl, listingId } = params;
   if (!companyPublicUrl || !listingId) return {};
 
   try {
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ListingPage({ params }) {
-  const { companyPublicUrl, listingId } = await params;
+  const { companyPublicUrl, listingId } = params;
   if (!companyPublicUrl || !listingId) notFound();
 
   let data;

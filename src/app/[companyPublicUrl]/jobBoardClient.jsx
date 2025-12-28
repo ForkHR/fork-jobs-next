@@ -292,6 +292,14 @@ export default function JobBoardClient({ companyPublicUrl, company: initialCompa
   useEffect(() => {
     if (!company) return;
 
+    try {
+      const jobsQty = Array.isArray(listings) ? listings.length : 0;
+      const companyName = company?.name || 'Company';
+      document.title = `Work at ${companyName} - ${jobsQty} open jobs - Powered by forkhr.com`;
+    } catch {
+      // ignore title errors
+    }
+
     // Set the brand color CSS custom property
     if (company.brandColor) {
       document.documentElement.style.setProperty('--color-brand', company.brandColor);
@@ -301,7 +309,7 @@ export default function JobBoardClient({ companyPublicUrl, company: initialCompa
     }
 
     window.scrollTo(0, 0);
-  }, [company]);
+  }, [company, listings]);
 
   const publicS3 = process.env.NEXT_PUBLIC_PUBLIC_S3_API_URL;
 

@@ -14,7 +14,7 @@ export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   title: {
     default: 'Fork Jobs',
-    template: '%s | Fork Jobs',
+    template: '%s - Powered by forkhr.com',
   },
   description: 'Company job boards powered by Fork.',
   applicationName: 'Fork Jobs',

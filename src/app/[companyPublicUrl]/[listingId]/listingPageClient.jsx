@@ -593,6 +593,17 @@ export default function ListingPageClient({ companyPublicUrl, listingId, company
   useEffect(() => {
     if (!company) return;
 
+    try {
+      const companyName = company?.name || 'Company';
+      if (listing?.title) {
+        document.title = `Apply for ${listing.title} position at ${companyName} - Powered by forkhr.com`;
+      } else {
+        document.title = `Apply for a job at ${companyName} - Powered by forkhr.com`;
+      }
+    } catch {
+      // ignore title errors
+    }
+
     if (company.brandColor) {
       document.documentElement.style.setProperty('--color-brand', company.brandColor);
       document.documentElement.style.setProperty('--color-brand-text', company.brandColor);
@@ -604,7 +615,7 @@ export default function ListingPageClient({ companyPublicUrl, listingId, company
     if (element) {
       element.scrollIntoView({ behavior: 'instant' });
     }
-  }, [company]);
+  }, [company, listing]);
 
   if ((!company || !listing) && isLoading) {
     return (

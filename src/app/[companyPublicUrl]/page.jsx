@@ -3,7 +3,7 @@ import JobBoardClient from './jobBoardClient';
 import { getCompanyJobsCached } from '../../lib/jobBoardData';
 
 export async function generateMetadata({ params }) {
-  const { companyPublicUrl } = await params;
+  const { companyPublicUrl } = params;
   if (!companyPublicUrl) return {};
 
   try {
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function CompanyJobsPage({ params }) {
-  const { companyPublicUrl } = await params;
+  const { companyPublicUrl } = params;
   if (!companyPublicUrl) notFound();
 
   let data;
