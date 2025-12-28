@@ -35,11 +35,13 @@ const getJobBoardUrl = () => {
 const getServerRequestHeaders = () => {
     if (typeof window !== 'undefined') return undefined;
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL;
+    const ssrToken = process.env.FORK_JOBS_SSR_TOKEN || process.env.JOBS_SSR_TOKEN;
     return {
         Accept: 'application/json',
         'User-Agent':
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
         ...(siteUrl ? { Referer: siteUrl } : {}),
+        ...(ssrToken ? { 'x-fork-jobs-ssr-token': ssrToken } : {}),
     };
 };
 
