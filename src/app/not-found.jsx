@@ -20,7 +20,7 @@ export default function NotFound() {
         </div>
       </div>
       <div className="flex-1 align-center justify-center flex flex-col">
-        <div className="flex pt-6 mt-6 justify-center">
+        <div className="flex justify-center">
             <div className="fs-38 border-right px-4 weight-500">404</div>
             <div className="flex flex-col justify-center px-4">
             <div className="fs-14 weight-500">Page not found</div>
