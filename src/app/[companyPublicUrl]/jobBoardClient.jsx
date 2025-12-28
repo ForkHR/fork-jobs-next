@@ -31,7 +31,7 @@ function JobListing({ item, companyPublicUrl }) {
             <div className="fs-12 weight-00 flex gap-1 mt-1 text-capitalize">{item?.employmentType ? `${item?.employmentType}` : ''}</div>
             <div className="fs-20 weight-500 flex-1 align-center flex py-3">
               {item.title}
-              {DateTime.fromISO(item.createdAt) >= DateTime.now().minus({ days: 4 }) ? (
+              {DateTime.fromISO(item.updatedAt) >= DateTime.now().minus({ days: 4 }) ? (
                 <span className="fs-12 tag-brand ms-2 px-2 p-xs border-radius-sm">New</span>
               ) : null}
             </div>

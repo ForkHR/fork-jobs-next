@@ -701,7 +701,7 @@ export default function ListingPageClient({ companyPublicUrl, listingId, company
 
           <div className="container flex-1">
             <div className="w-max-600-px mx-auto w-100" id="listing-detailed">
-              <Link className="flex align-center py-5 hover-opacity-50 sticky top-0 bg-main" href={`/${companyPublicUrl}`}>
+              <Link className="flex align-center py-5 hover-opacity-50" href={`/${companyPublicUrl}`}>
                 <Icon icon={chevronLeftIcon} size="sm" />
                 <span className="fs-14 weight-500 text-underlined">Back to all listings</span>
               </Link>
