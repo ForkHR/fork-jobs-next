@@ -11,8 +11,8 @@ export async function generateMetadata({ params }) {
 
     const companyName = company?.name || 'Company';
     const title = listing?.title
-      ? `Apply for ${listing.title} position at ${companyName} - Fork Jobs`
-      : `Apply for a job at ${companyName} - Fork Jobs`;
+      ? `Apply for ${listing.title} position at ${companyName}`
+      : `Apply for a job at ${companyName}`;
 
     const stripHtml = (html) => {
       if (!html) return '';
@@ -23,7 +23,15 @@ export async function generateMetadata({ params }) {
         .replace(/\s+/g, ' ')
         .trim();
     };
-    const description = stripHtml(listing?.description) || company?.description || `Apply for ${title}.`;
+    const description =
+      stripHtml(listing?.description) ||
+      stripHtml(company?.description) ||
+      (listing?.title
+        ? `Apply for ${listing.title} at ${companyName}.`
+        : `Apply for a job at ${companyName}.`);
+
+    const publicS3 = process.env.NEXT_PUBLIC_PUBLIC_S3_API_URL || process.env.PUBLIC_S3_API_URL;
+    const logoUrl = company?.logo && publicS3 ? `${String(publicS3).replace(/\/+$/, '')}/${company.logo}` : undefined;
 
     return {
       title,
@@ -32,8 +40,24 @@ export async function generateMetadata({ params }) {
         canonical: `/${companyPublicUrl}/${listingId}`,
       },
       openGraph: {
+        type: 'website',
         title,
+        description,
         url: `/${companyPublicUrl}/${listingId}`,
+        images: logoUrl
+          ? [
+              {
+                url: logoUrl,
+                alt: `${companyName} logo`,
+              },
+            ]
+          : undefined,
+      },
+      twitter: {
+        card: logoUrl ? 'summary' : 'summary',
+        title,
+        description,
+        images: logoUrl ? [logoUrl] : undefined,
       },
     };
   } catch {

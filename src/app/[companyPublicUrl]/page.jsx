@@ -7,23 +7,58 @@ export async function generateMetadata({ params }) {
   if (!companyPublicUrl) return {};
 
   try {
+    const stripHtml = (html) => {
+      if (!html) return '';
+      return String(html)
+        .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+        .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    };
+
     const data = await getCompanyJobsCached(companyPublicUrl);
     const company = data?.company;
     const listings = Array.isArray(data?.listings) ? data.listings : [];
     const companyName = company?.name || 'Company';
     const jobsQty = listings.length;
-    const title = `Work at ${companyName} - ${jobsQty} open jobs - Fork Jobs`;
+    const title = `Work at ${companyName} - ${jobsQty} open jobs`;
+
+    const companyDescription = stripHtml(company?.description);
+    const description =
+      companyDescription ||
+      (jobsQty > 0
+        ? `Explore ${jobsQty} open ${jobsQty === 1 ? 'job' : 'jobs'} at ${companyName}.`
+        : `Explore careers and new opportunities at ${companyName}.`);
+
+    const publicS3 = process.env.NEXT_PUBLIC_PUBLIC_S3_API_URL || process.env.PUBLIC_S3_API_URL;
+    const logoUrl = company?.logo && publicS3 ? `${String(publicS3).replace(/\/+$/, '')}/${company.logo}` : undefined;
 
     return {
       title,
-      description: company?.description || `Open roles at ${companyName}.`,
+      description,
       alternates: {
         canonical: `/${companyPublicUrl}`,
       },
       openGraph: {
+        type: 'website',
         title,
-        description: company?.description || `Open roles at ${companyName}.`,
+        description,
         url: `/${companyPublicUrl}`,
+        images: logoUrl
+          ? [
+              {
+                url: logoUrl,
+                alt: `${companyName} logo`,
+              },
+            ]
+          : undefined,
+      },
+      twitter: {
+        card: logoUrl ? 'summary' : 'summary',
+        title,
+        description,
+        images: logoUrl ? [logoUrl] : undefined,
       },
     };
   } catch {

@@ -21,6 +21,7 @@ const normalizeJobBoardPayload = (payload) => {
   return payload;
 };
 
+
 function JobListing({ item, companyPublicUrl }) {
   return (
     <Link href={`/${companyPublicUrl}/${item._id}`}>
@@ -295,7 +296,7 @@ export default function JobBoardClient({ companyPublicUrl, company: initialCompa
     try {
       const jobsQty = Array.isArray(listings) ? listings.length : 0;
       const companyName = company?.name || 'Company';
-      document.title = `Work at ${companyName} - ${jobsQty} open jobs - Powered by forkhr.com`;
+      document.title = `Work at ${companyName} - ${jobsQty} open jobs | Fork Jobs`;
     } catch {
       // ignore title errors
     }

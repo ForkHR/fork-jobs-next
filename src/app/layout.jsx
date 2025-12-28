@@ -23,7 +23,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body suppressHydrationWarning>
         <Providers>{children}</Providers>
         <Script
           src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
