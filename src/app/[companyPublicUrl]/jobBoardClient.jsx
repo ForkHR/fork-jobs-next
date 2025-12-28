@@ -104,7 +104,7 @@ function Jobs({ items, companyPublicUrl }) {
     <>
       <div className="bg-secondary">
         <div className="flex-1 w-max-600-px mx-auto w-100">
-          <div className="flex container pt-3 pb-4 gap-2 flex-col align-start animation-slide-in">
+          <div className="flex container pt-3 pb-4 gap-2 flex-col align-start animation-fade-in">
             <div className="flex justify-between w-100"
                 style={{
                     minHeight: "16px"
@@ -378,7 +378,7 @@ export default function JobBoardClient({ companyPublicUrl, company: initialCompa
                 fontSize: 'clamp(32px, 7vw, 58px)',
               }}
             >
-              Work at {company?.name}
+              Work at{window.innerWidth < 480 ? <br /> : ' '} {company?.name}
             </h1>
             <div
               className="pointer clickable px-5 py-2 fs-20 weight-500 hover-opacity-75 border-radius-rounded animation-slide-in"
