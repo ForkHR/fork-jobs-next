@@ -3,11 +3,11 @@ import JobBoardClient from './jobBoardClient';
 import { getCompanyJobsCached } from '../../lib/jobBoardData';
 
 export async function generateMetadata({ params }) {
-  const { publicUrl } = await params;
-  if (!publicUrl) return {};
+  const { companyPublicUrl } = await params;
+  if (!companyPublicUrl) return {};
 
   try {
-    const data = await getCompanyJobsCached(publicUrl);
+    const data = await getCompanyJobsCached(companyPublicUrl);
     const company = data?.company;
     const listings = Array.isArray(data?.listings) ? data.listings : [];
     const companyName = company?.name || 'Company';
@@ -18,12 +18,12 @@ export async function generateMetadata({ params }) {
       title,
       description: company?.description || `Open roles at ${companyName}.`,
       alternates: {
-        canonical: `/${publicUrl}`,
+        canonical: `/${companyPublicUrl}`,
       },
       openGraph: {
         title,
         description: company?.description || `Open roles at ${companyName}.`,
-        url: `/${publicUrl}`,
+        url: `/${companyPublicUrl}`,
       },
     };
   } catch {
@@ -32,12 +32,12 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function CompanyJobsPage({ params }) {
-  const { publicUrl } = await params;
-  if (!publicUrl) notFound();
+  const { companyPublicUrl } = await params;
+  if (!companyPublicUrl) notFound();
 
   let data;
   try {
-    data = await getCompanyJobsCached(publicUrl);
+    data = await getCompanyJobsCached(companyPublicUrl);
   } catch (e) {
     if (e?.response?.status === 404 || e?.response?.status === 403) notFound();
     throw e;
@@ -54,7 +54,7 @@ export default async function CompanyJobsPage({ params }) {
     itemListElement: (Array.isArray(listings) ? listings : []).map((l, idx) => ({
       '@type': 'ListItem',
       position: idx + 1,
-      url: `/${publicUrl}/${l?._id}`,
+      url: `/${companyPublicUrl}/${l?._id}`,
       name: l?.title,
     })),
   };
@@ -63,7 +63,7 @@ export default async function CompanyJobsPage({ params }) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       <JobBoardClient
-        publicUrl={publicUrl}
+        companyPublicUrl={companyPublicUrl}
         company={company}
         listings={Array.isArray(listings) ? listings : []}
       />

@@ -5,7 +5,7 @@ const getApiBaseUrl = () => {
     if (!base) {
         throw new Error('Missing API base URL. Set NEXT_PUBLIC_API_URL (recommended) or API_URL.');
     }
-    return base;
+    return base
 };
 
 const getJobBoardUrl = () => `${getApiBaseUrl()}/job-board`;
@@ -13,7 +13,8 @@ const getJobBoardUrl = () => `${getApiBaseUrl()}/job-board`;
 
 
 export const getCompanyJobs = async (id) => {
-    const res = await axios.get(`${getJobBoardUrl()}?publicUrl=` + id);
+    console.log(`fetching : ${getJobBoardUrl()}?companyPublicUrl=` + id);
+    const res = await axios.get(`${getJobBoardUrl()}?companyPublicUrl=` + id);
 
     return res.data;
 }

@@ -11,9 +11,9 @@ import { convertHexToRgba, numberFormatter, returnColorLum } from '../../assets/
 import FilterDropdown from '../../components/ui/FilterDropdown';
 import { DateTime } from 'luxon';
 
-function JobListing({ item, publicUrl }) {
+function JobListing({ item, companyPublicUrl }) {
   return (
-    <Link href={`/${publicUrl}/${item._id}`}>
+    <Link href={`/${companyPublicUrl}/${item._id}`}>
       <div className="border-bottom py-5 transition-shadow pointer display-on-hover-parent transition-slide-right-hover-parent animation-slide-in">
         <div className="flex justify-between">
           <div>
@@ -41,7 +41,7 @@ function JobListing({ item, publicUrl }) {
   );
 }
 
-function Jobs({ items, publicUrl }) {
+function Jobs({ items, companyPublicUrl }) {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
@@ -221,7 +221,7 @@ function Jobs({ items, publicUrl }) {
           {filteredItems && filteredItems.length > 0 ? (
             <div className="flex flex-col gap-3 container">
               {filteredItems.map((item) => (
-                <JobListing key={item._id} item={item} publicUrl={publicUrl} />
+                <JobListing key={item._id} item={item} companyPublicUrl={companyPublicUrl} />
               ))}
             </div>
           ) : (
@@ -233,7 +233,7 @@ function Jobs({ items, publicUrl }) {
   );
 }
 
-export default function JobBoardClient({ publicUrl, company, listings }) {
+export default function JobBoardClient({ companyPublicUrl, company, listings }) {
   useEffect(() => {
     if (!company) return;
 
@@ -335,7 +335,7 @@ export default function JobBoardClient({ publicUrl, company, listings }) {
               <div className="container fs-14 mt-4">There are currently no job openings.</div>
             </div>
           ) : listings && listings.length > 0 ? (
-            <Jobs items={listings} publicUrl={publicUrl} />
+            <Jobs items={listings} companyPublicUrl={companyPublicUrl} />
           ) : null}
 
           <div className="mt-6 py-2">

@@ -3,11 +3,11 @@ import ListingPageClient from './listingPageClient';
 import { getCompanyAndListingCached } from '../../../lib/jobBoardData';
 
 export async function generateMetadata({ params }) {
-  const { publicUrl, listingId } = await params;
-  if (!publicUrl || !listingId) return {};
+  const { companyPublicUrl, listingId } = await params;
+  if (!companyPublicUrl || !listingId) return {};
 
   try {
-    const { company, listing } = await getCompanyAndListingCached(publicUrl, listingId);
+    const { company, listing } = await getCompanyAndListingCached(companyPublicUrl, listingId);
 
     const companyName = company?.name || 'Company';
     const title = listing?.title
@@ -29,11 +29,11 @@ export async function generateMetadata({ params }) {
       title,
       description,
       alternates: {
-        canonical: `/${publicUrl}/${listingId}`,
+        canonical: `/${companyPublicUrl}/${listingId}`,
       },
       openGraph: {
         title,
-        url: `/${publicUrl}/${listingId}`,
+        url: `/${companyPublicUrl}/${listingId}`,
       },
     };
   } catch {
@@ -42,12 +42,12 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ListingPage({ params }) {
-  const { publicUrl, listingId } = await params;
-  if (!publicUrl || !listingId) notFound();
+  const { companyPublicUrl, listingId } = await params;
+  if (!companyPublicUrl || !listingId) notFound();
 
   let data;
   try {
-    data = await getCompanyAndListingCached(publicUrl, listingId);
+    data = await getCompanyAndListingCached(companyPublicUrl, listingId);
   } catch (e) {
     if (e?.response?.status === 404 || e?.response?.status === 403) notFound();
     throw e;
@@ -88,7 +88,7 @@ export default async function ListingPage({ params }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingJsonLd) }} />
-      <ListingPageClient publicUrl={publicUrl} company={company} listing={listing} />
+      <ListingPageClient companyPublicUrl={companyPublicUrl} company={company} listing={listing} />
     </>
   );
 }
