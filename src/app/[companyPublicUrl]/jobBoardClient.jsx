@@ -400,7 +400,7 @@ export default function JobBoardClient({ companyPublicUrl, company: initialCompa
             </div>
           </div>
 
-          <div className="w-max-600-px mx-auto w-100 py-5 animation-slide-in">
+          <div className="w-max-600-px mx-auto w-100 py-5 animation-fade-in">
             <div className="container">
               <Avatar
                 img={
