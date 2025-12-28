@@ -11,7 +11,7 @@ export async function generateMetadata({ params }) {
 
     const companyName = company?.name || 'Company';
     const title = listing?.title
-      ? `Apply for ${listing.title} at ${companyName} - Fork Jobs`
+      ? `Apply for ${listing.title} position at ${companyName} - Fork Jobs`
       : `Apply for a job at ${companyName} - Fork Jobs`;
 
     const stripHtml = (html) => {
@@ -49,13 +49,17 @@ export default async function ListingPage({ params }) {
   try {
     data = await getCompanyAndListingCached(companyPublicUrl, listingId);
   } catch (e) {
-    if (e?.response?.status === 404 || e?.response?.status === 403) notFound();
-    throw e;
+    if (e?.response?.status === 404) notFound();
+    data = null;
   }
   const company = data?.company;
   const listing = data?.listing;
 
-  if (!company || !listing) notFound();
+  // If the server cannot reach the API (e.g. 403/WAF), render and let the client fetch.
+  // Still `notFound()` above for genuine 404s.
+  if (!company || !listing) {
+    return <ListingPageClient companyPublicUrl={companyPublicUrl} listingId={listingId} company={null} listing={null} />;
+  }
 
   const publicS3 = process.env.NEXT_PUBLIC_PUBLIC_S3_API_URL;
   const jobPostingJsonLd = {
@@ -88,7 +92,7 @@ export default async function ListingPage({ params }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingJsonLd) }} />
-      <ListingPageClient companyPublicUrl={companyPublicUrl} company={company} listing={listing} />
+      <ListingPageClient companyPublicUrl={companyPublicUrl} listingId={listingId} company={company} listing={listing} />
     </>
   );
 }

@@ -704,11 +704,17 @@ const downloadFile = async (url, name, mimeType, currentUrl) => {
         a.download = filename + '.' + mimeType || 'download';
         a.click();
     } else {
-        const apiBase = process.env.NEXT_PUBLIC_API_URL || process.env.API_URL;
+        const apiBase = process.env.NEXT_PUBLIC_API_URL;
         if (!apiBase) {
             throw new Error('Missing API base URL. Set NEXT_PUBLIC_API_URL (recommended) or API_URL.');
         }
-        const proxy = `${apiBase}/third-party/proxy?url=${url}`
+        const trimmed = String(apiBase).trim();
+        if (!/^https?:\/\//i.test(trimmed)) {
+            throw new Error(
+                `Invalid API base URL: "${trimmed}". It must start with http(s):// (e.g. https://app.forkhr.com/api).`
+            );
+        }
+        const proxy = `${trimmed}/third-party/proxy?url=${url}`
         const response = await fetch(proxy);
         const blob = await response.blob();
 

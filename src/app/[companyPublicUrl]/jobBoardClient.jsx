@@ -10,6 +10,16 @@ import { arrowDownShortIcon, leftArrowIcon, rightArrowPointIcon } from '../../as
 import { convertHexToRgba, numberFormatter, returnColorLum } from '../../assets/utils';
 import FilterDropdown from '../../components/ui/FilterDropdown';
 import { DateTime } from 'luxon';
+import jobBoardService from '../../features/jobBoard/jobBoardService';
+
+const normalizeJobBoardPayload = (payload) => {
+  if (!payload) return { company: null, listings: [] };
+
+  if (payload.company && Array.isArray(payload.listings)) return payload;
+  if (payload.data && payload.data.company && Array.isArray(payload.data.listings)) return payload.data;
+
+  return payload;
+};
 
 function JobListing({ item, companyPublicUrl }) {
   return (
@@ -233,7 +243,52 @@ function Jobs({ items, companyPublicUrl }) {
   );
 }
 
-export default function JobBoardClient({ companyPublicUrl, company, listings }) {
+export default function JobBoardClient({ companyPublicUrl, company: initialCompany, listings: initialListings }) {
+  const [company, setCompany] = useState(initialCompany ?? null);
+  const [listings, setListings] = useState(Array.isArray(initialListings) ? initialListings : []);
+  const [isLoading, setIsLoading] = useState(!initialCompany);
+  const [loadError, setLoadError] = useState(null);
+
+  useEffect(() => {
+    setCompany(initialCompany ?? null);
+    setListings(Array.isArray(initialListings) ? initialListings : []);
+    setIsLoading(!initialCompany);
+  }, [initialCompany, initialListings]);
+
+  useEffect(() => {
+    setLoadError(null);
+  }, [companyPublicUrl]);
+
+  useEffect(() => {
+    if (!companyPublicUrl) return;
+    if (company) return;
+
+    let cancelled = false;
+    setIsLoading(true);
+    setLoadError(null);
+
+    jobBoardService
+      .getCompanyJobs(companyPublicUrl)
+      .then((payload) => {
+        if (cancelled) return;
+        const normalized = normalizeJobBoardPayload(payload);
+        setCompany(normalized?.company ?? null);
+        setListings(Array.isArray(normalized?.listings) ? normalized.listings : []);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setLoadError(err);
+      })
+      .finally(() => {
+        if (cancelled) return;
+        setIsLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [companyPublicUrl, company]);
+
   useEffect(() => {
     if (!company) return;
 
@@ -249,6 +304,33 @@ export default function JobBoardClient({ companyPublicUrl, company, listings }) 
   }, [company]);
 
   const publicS3 = process.env.NEXT_PUBLIC_PUBLIC_S3_API_URL;
+
+  if (!company && isLoading) {
+    return (
+      <section className="page-body h-100">
+        <div className="animation-fade-in flex flex-col h-100">
+          <Alerts />
+          <IsOffline />
+          <div className="flex-1 flex align-center justify-center container fs-14 py-6">Loading job board…</div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!company && loadError) {
+    return (
+      <section className="page-body h-100">
+        <div className="animation-fade-in flex flex-col h-100">
+          <Alerts />
+          <IsOffline />
+          <div className="flex-1 flex flex-col align-center justify-center container fs-14 py-6 text-center">
+            <div className="weight-600 pb-2">Unable to load this job board.</div>
+            <div className="opacity-75">Please refresh the page and try again.</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="page-body h-100">

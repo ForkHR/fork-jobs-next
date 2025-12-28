@@ -39,14 +39,18 @@ export default async function CompanyJobsPage({ params }) {
   try {
     data = await getCompanyJobsCached(companyPublicUrl);
   } catch (e) {
-    if (e?.response?.status === 404 || e?.response?.status === 403) notFound();
-    throw e;
+    if (e?.response?.status === 404) notFound();
+    data = null;
   }
 
   const company = data?.company;
   const listings = data?.listings;
 
-  if (!company) notFound();
+  // If the server cannot reach the API (e.g. 403/WAF), render and let the client fetch.
+  // Still `notFound()` above for genuine 404s.
+  if (!company) {
+    return <JobBoardClient companyPublicUrl={companyPublicUrl} company={null} listings={[]} />;
+  }
 
   const itemListJsonLd = {
     '@context': 'https://schema.org',

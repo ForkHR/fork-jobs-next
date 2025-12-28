@@ -531,7 +531,65 @@ function Listing({ item }) {
   );
 }
 
-export default function ListingPageClient({ companyPublicUrl, company, listing }) {
+const normalizeJobBoardPayload = (payload) => {
+  if (!payload) return { company: null, listings: [] };
+
+  if (payload.company && Array.isArray(payload.listings)) return payload;
+  if (payload.data && payload.data.company && Array.isArray(payload.data.listings)) return payload.data;
+
+  return payload;
+};
+
+export default function ListingPageClient({ companyPublicUrl, listingId, company: initialCompany, listing: initialListing }) {
+  const [company, setCompany] = useState(initialCompany ?? null);
+  const [listing, setListing] = useState(initialListing ?? null);
+  const [isLoading, setIsLoading] = useState(!initialCompany || !initialListing);
+  const [loadError, setLoadError] = useState(null);
+
+  useEffect(() => {
+    setCompany(initialCompany ?? null);
+    setListing(initialListing ?? null);
+    setIsLoading(!initialCompany || !initialListing);
+  }, [initialCompany, initialListing]);
+
+  useEffect(() => {
+    setLoadError(null);
+  }, [companyPublicUrl, listingId]);
+
+  useEffect(() => {
+    if (!companyPublicUrl || !listingId) return;
+    if (company && listing) return;
+
+    let cancelled = false;
+    setIsLoading(true);
+    setLoadError(null);
+
+    jobBoardService
+      .getCompanyJobs(companyPublicUrl)
+      .then((payload) => {
+        if (cancelled) return;
+        const normalized = normalizeJobBoardPayload(payload);
+        const nextCompany = normalized?.company ?? null;
+        const nextListings = Array.isArray(normalized?.listings) ? normalized.listings : [];
+        const nextListing = nextListings.find((l) => String(l?._id) === String(listingId)) ?? null;
+
+        setCompany(nextCompany);
+        setListing(nextListing);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setLoadError(err);
+      })
+      .finally(() => {
+        if (cancelled) return;
+        setIsLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [companyPublicUrl, listingId, company, listing]);
+
   useEffect(() => {
     if (!company) return;
 
@@ -547,6 +605,33 @@ export default function ListingPageClient({ companyPublicUrl, company, listing }
       element.scrollIntoView({ behavior: 'instant' });
     }
   }, [company]);
+
+  if ((!company || !listing) && isLoading) {
+    return (
+      <section className="page-body h-100">
+        <div className="animation-fade-in flex flex-col h-100">
+          <Alerts />
+          <IsOffline />
+          <div className="flex-1 flex align-center justify-center container fs-14 py-6">Loading job…</div>
+        </div>
+      </section>
+    );
+  }
+
+  if ((!company || !listing) && loadError) {
+    return (
+      <section className="page-body h-100">
+        <div className="animation-fade-in flex flex-col h-100">
+          <Alerts />
+          <IsOffline />
+          <div className="flex-1 flex flex-col align-center justify-center container fs-14 py-6 text-center">
+            <div className="weight-600 pb-2">Unable to load this job.</div>
+            <div className="opacity-75">Please refresh the page and try again.</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="page-body h-100">
