@@ -1,0 +1,387 @@
+.icon-btn {
+    padding: 4px;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: transparent;
+    fill: var(--text-dark);
+    color: var(--text-dark);
+    transition: var(--transition-duration);
+    border: none;
+    position: relative;
+    fill: var(--text-dark);
+    height: 34px;
+    width: 34px;
+    min-width: 34px;
+    min-height: 34px;
+    position: relative;
+    z-index: 2;
+}
+.icon-btn.icon-btn-outline.icon-btn-brand:hover .spinner-animation svg,
+.icon-btn:hover .spinner-animation svg,
+.icon-btn .spinner-animation svg {
+    fill: transparent!important;
+}
+.icon-btn .icon-svg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.icon-btn-no-action {
+    cursor: default;
+    pointer-events: none;
+}
+.icon-btn-no-action:hover {
+    transform: none;
+}
+
+.icon-btn.icon-btn-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.icon-btn:active {
+    opacity: 0.75;
+}
+
+.icon-btn svg {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    fill: rgb(var(--color-general-secondary-text));
+    color: rgb(var(--color-general-secondary-text));
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Size */
+.icon-btn.icon-btn-xs {
+    height: 22px;
+    width: 22px;
+    min-width: 22px;
+    min-height: 22px;
+}
+.icon-btn.icon-btn-xs svg {
+    height: 10px!important;
+    width: 10px!important;
+    min-width: 10px!important;
+    min-height: 10px!important;
+}
+.icon-btn.icon-btn-sm {
+    height: 24px;
+    width: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}
+.icon-btn.icon-btn-sm svg {
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+}
+.icon-btn.icon-btn-md {
+    height: 38px;
+    width: 38px;
+    min-width: 38px;
+    min-height: 38px;
+}
+.icon-btn.icon-btn-md svg {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+.icon-btn.icon-btn-lg {
+    height: 48px;
+    width: 48px;
+    min-width: 48px;
+    min-height: 48px;
+}
+.icon-btn.icon-btn-lg svg {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+}
+a.icon-btn.icon-btn-lg {
+    min-width: 40px!important;
+    min-height: 40px!important;
+    width: 40px!important;
+    height: 40px!important;
+}
+
+/* Default */
+.icon-btn.icon-btn-primary {
+    background-color: rgb(var(--color-general-primary-bg));
+    border-color: rgb(var(--color-general-primary-bg));
+}
+.icon-btn.icon-btn-secondary {
+    background-color: rgb(var(--color-general-secondary-bg));
+    border-color: rgb(var(--color-general-secondary-bg));
+}
+.icon-btn.icon-btn-danger {
+    background-color: rgb(var(--color-general-danger-bg));
+    border-color: rgb(var(--color-general-danger-bg));
+}
+.icon-btn.icon-btn-brand {
+    background-color: var(--color-brand-bg);
+    border-color: var(--color-brand-bg);
+}
+.icon-btn.icon-btn-warning {
+    background-color: rgb(var(--color-general-warning-bg));
+    border-color: rgb(var(--color-general-warning-bg));
+}
+.icon-btn.icon-btn-success {
+    background-color: rgb(var(--color-general-success-bg));
+    border-color: rgb(var(--color-general-success-bg));
+}
+/* Icon */
+.icon-btn.icon-btn-primary,
+.icon-btn.icon-btn-primary svg {
+    fill: rgb(var(--color-general-primary-text));
+    color: rgb(var(--color-general-primary-text));
+}
+.icon-btn.icon-btn-secondary,
+.icon-btn.icon-btn-secondary svg {
+    fill: rgb(var(--color-general-secondary-text));
+    color: rgb(var(--color-general-secondary-text));
+}
+.icon-btn.icon-btn-danger,
+.icon-btn.icon-btn-danger svg {
+    fill: rgb(var(--color-general-danger-text));
+    color: rgb(var(--color-general-danger-text));
+}
+.icon-btn.icon-btn-brand,
+.icon-btn.icon-btn-brand svg {
+    fill: var(--color-brand-text);
+    color: var(--color-brand-text);
+}
+.icon-btn.icon-btn-warning,
+    .icon-btn.icon-btn-warning svg {
+    fill: rgb(var(--color-general-warning-text));
+    color: rgb(var(--color-general-warning-text));
+}
+.icon-btn.icon-btn-success,
+.icon-btn.icon-btn-success svg {
+    fill: rgb(var(--color-general-success-text));
+    color: rgb(var(--color-general-success-text));
+}
+
+.icon-btn.icon-btn-text,
+.icon-btn.icon-btn-outline {
+    background-color: transparent!important;
+}
+.icon-btn.icon-btn-outline {
+    border: var(--border);
+    border-color: var(--color-border);
+}
+
+/* Outline */
+.icon-btn.icon-btn-outline {
+    border-color: var(--color-border);
+}
+.icon-btn.icon-btn-outline svg {
+    color: var(--text-dark);
+    fill: var(--text-dark);
+}
+.icon-btn.icon-btn-secondary.icon-btn-outline {
+    border-color: rgb(var(--color-general-secondary-bg));
+}
+.icon-btn.icon-btn-primary.icon-btn-outline {
+    border-color: rgb(var(--color-general-primary-bg));
+}
+.icon-btn.icon-btn-outline:hover.icon-btn-primary {
+    background-color: var(--color-general-primary-bg-hover, rgba(26,26,26,0.1));
+}
+.icon-btn.icon-btn-outline:hover.icon-btn-success {
+    background-color: var(--color-general-success-bg-hover, rgba(26,26,26,0.1));
+}
+.icon-btn.icon-btn-outline:hover.icon-btn-danger {
+    background-color: var(--color-general-danger-bg-hover, rgba(26,26,26,0.1));
+}
+.icon-btn.icon-btn-outline:hover.icon-btn-brand {
+    background-color: var(--color-general-brand-bg-hover, rgba(26,26,26,0.1));
+}
+.icon-btn.icon-btn-outline:hover.icon-btn-warning {
+    background-color: var(--color-general-warning-bg-hover, rgba(26,26,26,0.1));
+}
+
+.icon-btn.icon-btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    font-size: 12px;
+    color: var(--text-dark);
+}
+.icon-btn.icon-btn-outline svg {
+    fill: var(--text-dark);
+}
+.icon-btn.icon-btn-outline:hover {
+    border-color: var(--text-dark);
+}
+.icon-btn.icon-btn-outline.icon-btn-secondary:hover svg {
+    fill: var(--text-dark);
+}
+.icon-btn.icon-btn-outline.icon-btn-secondary:hover {
+    color: var(--text-dark);
+    background-color: rgb(var(--color-general-secondary-bg))!important;
+}
+.icon-btn.icon-btn-outline.icon-btn-primary svg {
+    fill: var(--text-dark);
+}
+.icon-btn.icon-btn-outline.icon-btn-primary:hover svg {
+    fill: rgb(var(--color-general-primary-text))!important;
+}
+.icon-btn.icon-btn-outline.icon-btn-primary:hover {
+    background-color: rgb(var(--color-general-primary-bg))!important;
+    border-color: rgb(var(--color-general-primary-border));
+    color: rgb(var(--color-general-primary-text))!important;
+}
+.icon-btn.icon-btn-outline.icon-btn-success:hover svg {
+    fill: rgb(var(--color-general-success-text))!important;
+}
+.icon-btn.icon-btn-outline.icon-btn-success:hover {
+    background-color: rgb(var(--color-general-success-bg))!important;
+    border-color: rgb(var(--color-general-success-border));
+    color: rgb(var(--color-general-success-text))!important;
+}
+.icon-btn.icon-btn-outline.icon-btn-danger:hover svg {
+    fill: rgb(var(--color-general-danger-text))!important;
+}
+.icon-btn.icon-btn-outline.icon-btn-danger:hover {
+    background-color: rgb(var(--color-general-danger-bg))!important;
+    border-color: rgb(var(--color-general-danger-border));
+    color: rgb(var(--color-general-danger-text))!important;
+}
+.icon-btn.icon-btn-outline.icon-btn-warning:hover svg {
+    fill: rgb(var(--color-general-warning-text))!important;
+}
+.icon-btn.icon-btn-outline.icon-btn-warning:hover {
+    background-color: rgb(var(--color-general-warning-bg))!important;
+    border-color: rgb(var(--color-general-warning-border));
+    color: rgb(var(--color-general-warning-text))!important;
+}
+.icon-btn.icon-btn-outline {
+    background-color: transparent!important;
+}
+.icon-btn.icon-btn-outline.icon-btn-brand:hover svg {
+    color: var(--color-brand-text)!important;
+    fill: var(--color-brand-text)!important;
+}
+.icon-btn.icon-btn-outline.icon-btn-brand:hover {
+    background-color: var(--color-brand-bg)!important;
+    border-color: var(--color-brand-border);
+    color: var(--color-brand-text)!important;
+}
+
+/* Outline hover */
+.btn.btn-outline:hover.btn-secondary {
+    border-color: rgb(var(--color-general-secondary-border));
+}
+.btn.btn-outline:hover.btn-primary {
+    border-color: rgb(var(--color-general-primary-border));
+}
+.btn.btn-outline:hover.btn-success {
+    border-color: rgb(var(--color-general-success-border));
+}
+.btn.btn-outline:hover.btn-danger {
+    border-color: rgb(var(--color-general-danger-border));
+}
+.btn.btn-outline:hover.btn-brand {
+    border-color: var(--color-brand-border);
+}
+.btn.btn-outline:hover.btn-warning {
+    border-color: rgb(var(--color-general-warning-border));
+}
+.btn.btn-outline:hover,
+.btn.btn-outline {
+    background-color: transparent!important;
+}
+
+/* Button filled */
+.icon-btn.icon-btn-filled.icon-btn-primary {
+    background-color: rgb(var(--color-general-primary-text));
+}
+.icon-btn.icon-btn-filled.icon-btn-primary svg {
+    fill: rgb(var(--color-general-primary-bg));
+    color: var(--text-light);
+}
+.icon-btn.icon-btn-filled.icon-btn-secondary {
+    background-color: var(--text-dark);
+}
+.icon-btn.icon-btn-filled.icon-btn-secondary svg {
+    fill: var(--text-light);
+    color: var(--text-light);
+}
+.icon-btn.icon-btn-filled.icon-btn-danger {
+    background-color: rgb(var(--color-general-danger-text));
+}
+.icon-btn.icon-btn-filled.icon-btn-danger svg {
+    fill: var(--text-light);
+    color: var(--text-light);
+}
+.icon-btn.icon-btn-filled.icon-btn-brand {
+    background-color: var(--color-brand-text);
+}
+.icon-btn.icon-btn-filled.icon-btn-brand svg {
+    fill: var(--text-light);
+    color: var(--text-light);
+}
+.icon-btn.icon-btn-filled.icon-btn-warning {
+    background-color: rgb(var(--color-general-warning-text));
+}
+.icon-btn.icon-btn-filled.icon-btn-warning svg {
+    fill: var(--text-light);
+    color: var(--text-light);
+}
+.icon-btn.icon-btn-filled.icon-btn-success {
+    background-color: rgb(var(--color-general-success-text));
+}
+.icon-btn.icon-btn-filled.icon-btn-success svg {
+    fill: var(--text-light);
+    color: var(--text-light);
+}
+
+.icon-btn.icon-btn-text {
+    border-color: transparent!important;
+}
+.icon-btn.icon-btn-link,
+.icon-btn.icon-btn-link:active,
+.icon-btn.icon-btn-link:hover {
+    border-color: transparent!important;
+    background-color: transparent!important;
+}
+
+.icon-btn-notify {
+    position: relative;
+}
+.icon-btn-notify .icon-svg {
+    position: relative;
+}
+.icon-btn-notify .icon-svg::after {
+    /* content: attr(data-notify-count); */
+    content: '';
+    font-size: 12px;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    top: -2px;
+    left: 12px;
+    overflow: hidden;
+    display: inline-flex;
+    border-radius: var(--border-radius);
+    background-color: rgb(var(--color-general-danger-text));
+    border: 1px solid rgb(var(--color-general-danger-border));
+    color: #fff;
+    line-height: 16px;
+    box-shadow: 0 0 0 2px var(--color-main);
+    z-index: 1;
+}
+
+.icon-btn-muted .icon-svg svg,
+.icon-btn-muted svg {
+    fill: var(--text-secondary)!important;
+    color: var(--text-secondary)!important;
+}
+.icon-btn-muted:hover svg {
+    fill: var(--text-dark)!important;
+    color: var(--text-dark)!important;
+}

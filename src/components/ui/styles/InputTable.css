@@ -1,0 +1,26 @@
+.input-table-container {
+    height: 45px;
+    cursor: pointer;
+}
+
+.input-table-container input {
+    height: 100%;
+    border: none;
+    text-align: center;
+    font-family: monospace;
+    font-size: 16px;
+    width: 100%;
+    cursor: pointer;
+    color: var(--text-dark);
+    background-color: transparent;
+    transition-duration: var(--transition-duration);
+    outline: 2px solid transparent;
+    position: relative;
+}
+.input-table-container input:focus-within,
+.input-table-container input:focus-visible,
+.input-table-container input:focus {
+    outline: 4px solid var(--color-border);
+    background-color: var(--color-secondary);
+    z-index: 4;
+}

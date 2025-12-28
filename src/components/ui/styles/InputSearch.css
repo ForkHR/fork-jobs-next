@@ -1,0 +1,95 @@
+.input-search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid transparent;
+    border-width: 1px!important;
+    border-radius: var(--border-radius-lg);
+    transition-duration: var(--transition-duration);
+    height: 32px;
+    background-color: var(--color-main);
+    border: 1px solid var(--color-border);
+    opacity: 0.85;
+}
+
+.input-search-container input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-overflow: ellipsis;
+    min-width: 0;
+    width: 0;
+    height: 100%;
+    background-color: transparent!important;
+}
+.input-search-container-filled {
+    background-color: rgb(var(--color-general-secondary-bg));
+    border-color: var(--color-secondary);
+}
+
+.input-search-container input::placeholder {
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    font-family: var(--font-family);
+}
+.input-search-container .input-search-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    padding: 0 12px;
+    height: 100%;
+}
+.input-search-container .input-search-icon svg {
+    fill: var(--text-dark);
+    width: 16px;
+    height: 16px;
+    transition-duration: var(--transition-duration);
+}
+
+.input-search-container:hover {
+    border-color: var(--color-border);
+    opacity: 1;
+}
+.input-search-container:focus-within {
+    border-color: rgb(var(--color-general-secondary-border))!important;
+    opacity: 1;
+}
+
+.input-search-focused,
+.input-search-focused {
+    border-color: var(--color-border);
+    opacity: 1;
+}
+.input-search-submit {
+    cursor: pointer;
+}
+.input-search-submit:hover {
+    color: var(--color-primary);
+}
+.input-search-submit svg {
+    opacity: 1!important;
+    transition-duration: var(--transition-duration);
+}
+.clear-input {
+    height: 100%;
+    padding: 0 6px;
+    display: flex;
+    align-items: center;
+}
+.input-search-has-sign input {
+    padding: 8px 8px 8px 4px;
+}
+.input-search-sign {
+    font-size: 14px;
+    padding: 5px 12px;
+    background-color: var(--color-secondary);
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+    margin: 3px;
+    font-weight: 600;
+}

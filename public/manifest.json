@@ -1,0 +1,70 @@
+{
+  "name": "Fork",
+  "short_name": "Fork",
+  "id": "app.forkhr.com",
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "dir": "ltr",
+  "scope": "/",
+  "theme_color": "#ffffff",
+  "lang": "en-US",
+  "categories": [
+    "business",
+    "SAAS"
+  ],
+  "description": "Manage your workforce with Fork. A comprehensive platform for workforce management, including employee onboarding, time tracking, and more.",
+  "related_applications": [{
+    "id": "app.forkhr.com",
+    "platform": "webapp",
+    "url": "https://app.forkhr.com/manifest.json"
+  }],
+  "icons": [
+    {
+      "src": "./icons/logo192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icons/maskable_logo192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/logo300.png",
+      "sizes": "300x300",
+      "type": "image/png"
+    },
+    {
+      "src": "./icons/maskable_logo300.png",
+      "sizes": "300x300",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/logo512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "./icons/maskable_logo512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+  ],
+  "shortcuts": [
+  ],
+  "edge_side_panel": {
+    "preferred_width": 480
+  },
+  "handle_links": "auto",
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  }
+}

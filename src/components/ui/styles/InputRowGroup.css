@@ -1,0 +1,55 @@
+.input-row-group .input-row-group-wrapper .line-button {
+    border-radius: 0;
+}
+
+.input-row-group .input-row-group-wrapper .input-row:last-of-type {
+    border-bottom: none;
+}
+
+.input-row-group .input-row-group-wrapper .input-row:not(:first-of-type):not(:last-of-type)>.input-row-label,
+.input-row-group .input-row-group-wrapper .input-row:not(:first-of-type):not(:last-of-type) {
+    border-radius: 0!important;
+}
+
+.input-row-group .input-row:first-of-type>.input-row-label {
+    border-top-left-radius: var(--border-radius);
+}
+
+.input-row-group .input-row:first-of-type .input-row-switch,
+.input-row-group .input-row:first-of-type .input-row-select div:first-child .checkbox-wrapper,
+.input-row-group .input-row:first-of-type .input-row-input-inner {
+    border-top-right-radius: var(--border-radius);
+}
+
+.input-row-group .input-row:last-of-type>.input-row-label {
+    border-bottom-left-radius: var(--border-radius);
+}
+
+.input-row-group .input-row:last-of-type .input-row-switch,
+.input-row-group .input-row:last-of-type .line-button:last-child,
+.input-row-group .input-row:last-of-type .input-row-select div:last-child .checkbox-wrapper,
+.input-row-group .input-row:last-of-type .input-row-input-inner {
+    border-bottom-right-radius: var(--border-radius);
+}
+
+.input-row-group-wrapper .input-row:only-child>.input-row-label {
+    border-left: none;
+}
+
+@media (max-width: 800px) {
+    .input-row-group .input-row:first-of-type>.input-row-label {
+        border-top-right-radius: var(--border-radius);
+    }
+    .input-row-group .input-row:last-of-type>.input-row-label {
+        border-bottom-left-radius: 0;
+    }
+    .input-row-group .input-row .input-row-switch,
+    .input-row-group .checkbox-wrapper {
+        border-top-right-radius: 0;
+    }
+    .input-row-group .input-row:last-of-type .input-row-input-inner,
+    .input-row-group .input-row:last-of-type .input-row-switch,
+    .input-row-group .input-row:last-of-type .input-row-select div:last-child .checkbox-wrapper {
+        border-bottom-left-radius: var(--border-radius);
+    }
+}

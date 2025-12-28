@@ -1,0 +1,217 @@
+import { useEffect, useState } from 'react';
+import { Button, Icon } from '../';
+import { closeIcon, errorIcon, spinnerIcon, warningFillIcon } from '../../assets/img/icons';
+import './styles/Modal.css';
+import { createPortal } from 'react-dom';
+
+const Modal = ({
+    children,
+    secondary,
+    bodyHidden,
+    bodyStyles,
+    headerNone,
+    noAction,
+    style,
+    modalIsOpen,
+    label,
+    setModalIsOpen,
+    actionBtnText,
+    onSubmit,
+    actionDangerBtnText,
+    onSubmitDanger,
+    disableClose,
+    isLoading,
+    notCloseOnUpdate,
+    isError,
+    errMsg,
+    isScroll,
+    onClose,
+    onClickOutside,
+    type,
+    classNameBody,
+    classNameContent,
+    classNameFooter,
+    showOverflow,
+    warning,
+    forbidBackdropClose,
+    disabledAction,
+    minWith,
+    maxWith,
+    dialogWindow,
+    smallWindow,
+    smallWindowCenter,
+    onSubmitEnter,
+    onSubmitDangerDelete,
+    ...props
+}) => {
+    const [open, setOpen] = useState(modalIsOpen); 
+
+    const closeModal = () => {
+        if (forbidBackdropClose) {
+            return;
+        }
+        onClose && onClose();
+        setModalIsOpen && setModalIsOpen(false);
+    }
+
+    const clickOutside = (e) => {
+        if (forbidBackdropClose) {
+            return;
+        }
+
+        if (e.target.classList.contains('modal-overlay') || e.target.classList.contains('modal-wrapper')) {
+            if(!disableClose || disableClose === false) {
+                closeModal();
+                if (onClickOutside) {
+                    onClickOutside();
+                }
+            } else {
+                console.log('modal is disabled');
+            }
+        }
+    }
+
+    const closeOnEscape = (e) => {
+        if (forbidBackdropClose) {
+            return;
+        }
+
+        if(e.key === 'Escape') {
+            closeModal();
+        }
+    }
+
+    useEffect(() => {
+        if (forbidBackdropClose) {
+            return;
+        }
+
+        let timeOut = null;
+
+        if (!modalIsOpen) {
+            if (open) {
+                timeOut = setTimeout(() => {
+                    setOpen(false);
+                    onClose && onClose();
+                }, 150);
+            }
+        } else {
+            setOpen(true);
+        }
+
+        if(modalIsOpen) {
+            window.addEventListener('keydown', closeOnEscape);
+        }
+
+        return () => {
+            timeOut && clearTimeout(timeOut);
+            window.removeEventListener('keydown', closeOnEscape);
+        }
+    }, [modalIsOpen])
+
+    return createPortal(
+        open ? (
+        <>
+        <div className="modal-overlay" onMouseDown={clickOutside} style={{
+            '--modal-min-width': minWith || '',
+            '--modal-max-width': maxWith || undefined,
+            ...style
+        }}>
+            <div className={`modal-wrapper${modalIsOpen ? ' modal-open' : ' modal-closed'}${dialogWindow ? " modal-dialog-window" : ""}${smallWindow ? " modal-small-window" : ""}${smallWindowCenter ? " modal-small-window-center" : ""}`}>
+                <div className={`modal-body${classNameBody ? ` ${classNameBody}` : ""}${showOverflow ? ' modal-overflow-none' : ''}`}>
+                    {!headerNone ? (
+                    <div className="modal-header">
+                        {props.centerHeader && <div className="w-set-50-px"/>}
+                        <div>
+                            <div className="fs-18 fs-sm-16 weight-500">{label}</div>
+                            {secondary && <div className="fs-14 text-secondary mt-2">{secondary}</div>}
+                        </div>
+                        {disableClose ? null : (
+                            <Button
+                                color="secondary"
+                                variant="text"
+                                muted
+                                icon={closeIcon}
+                                onClick={closeModal}
+                                disabled={forbidBackdropClose}
+                            />
+                        )}
+                    </div>
+                    ) : null}
+                    <div className={`modal-content scrollbar-none${isScroll ? ' modal-scroll' : ''}${classNameContent ? ` ${classNameContent}` : ""}`} style={bodyStyles}>
+                        {children}
+                        {isScroll && isLoading && (
+                            <div className="flex align-center mb-1">
+                                <div className="btn-icon modal-spinner">{spinnerIcon}</div>
+                            </div>
+                        )}
+                    </div>
+                    {isError && errMsg && (
+                        <div className="modal-error">
+                            <Icon
+                                icon={errorIcon}
+                                size="sm"
+                                className="fill-danger"
+                            />
+                            {warning}
+                        </div>
+                    )}
+                    {warning && (
+                        <div className="modal-warning">
+                            <Icon
+                                icon={warningFillIcon}
+                                size="sm"
+                                className="fill-warning"
+                            />
+                            {warning}
+                        </div>
+                    )}
+                    {!noAction && (
+                        <div className={`${classNameFooter ? `${classNameFooter} modal-footer` : "modal-footer gap-3"}`}>
+                            {props.footer ? (
+                                props.footer
+                            ) : 
+                                actionDangerBtnText && !isLoading && (
+                                    <Button
+                                        label={actionDangerBtnText}
+                                        onClick={onSubmitDanger ? onSubmitDanger : undefined}
+                                        type="secondary"
+                                        variant="outline"
+                                        size={smallWindow ? "lg" : ""}
+                                        className={smallWindow ? "flex-grow-1" : "" }
+                                        smSize="lg"
+                                        disabled={forbidBackdropClose}
+                                    />
+                                )}
+                                {actionBtnText && (
+                                    <Button
+                                        label={actionBtnText}
+                                        onClick={onSubmit ? onSubmit : undefined}
+                                        isLoading={isLoading}
+                                        type={type ? type : "secondary"}
+                                        size={smallWindow ? "lg" : ""}
+                                        className={smallWindow ? "flex-grow-1" : "" }
+                                        variant="filled"
+                                        onKeyPress={onSubmitEnter ?
+                                            (e) => {
+                                                if(e.key === 'Enter') {
+                                                    onSubmit()
+                                                }
+                                            } : undefined
+                                        }
+                                        smSize="lg"
+                                        disabled={disabledAction || forbidBackdropClose}
+                                    />
+                                )
+                            }
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+        </> ) : null,
+        document.body
+    )
+}
+
+export default Modal

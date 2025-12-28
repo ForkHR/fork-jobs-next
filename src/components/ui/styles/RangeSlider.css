@@ -1,0 +1,50 @@
+.range-input {
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
+    border-radius: var(--border-radius-lg);
+    outline: 3px solid transparent;
+    border:none;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+    transition-duration: var(--transition-duration);
+}
+
+.range-input:hover {
+    opacity:1;
+    border-color: rgba(var(--color-general-brand), 1)!important;
+    outline-color: rgba(var(--color-general-brand), 0.5)!important;
+}
+
+.range-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition-duration: var(--transition-duration);
+    border: 1px solid rgba(var(--color-general-brand),1)!important;
+    background-color: var(--color-brand);
+    outline: 2px solid rgba(var(--color-general-brand), 0.5)!important;
+}
+
+.range-input::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background-color: var(--color-brand);
+    cursor: pointer;
+    border-radius: 50%;
+}
+.range-input::-webkit-slider-thumb:active {
+    box-shadow: 0px 0px 0 1px var(--color-brand)!important;
+}
+.range-input-empty::-webkit-slider-thumb {
+    background-color: transparent!important;
+    border: none!important;
+    outline-color: transparent!important;
+    border: 1px solid var(--color-border)!important;
+    background-color: transparent!important;
+    outline: 2px solid transparent!important;
+}
