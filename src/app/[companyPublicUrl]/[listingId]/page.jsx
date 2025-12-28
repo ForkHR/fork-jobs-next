@@ -3,11 +3,11 @@ import ListingPageClient from './listingPageClient';
 import { getCompanyAndListingCached } from '../../../lib/jobBoardData';
 
 export async function generateMetadata({ params }) {
-  const { companyPublicUrl, listingId } = await params;
-  if (!companyPublicUrl || !listingId) return {};
+  const { publicUrl, listingId } = await params;
+  if (!publicUrl || !listingId) return {};
 
   try {
-    const { company, listing } = await getCompanyAndListingCached(companyPublicUrl, listingId);
+    const { company, listing } = await getCompanyAndListingCached(publicUrl, listingId);
 
     const companyName = company?.name || 'Company';
     const title = listing?.title
@@ -29,11 +29,11 @@ export async function generateMetadata({ params }) {
       title,
       description,
       alternates: {
-        canonical: `/${companyPublicUrl}/${listingId}`,
+        canonical: `/${publicUrl}/${listingId}`,
       },
       openGraph: {
         title,
-        url: `/${companyPublicUrl}/${listingId}`,
+        url: `/${publicUrl}/${listingId}`,
       },
     };
   } catch {
@@ -42,12 +42,12 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ListingPage({ params }) {
-  const { companyPublicUrl, listingId } = await params;
-  if (!companyPublicUrl || !listingId) notFound();
+  const { publicUrl, listingId } = await params;
+  if (!publicUrl || !listingId) notFound();
 
   let data;
   try {
-    data = await getCompanyAndListingCached(companyPublicUrl, listingId);
+    data = await getCompanyAndListingCached(publicUrl, listingId);
   } catch (e) {
     if (e?.response?.status === 404 || e?.response?.status === 403) notFound();
     throw e;
@@ -88,7 +88,7 @@ export default async function ListingPage({ params }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingJsonLd) }} />
-      <ListingPageClient companyPublicUrl={companyPublicUrl} company={company} listing={listing} />
+      <ListingPageClient publicUrl={publicUrl} company={company} listing={listing} />
     </>
   );
 }

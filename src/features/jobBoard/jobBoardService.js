@@ -13,7 +13,7 @@ const getJobBoardUrl = () => `${getApiBaseUrl()}/job-board`;
 
 
 export const getCompanyJobs = async (id) => {
-    const res = await axios.get(`${getJobBoardUrl()}?companyPublicUrl=` + id);
+    const res = await axios.get(`${getJobBoardUrl()}?publicUrl=` + id);
 
     return res.data;
 }

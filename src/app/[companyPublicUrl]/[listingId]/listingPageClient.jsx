@@ -531,7 +531,7 @@ function Listing({ item }) {
   );
 }
 
-export default function ListingPageClient({ companyPublicUrl, company, listing }) {
+export default function ListingPageClient({ publicUrl, company, listing }) {
   useEffect(() => {
     if (!company) return;
 
@@ -593,7 +593,7 @@ export default function ListingPageClient({ companyPublicUrl, company, listing }
                 background: 'white',
                 color: '#333',
               }}
-              href={`/${companyPublicUrl}`}
+              href={`/${publicUrl}`}
             >
               <div className="flex align-center justify-between gap-2 text-brand">
                 <Icon icon={leftArrowIcon} className="fs-24 weight-500 fill-brand" />
@@ -604,7 +604,7 @@ export default function ListingPageClient({ companyPublicUrl, company, listing }
 
           <div className="container flex-1">
             <div className="w-max-600-px mx-auto w-100" id="listing-detailed">
-              <Link className="flex align-center py-5 hover-opacity-50" href={`/${companyPublicUrl}`}>
+              <Link className="flex align-center py-5 hover-opacity-50" href={`/${publicUrl}`}>
                 <Icon icon={chevronLeftIcon} size="sm" />
                 <span className="fs-14 weight-500 text-underlined">Back to all listings</span>
               </Link>
