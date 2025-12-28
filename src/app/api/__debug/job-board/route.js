@@ -40,11 +40,22 @@ export async function GET(request) {
         ? res.data.slice(0, 400)
         : res.data;
 
+    const responseHeaders = {
+      server: res.headers?.server,
+      'content-type': res.headers?.['content-type'],
+      'cf-ray': res.headers?.['cf-ray'],
+      'cf-cache-status': res.headers?.['cf-cache-status'],
+      'cf-mitigated': res.headers?.['cf-mitigated'],
+      'cf-chl-out': res.headers?.['cf-chl-out'],
+    };
+
     return NextResponse.json({
       ok: res.status >= 200 && res.status < 300,
       url,
       status: res.status,
       hasSsrToken: Boolean(ssrToken),
+      sentHeaderNames: Object.keys(headers),
+      responseHeaders,
       dataPreview,
     });
   } catch (e) {
@@ -53,6 +64,7 @@ export async function GET(request) {
         ok: false,
         url,
         hasSsrToken: Boolean(ssrToken),
+        sentHeaderNames: Object.keys(headers),
         error: e?.message || 'Request failed',
         status: e?.response?.status,
       },

@@ -1,4 +1,3 @@
-import { cache } from 'react';
 import jobBoardService from '../features/jobBoard/jobBoardService';
 
 const normalizeJobBoardResponse = (res) => {
@@ -8,12 +7,12 @@ const normalizeJobBoardResponse = (res) => {
   return res;
 };
 
-export const getCompanyJobsCached = cache(async (companyPublicUrl) => {
+export const getCompanyJobsCached = async (companyPublicUrl) => {
   const res = await jobBoardService.getCompanyJobs(companyPublicUrl);
   return normalizeJobBoardResponse(res);
-});
+};
 
-export const getCompanyAndListingCached = cache(async (companyPublicUrl, listingId) => {
+export const getCompanyAndListingCached = async (companyPublicUrl, listingId) => {
   const data = await getCompanyJobsCached(companyPublicUrl);
   const listings = Array.isArray(data?.listings) ? data.listings : [];
   const listing = listings.find((l) => l?._id === listingId);
@@ -23,4 +22,4 @@ export const getCompanyAndListingCached = cache(async (companyPublicUrl, listing
     listings,
     listing,
   };
-});
+};
