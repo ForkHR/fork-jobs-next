@@ -2,6 +2,9 @@ import { notFound } from 'next/navigation';
 import ListingPageClient from './listingPageClient';
 import { getCompanyAndListingCached } from '../../../lib/jobBoardData';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function generateMetadata({ params }) {
   const { companyPublicUrl, listingId } = await params;
   if (!companyPublicUrl || !listingId) return {};
