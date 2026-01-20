@@ -1,6 +1,5 @@
 import Script from 'next/script';
 import Providers from './providers';
-import { getSiteUrl } from '../lib/siteUrl';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -12,7 +11,7 @@ import '../utilities/ReactDatepicker.css';
 import '../index.css';
 
 export const metadata = {
-  metadataBase: new URL(getSiteUrl()),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   title: {
     default: 'Fork Jobs',
     template: '%s - Powered by forkhr.com',
