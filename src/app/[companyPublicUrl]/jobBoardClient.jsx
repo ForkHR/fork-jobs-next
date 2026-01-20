@@ -25,7 +25,7 @@ const normalizeJobBoardPayload = (payload) => {
 function JobListing({ item, companyPublicUrl }) {
   return (
     <Link href={`/${companyPublicUrl}/${item._id}`}>
-      <div className="border-bottom py-5 transition-shadow pointer display-on-hover-parent transition-slide-right-hover-parent animation-slide-in">
+      <div className="border-bottom py-5 transition-shadow pointer display-on-hover-parent transition-slide-right-hover-parent animation-fade-in">
         <div className="flex justify-between">
           <div>
             <div className="fs-12 weight-00 flex gap-1 mt-1 text-capitalize">{item?.employmentType ? `${item?.employmentType}` : ''}</div>
@@ -373,15 +373,15 @@ export default function JobBoardClient({ companyPublicUrl, company: initialCompa
         <div className="flex-1 flex flex-col">
           <div className="bg-brand text-light container py-6 flex flex-col justify-center align-center h-min-400-px">
             <h1
-              className="weight-400 fs-sm-48 text-center weight-500 pb-6 w-max-sm py-sm-4 line-height-1-3 animation-slide-in w-max-md"
+              className="weight-400 fs-sm-48 text-center weight-500 pb-6 w-max-sm py-sm-4 line-height-1-3 animation-fade-in w-max-md"
               style={{
                 fontSize: 'clamp(32px, 7vw, 58px)',
               }}
             >
-              Work at{window.innerWidth < 480 ? <br /> : ' '} {company?.name}
+              Work at {company?.name}
             </h1>
             <div
-              className="pointer clickable px-5 py-2 fs-20 weight-500 hover-opacity-75 border-radius-rounded animation-slide-in"
+              className="pointer clickable px-5 py-2 fs-20 weight-500 hover-opacity-75 border-radius-rounded animation-fade-in"
               style={{
                 background: 'white',
                 color: '#333',

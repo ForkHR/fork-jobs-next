@@ -682,7 +682,7 @@ export default function ListingPageClient({ companyPublicUrl, listingId, company
                 fontSize: 'clamp(32px, 7vw, 58px)',
               }}
             >
-              Work at{window.innerWidth < 480 ? <br /> : ' '} {company?.name}
+              Work at {company?.name}
             </h1>
             <Link
               className="pointer clickable px-5 py-2 fs-20 weight-500 hover-opacity-75 border-radius-rounded animation-slide-in"
