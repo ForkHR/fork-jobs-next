@@ -18,6 +18,62 @@ const parseCompanyPublicUrls = () => {
   return Array.from(new Set(urls));
 };
 
+const getForkAppBaseUrl = () => {
+  const explicit =
+    process.env.FORKHR_APP_URL ||
+    process.env.NEXT_PUBLIC_FORKHR_APP_URL ||
+    process.env.FORK_APP_URL ||
+    process.env.NEXT_PUBLIC_FORK_APP_URL;
+
+  return String(explicit || 'https://app.forkhr.com')
+    .trim()
+    .replace(/\/+$/, '');
+};
+
+const fetchAvailableCompanyPublicUrls = async () => {
+  const explicitUrl =
+    process.env.AVAILABLE_COMPANIES_URL ||
+    process.env.FORK_AVAILABLE_COMPANIES_URL ||
+    process.env.NEXT_PUBLIC_AVAILABLE_COMPANIES_URL ||
+    process.env.NEXT_PUBLIC_FORK_AVAILABLE_COMPANIES_URL;
+
+  const base = getForkAppBaseUrl();
+  const url = explicitUrl ? String(explicitUrl).trim() : `${base}/jobs-board/available`;
+
+  const ssrToken = process.env.FORK_JOBS_SSR_TOKEN || process.env.JOBS_SSR_TOKEN;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL;
+
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'User-Agent': 'Mozilla/5.0 (compatible; ForkJobsSitemap/1.0; +https://jobs.forkhr.com)',
+      ...(siteUrl ? { Referer: String(siteUrl).trim() } : {}),
+      ...(ssrToken ? { 'x-fork-jobs-ssr-token': String(ssrToken).trim() } : {}),
+    },
+    cache: 'no-store',
+  });
+
+  if (!res.ok) return [];
+
+  const text = await res.text().catch(() => '');
+  let json = null;
+  try {
+    json = text ? JSON.parse(text) : null;
+  } catch {
+    json = null;
+  }
+
+  const data = Array.isArray(json?.data) ? json.data : [];
+  const ids = data
+    .map((item) => item?._id)
+    .filter(Boolean)
+    .map((v) => String(v).trim())
+    .filter(Boolean);
+
+  return Array.from(new Set(ids));
+};
+
 export default async function sitemap() {
   const siteUrl = getSiteUrl();
   const now = new Date();
@@ -31,7 +87,17 @@ export default async function sitemap() {
     },
   ];
 
-  const companyPublicUrls = parseCompanyPublicUrls();
+  const fromEnv = parseCompanyPublicUrls();
+  let companyPublicUrls = fromEnv;
+
+  if (companyPublicUrls.length === 0) {
+    try {
+      companyPublicUrls = await fetchAvailableCompanyPublicUrls();
+    } catch {
+      companyPublicUrls = [];
+    }
+  }
+
   if (companyPublicUrls.length === 0) return entries;
 
   for (const companyPublicUrl of companyPublicUrls) {

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import JobBoardClient from './jobBoardClient';
 import { getCompanyJobsCached } from '../../lib/jobBoardData';
+import { getSiteUrl } from '../../lib/siteUrl';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -27,6 +28,10 @@ export async function generateMetadata({ params }) {
     const jobsQty = listings.length;
     const title = `Work at ${companyName} - ${jobsQty} open jobs`;
 
+    const siteUrl = getSiteUrl();
+    const companySlug = encodeURIComponent(companyPublicUrl);
+    const absoluteUrl = `${siteUrl}/${companySlug}`;
+
     const companyDescription = stripHtml(company?.description);
     const description =
       companyDescription ||
@@ -41,13 +46,13 @@ export async function generateMetadata({ params }) {
       title,
       description,
       alternates: {
-        canonical: `/${companyPublicUrl}`,
+        canonical: absoluteUrl,
       },
       openGraph: {
         type: 'website',
         title,
         description,
-        url: `/${companyPublicUrl}`,
+        url: absoluteUrl,
         images: logoUrl
           ? [
               {

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import ListingPageClient from './listingPageClient';
 import { getCompanyAndListingCached } from '../../../lib/jobBoardData';
+import { getSiteUrl } from '../../../lib/siteUrl';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -36,17 +37,22 @@ export async function generateMetadata({ params }) {
     const publicS3 = process.env.NEXT_PUBLIC_PUBLIC_S3_API_URL || process.env.PUBLIC_S3_API_URL;
     const logoUrl = company?.logo && publicS3 ? `${String(publicS3).replace(/\/+$/, '')}/${company.logo}` : undefined;
 
+    const siteUrl = getSiteUrl();
+    const companySlug = encodeURIComponent(companyPublicUrl);
+    const listingSlug = encodeURIComponent(String(listingId));
+    const absoluteUrl = `${siteUrl}/${companySlug}/${listingSlug}`;
+
     return {
       title,
       description,
       alternates: {
-        canonical: `/${companyPublicUrl}/${listingId}`,
+        canonical: absoluteUrl,
       },
       openGraph: {
         type: 'website',
         title,
         description,
-        url: `/${companyPublicUrl}/${listingId}`,
+        url: absoluteUrl,
         images: logoUrl
           ? [
               {
