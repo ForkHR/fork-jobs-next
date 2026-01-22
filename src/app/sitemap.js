@@ -30,6 +30,19 @@ const getForkAppBaseUrl = () => {
     .replace(/\/+$/, '');
 };
 
+const joinUrl = (base, path) => {
+  const cleanBase = String(base || '').trim().replace(/\/+$/, '');
+  const cleanPath = String(path || '').trim().replace(/^\/+/, '');
+  return `${cleanBase}/${cleanPath}`;
+};
+
+const asDateOrNow = (value, now) => {
+  if (!value) return now;
+  if (value instanceof Date && !Number.isNaN(value.getTime())) return value;
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? now : d;
+};
+
 const fetchAvailableCompanyPublicUrls = async () => {
   const explicitUrl =
     process.env.AVAILABLE_COMPANIES_URL ||
@@ -38,35 +51,53 @@ const fetchAvailableCompanyPublicUrls = async () => {
     process.env.NEXT_PUBLIC_FORK_AVAILABLE_COMPANIES_URL;
 
   const base = getForkAppBaseUrl();
-  const url = explicitUrl ? String(explicitUrl).trim() : `${base}/jobs-board/available`;
+  const urlPrimary = explicitUrl
+    ? String(explicitUrl).trim()
+    : joinUrl(base, '/api/job-board/available');
+  const urlFallback = explicitUrl ? null : joinUrl(base, '/jobs-board/available');
 
   const ssrToken = process.env.FORK_JOBS_SSR_TOKEN || process.env.JOBS_SSR_TOKEN;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL;
 
-  const res = await fetch(url, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'User-Agent': 'Mozilla/5.0 (compatible; ForkJobsSitemap/1.0; +https://jobs.forkhr.com)',
-      ...(siteUrl ? { Referer: String(siteUrl).trim() } : {}),
-      ...(ssrToken ? { 'x-fork-jobs-ssr-token': String(ssrToken).trim() } : {}),
-    },
-    cache: 'no-store',
-  });
+  const headers = {
+    Accept: 'application/json',
+    'User-Agent': 'Mozilla/5.0 (compatible; ForkJobsSitemap/1.0; +https://jobs.forkhr.com)',
+    ...(siteUrl ? { Referer: String(siteUrl).trim() } : {}),
+    ...(ssrToken ? { 'x-fork-jobs-ssr-token': String(ssrToken).trim() } : {}),
+  };
 
-  if (!res.ok) return [];
+  const tryFetchJson = async (url) => {
+    const res = await fetch(url, {
+      method: 'GET',
+      headers,
+      cache: 'no-store',
+    });
 
-  const text = await res.text().catch(() => '');
-  let json = null;
-  try {
-    json = text ? JSON.parse(text) : null;
-  } catch {
-    json = null;
+    if (!res.ok) return null;
+
+    const text = await res.text().catch(() => '');
+    try {
+      return text ? JSON.parse(text) : null;
+    } catch {
+      return null;
+    }
+  };
+
+  let json = await tryFetchJson(urlPrimary);
+  if (!json && urlFallback) {
+    json = await tryFetchJson(urlFallback);
   }
 
-  const data = Array.isArray(json?.data) ? json.data : [];
+  if (!json) return [];
+
+  const data =
+    (Array.isArray(json?.data) && json.data) ||
+    (Array.isArray(json) && json) ||
+    (Array.isArray(json?.data?.data) && json.data.data) ||
+    [];
+
   const ids = data
-    .map((item) => item?._id)
+    .map((item) => (typeof item === 'string' ? item : item?._id || item?.id || item?.companyPublicUrl))
     .filter(Boolean)
     .map((v) => String(v).trim())
     .filter(Boolean);
@@ -118,7 +149,7 @@ export default async function sitemap() {
         const listingId = listing?._id;
         if (!listingId) continue;
 
-        const lastModified = listing?.updatedAt || listing?.createdAt || now;
+        const lastModified = asDateOrNow(listing?.updatedAt || listing?.createdAt, now);
 
         entries.push({
           url: `${siteUrl}/${companySlug}/${encodeURIComponent(String(listingId))}`,
