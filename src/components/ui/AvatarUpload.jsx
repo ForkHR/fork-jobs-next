@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, useState } from 'react'
 import Compressor from 'compressorjs';
 import { Avatar, Button } from '../'

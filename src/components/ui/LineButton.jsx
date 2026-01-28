@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from "react"
 import { checkIcon, copyIcon, chevronRightIcon } from "../../assets/img/icons"
 import IconButton from "./IconButton"

@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import './styles/Button.css'
 import { spinnerIcon } from '../../assets/img/icons'
-import { useEffect } from 'react'
 
 const Button = ({
     icon,
@@ -28,15 +27,6 @@ const Button = ({
     muted,
     style
 }) => {
-    useEffect(() => {
-        if(onKeyPress) {
-            document.addEventListener('keydown', onKeyPress)
-            return () => {
-                document.removeEventListener('keydown', onKeyPress)
-            }
-        }
-    }, [onKeyPress, onClick])
-
     return (
         <>
         { to ?

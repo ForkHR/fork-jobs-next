@@ -1,3 +1,5 @@
+'use client';
+
 import { errorIcon } from "../../assets/img/icons"
 import Button from "../ui/Button"
 

@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useRef } from 'react';
 import './styles/FsModal.css';
 import { createPortal } from 'react-dom';

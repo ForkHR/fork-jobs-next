@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react'
 import { errorIcon, warningIcon, wifiOffIcon } from '../../assets/img/icons'
 import ErrorInfo from '../ui/ErrorInfo'

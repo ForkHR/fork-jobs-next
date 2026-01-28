@@ -34,10 +34,7 @@ const toAxiosLikeHttpError = (status, url, bodyPreview) => {
   return error;
 };
 
-const fetchCompanyJobsServer = async (companyPublicUrl) => {
-  const base = getApiBaseUrl();
-  const url = `${base}/job-board?companyPublicUrl=${encodeURIComponent(companyPublicUrl)}`;
-
+const fetchJsonNoStore = async (url) => {
   const res = await fetch(url, {
     method: 'GET',
     headers: getServerRequestHeaders(),
@@ -59,10 +56,64 @@ const fetchCompanyJobsServer = async (companyPublicUrl) => {
   return json;
 };
 
+const fetchCompanyJobsServer = async (companyPublicUrl) => {
+  const base = getApiBaseUrl();
+  const url = `${base}/job-board?companyPublicUrl=${encodeURIComponent(companyPublicUrl)}`;
+
+  return fetchJsonNoStore(url);
+};
+
 const normalizeJobBoardResponse = (res) => {
   if (!res) return res;
   if (res?.company || res?.listings) return res;
   if (res?.data && (res.data.company || res.data.listings)) return res.data;
+  return res;
+};
+
+const fetchAvailableJobBoardsServer = async () => {
+  const base = getApiBaseUrl();
+  const url = `${base}/job-board/available`;
+
+  return fetchJsonNoStore(url);
+};
+
+export const getAvailableJobBoardsCached = async () => {
+  const res = await fetchAvailableJobBoardsServer();
+  if (Array.isArray(res)) return res;
+  if (Array.isArray(res?.data)) return res.data;
+  return [];
+};
+
+export const searchJobListingsCached = async (params = {}) => {
+  const base = getApiBaseUrl();
+  const url = new URL(`${base}/job-board/search`);
+  Object.entries(params).forEach(([k, v]) => {
+    if (v === undefined || v === null || v === '') return;
+    url.searchParams.set(k, String(v));
+  });
+
+  const res = await fetchJsonNoStore(url.toString());
+  return res?.data || res;
+};
+
+export const searchJobBoardCompaniesCached = async (params = {}) => {
+  const base = getApiBaseUrl();
+  const url = new URL(`${base}/job-board/companies/search`);
+  Object.entries(params).forEach(([k, v]) => {
+    if (v === undefined || v === null || v === '') return;
+    url.searchParams.set(k, String(v));
+  });
+
+  const res = await fetchJsonNoStore(url.toString());
+  return res?.data || res;
+};
+
+export const getJobListingByIdCached = async (listingId) => {
+  const base = getApiBaseUrl();
+  const url = `${base}/job-board/listing/${encodeURIComponent(listingId)}`;
+
+  const res = await fetchJsonNoStore(url);
+  if (res?.data?.company || res?.data?.listing) return res.data;
   return res;
 };
 

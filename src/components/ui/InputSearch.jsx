@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, useState } from 'react'
 import './styles/InputSearch.css'
 import { closeIcon, leftArrowIcon, searchIcon } from '../../assets/img/icons'

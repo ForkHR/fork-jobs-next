@@ -1,3 +1,4 @@
+'use client';
 import { useState, useMemo, useEffect } from 'react'
 import { IconButton, Button, Dropdown, Icon, CheckBox } from '../'
 import { chevronLeftIcon, chevronRightIcon, arrowDownShortIcon } from '../../assets/img/icons'

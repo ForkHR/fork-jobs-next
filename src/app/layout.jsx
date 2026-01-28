@@ -11,6 +11,8 @@ import '../utilities/Text.css';
 import '../utilities/ReactDatepicker.css';
 import '../index.css';
 
+import SiteHeader from './SiteHeader';
+
 export const metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: {
@@ -25,7 +27,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        <Providers>
+          <SiteHeader />
+          {children}
+        </Providers>
         <Script
           src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
           strategy="afterInteractive"

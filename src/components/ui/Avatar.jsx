@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState, useRef, memo } from 'react'
 import './styles/Avatar.css'
 import { createPortal } from 'react-dom';

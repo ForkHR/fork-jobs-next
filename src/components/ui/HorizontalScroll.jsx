@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, useEffect, useState } from 'react'
 import { chevronLeftIcon, chevronRightIcon } from '../../assets/img/icons'
 import { IconButton } from '../'

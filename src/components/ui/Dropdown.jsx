@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useRef } from 'react'
 import { closeIcon, chevronDownIcon } from '../../assets/img/icons'
 import './styles/Dropdown.css'

@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { Button, Icon } from '../';
 import { closeIcon, errorIcon, spinnerIcon, warningFillIcon } from '../../assets/img/icons';

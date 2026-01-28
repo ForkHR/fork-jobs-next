@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, useState } from 'react'
 import './styles/InputDefault.css'
 import { eyeIcon, hideIcon, questionIcon, selectOptionsIcon, xIcon } from '../../assets/img/icons'

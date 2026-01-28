@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useRef } from 'react'
 import { closeIcon, errorFillIcon, infoIcon, warningFillIcon } from '../../assets/img/icons'
 import Icon from './Icon'

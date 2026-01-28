@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState } from 'react'
 import Modal from './Modal'
 import Banner from './Banner'

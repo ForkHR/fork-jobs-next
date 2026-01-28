@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useRef, useEffect, useMemo, forwardRef } from 'react'
 import { calendarDefaultIcon, chevronDownIcon, selectOptionsIcon } from '../../assets/img/icons'
 import './styles/InputRow.css'
