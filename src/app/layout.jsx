@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import Script from 'next/script';
 import Providers from './providers';
 import { getSiteUrl } from '../lib/siteUrl';
@@ -56,7 +57,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body suppressHydrationWarning>
         <Providers>
-          <SiteHeader />
+          <Suspense>
+            <SiteHeader />
+          </Suspense>
           {children}
           <SiteFooter />
         </Providers>
