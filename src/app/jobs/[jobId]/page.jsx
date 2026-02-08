@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getJobListingByIdCached } from '../../../lib/jobBoardData';
 import { getSiteUrl } from '../../../lib/siteUrl';
 import JobApplySection from './JobApplySection';
+import ShareJobButton from './ShareJobButton';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -273,7 +274,11 @@ export default async function JobDetailPage({ params }) {
         {/* CTAs */}
         <div style={{ display: 'flex', gap: 12, marginBottom: 32 }}>
           <a
-            href={company?.publicUrl ? `/${company.publicUrl}/${listing._id}` : `/${listing.company?._id || listing.company}/${listing._id}`}
+            href={
+              company?.publicUrl
+                ? `/${company.publicUrl}/${listing._id}#application-form`
+                : `/${listing.company?._id || listing.company}/${listing._id}#application-form`
+            }
             style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
               padding: '12px 24px', fontSize: 15, fontWeight: 600, color: '#fff',
@@ -282,18 +287,6 @@ export default async function JobDetailPage({ params }) {
           >
             Apply Now
           </a>
-          {company?.publicUrl && (
-            <Link
-              href={`/boards/${company.publicUrl}`}
-              style={{
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                padding: '12px 24px', fontSize: 15, fontWeight: 600, color: '#000000',
-                background: '#fff', border: '1px solid #e2e8f0', borderRadius: 999, textDecoration: 'none',
-              }}
-            >
-              Company Board
-            </Link>
-          )}
         </div>
 
         {/* Job description */}
@@ -323,14 +316,10 @@ export default async function JobDetailPage({ params }) {
           gap: 16,
           fontSize: 14,
         }}>
-          <Link href="/jobs" style={{ color: '#64748b', textDecoration: 'underline', textDecorationColor: '#cbd5e1' }}>
-            ← Back to all jobs
-          </Link>
-          {company?.publicUrl && (
-            <Link href={`/boards/${company.publicUrl}`} style={{ color: '#64748b', textDecoration: 'underline', textDecorationColor: '#cbd5e1' }}>
+          <ShareJobButton jobUrl={`${siteUrl}/jobs/${jobId}`} jobTitle={listing.title} />
+            <Link href={`/${company?.publicUrl || company._id}`} style={{ color: '#64748b', textDecoration: 'underline', textDecorationColor: '#cbd5e1' }} target="_blank" rel="noopener noreferrer">
               More jobs at {companyName}
             </Link>
-          )}
         </div>
       </div>
 

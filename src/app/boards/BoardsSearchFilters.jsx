@@ -73,7 +73,7 @@ export default function BoardsSearchFilters({ initialValues, totalResults }) {
             variant="text"
             fullWidth
             label="Name"
-            className="w-100"
+            className="w-100 justify-start"
             borderRadius="md"
             type={sort === 'name' ? 'brand' : 'secondary'}
             onClick={() => {

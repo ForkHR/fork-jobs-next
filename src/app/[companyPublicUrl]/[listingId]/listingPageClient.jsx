@@ -618,6 +618,35 @@ export default function ListingPageClient({ companyPublicUrl, listingId, company
     }
   }, [company, listing]);
 
+  useEffect(() => {
+    if (!listing) return;
+    if (typeof window === 'undefined') return;
+    if (window.location.hash !== '#application-form') return;
+
+    let cancelled = false;
+    let tries = 0;
+    const maxTries = 30;
+
+    const tryScroll = () => {
+      if (cancelled) return;
+      const element = document.getElementById('application-form');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+      tries += 1;
+      if (tries < maxTries) {
+        setTimeout(tryScroll, 100);
+      }
+    };
+
+    tryScroll();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [listing]);
+
   if ((!company || !listing) && isLoading) {
     return (
       <section className="page-body h-100">

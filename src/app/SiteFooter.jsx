@@ -47,10 +47,8 @@ export default function SiteFooter() {
               Jobs
             </h4>
             <nav style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <Link href="/jobs" style={{ fontSize: 14, color: '#475569', textDecoration: 'none' }}>Browse All Jobs</Link>
+              <Link href="/jobs" style={{ fontSize: 14, color: '#475569', textDecoration: 'none' }}>Browse Jobs</Link>
               <Link href="/boards" style={{ fontSize: 14, color: '#475569', textDecoration: 'none' }}>Browse Boards</Link>
-              <Link href="/jobs?type=full-time" style={{ fontSize: 14, color: '#475569', textDecoration: 'none' }}>Full-time Jobs</Link>
-              <Link href="/jobs?type=part-time" style={{ fontSize: 14, color: '#475569', textDecoration: 'none' }}>Part-time Jobs</Link>
             </nav>
           </div>
 
@@ -60,9 +58,7 @@ export default function SiteFooter() {
               For Employers
             </h4>
             <nav style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <a href="https://app.forkhr.com/hiring?new-job-listing=true" target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, color: '#475569', textDecoration: 'none' }}>Post a Job</a>
               <a href="https://medium.com/@bohdankhv/how-to-post-a-job-on-fork-in-under-2-minutes-bf957c35d46d" target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, color: '#475569', textDecoration: 'none' }}>How to Post a Job</a>
-              <a href="https://app.forkhr.com/register" target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, color: '#475569', textDecoration: 'none' }}>Create Job Board</a>
               <a href="https://app.forkhr.com/login" target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, color: '#475569', textDecoration: 'none' }}>Employer Sign In</a>
             </nav>
           </div>
@@ -78,17 +74,6 @@ export default function SiteFooter() {
               <a href="https://forkhr.com/pricing" target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, color: '#475569', textDecoration: 'none' }}>Pricing</a>
             </nav>
           </div>
-
-          {/* Legal */}
-          <div>
-            <h4 style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#94a3b8', margin: '0 0 12px' }}>
-              Legal
-            </h4>
-            <nav style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <a href="https://forkhr.com/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, color: '#475569', textDecoration: 'none' }}>Privacy Policy</a>
-              <a href="https://forkhr.com/terms-of-service" target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, color: '#475569', textDecoration: 'none' }}>Terms of Service</a>
-            </nav>
-          </div>
         </div>
 
         <div
@@ -102,20 +87,13 @@ export default function SiteFooter() {
             gap: 12,
           }}
         >
-          <p style={{ fontSize: 13, color: '#94a3b8', margin: 0 }}>
+          <p style={{ fontSize: 13, color: '#90a1b9', margin: 0 }}>
             © {new Date().getFullYear()} Fork. All rights reserved.
           </p>
-          <p style={{ fontSize: 13, color: '#94a3b8', margin: 0 }}>
-            Powered by{' '}
-            <a
-              href="https://forkhr.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: '#000000', textDecoration: 'underline', textDecorationColor: '#cbd5e1', textUnderlineOffset: 2, fontWeight: "600" }}
-            >
-              Fork
-            </a>
-          </p>
+          <nav style={{ display: 'flex', flexDirection: 'row', alignItems: "center", gap: 8 }}>
+            <a href="https://forkhr.com/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: '#90a1b9', textDecoration: 'none' }}>Privacy</a>
+            <a href="https://forkhr.com/terms-of-service" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: '#90a1b9', textDecoration: 'none' }}>Terms</a>
+          </nav>
         </div>
       </div>
     </footer>

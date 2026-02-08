@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getCompanyAndListingCached } from '../../../../lib/jobBoardData';
 import { getSiteUrl } from '../../../../lib/siteUrl';
+import ShareJobButton from '../../../jobs/[jobId]/ShareJobButton';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -252,7 +253,11 @@ export default async function BoardJobDetailPage({ params }) {
         {/* CTAs */}
         <div style={{ display: 'flex', gap: 12, marginBottom: 32 }}>
           <a
-            href={company?.publicUrl ? `/${company.publicUrl}/${listing._id}` : `/${listing.company?._id || listing.company}/${listing._id}`}
+            href={
+              company?.publicUrl
+                ? `/${company.publicUrl}/${listing._id}#application-form`
+                : `/${listing.company?._id || listing.company}/${listing._id}#application-form`
+            }
             style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
               padding: '12px 28px', fontSize: 15, fontWeight: 600, color: '#fff',
@@ -286,14 +291,9 @@ export default async function BoardJobDetailPage({ params }) {
           gap: 16,
           fontSize: 14,
         }}>
-          <Link href={`/boards/${companyPublicUrl}`} style={{ color: '#64748b', textDecoration: 'underline', textDecorationColor: '#cbd5e1' }}>
-            ← Back to board
-          </Link>
-          <Link href={`/${companyPublicUrl}`} style={{ color: '#64748b', textDecoration: 'underline', textDecorationColor: '#cbd5e1' }}>
-            Branded job board
-          </Link>
-          <Link href="/boards" style={{ color: '#64748b', textDecoration: 'underline', textDecorationColor: '#cbd5e1' }}>
-            Browse all boards
+          <ShareJobButton jobUrl={`${siteUrl}/jobs/${jobId}`} jobTitle={listing.title} />
+            <Link href={`/${company?.publicUrl || company._id}`} style={{ color: '#64748b', textDecoration: 'underline', textDecorationColor: '#cbd5e1' }} target="_blank" rel="noopener noreferrer">
+            More jobs at {companyName}
           </Link>
         </div>
       </div>
