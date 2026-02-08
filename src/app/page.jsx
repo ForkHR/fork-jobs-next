@@ -88,13 +88,11 @@ export default async function HomePage() {
                 label="Browse Jobs"
                 variant="filled"
                 type="brand"
-                size="lg"
               />
               <Button
                 to="https://app.forkhr.com/hiring?new-job-listing=true"
                 label="Post a Job"
                 variant="outline"
-                size="lg"
                 target="_blank"
               />
             </div>
