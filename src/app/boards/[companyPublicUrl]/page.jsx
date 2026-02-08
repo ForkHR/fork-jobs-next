@@ -23,6 +23,17 @@ const formatPay = (listing) => {
   return pay;
 };
 
+const timeAgo = (dateStr) => {
+  if (!dateStr) return '';
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const days = Math.floor(diff / 86400000);
+  if (days === 0) return 'Today';
+  if (days === 1) return '1 day ago';
+  if (days < 30) return `${days} days ago`;
+  const months = Math.floor(days / 30);
+  return months === 1 ? '1 month ago' : `${months} months ago`;
+};
+
 const formatLocation = (loc) => {
   if (!loc) return null;
   const parts = [loc.city, loc.state].filter(Boolean);
@@ -185,11 +196,13 @@ export default async function BoardDetailPage({ params }) {
           {listings.map((listing) => {
             const loc = formatLocation(listing.location);
             const pay = formatPay(listing);
+            const ago = timeAgo(listing.createdAt);
 
             return (
               <Link
                 key={listing._id}
                 href={`/boards/${companyPublicUrl}/${listing._id}`}
+                className="bg-tertiary-hover"
                 style={{
                   display: 'block',
                   background: '#fff',
@@ -208,6 +221,7 @@ export default async function BoardDetailPage({ params }) {
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, fontSize: 13, color: '#94a3b8' }}>
                       {loc && <span>📍 {loc}</span>}
                       {pay && <span>💰 {pay}</span>}
+                      {ago && <span>🕐 {ago}</span>}
                     </div>
                   </div>
                   {listing.employmentType && (

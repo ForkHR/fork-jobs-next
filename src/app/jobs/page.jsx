@@ -90,10 +90,19 @@ export default async function JobsPage({ searchParams }) {
     if (type) params.employmentType = type;
 
     const res = await searchJobListingsCached(params);
-    items = Array.isArray(res?.items) ? res.items : [];
-    total = res?.total || items.length;
-    pages = res?.pages || Math.ceil(total / LIMIT) || 1;
-  } catch {
+    items = Array.isArray(res?.items)
+      ? res.items
+      : Array.isArray(res?.listings)
+        ? res.listings
+        : Array.isArray(res?.results)
+          ? res.results
+          : Array.isArray(res)
+            ? res
+            : [];
+    total = res?.total || res?.totalCount || items.length;
+    pages = res?.pages || res?.totalPages || Math.ceil(total / LIMIT) || 1;
+  } catch (err) {
+    console.error('[JobsPage] Failed to fetch jobs:', err?.message || err, err?.status ? `(status ${err.status})` : '', err?.url || '');
     items = [];
   }
 
