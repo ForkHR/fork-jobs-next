@@ -1,4 +1,8 @@
-import { getCompanyJobsCached } from '../lib/jobBoardData';
+import {
+  getCompanyJobsCached,
+  searchJobListingsCached,
+  searchJobBoardCompaniesCached,
+} from '../lib/jobBoardData';
 import { getSiteUrl } from '../lib/siteUrl';
 
 export const dynamic = 'force-dynamic';
@@ -114,10 +118,109 @@ export default async function sitemap() {
       url: `${siteUrl}/`,
       lastModified: now,
       changeFrequency: 'daily',
-      priority: 0.1,
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/jobs`,
+      lastModified: now,
+      changeFrequency: 'hourly',
+      priority: 1.0,
+    },
+    {
+      url: `${siteUrl}/boards`,
+      lastModified: now,
+      changeFrequency: 'daily',
+      priority: 0.9,
     },
   ];
 
+  // --- Fetch all job listings for individual /jobs/:id pages ---
+  try {
+    let page = 1;
+    const limit = 50;
+    let hasMore = true;
+
+    while (hasMore && page <= 100) {
+      const data = await searchJobListingsCached({ page, limit, sort: 'recent' });
+      const listings = Array.isArray(data?.listings) ? data.listings : [];
+
+      for (const listing of listings) {
+        const id = listing?._id;
+        if (!id) continue;
+
+        const lastModified = asDateOrNow(listing?.updatedAt || listing?.createdAt, now);
+
+        entries.push({
+          url: `${siteUrl}/jobs/${encodeURIComponent(String(id))}`,
+          lastModified,
+          changeFrequency: 'daily',
+          priority: 0.9,
+        });
+      }
+
+      hasMore = listings.length === limit;
+      page++;
+    }
+  } catch {
+    // If the search API fails, continue with what we have
+  }
+
+  // --- Fetch companies for /boards/:slug pages ---
+  try {
+    let page = 1;
+    const limit = 50;
+    let hasMore = true;
+
+    while (hasMore && page <= 50) {
+      const data = await searchJobBoardCompaniesCached({ page, limit, sort: 'jobs' });
+      const companies = Array.isArray(data?.companies)
+        ? data.companies
+        : Array.isArray(data?.items)
+          ? data.items
+          : [];
+
+      for (const company of companies) {
+        const slug = company?.companyPublicUrl || company?.publicUrl;
+        if (!slug) continue;
+
+        entries.push({
+          url: `${siteUrl}/boards/${encodeURIComponent(slug)}`,
+          lastModified: now,
+          changeFrequency: 'daily',
+          priority: 0.7,
+        });
+
+        // Also add individual job listing pages within this board
+        try {
+          const boardData = await getCompanyJobsCached(slug);
+          const listings = Array.isArray(boardData?.listings) ? boardData.listings : [];
+
+          for (const listing of listings) {
+            const listingId = listing?._id;
+            if (!listingId) continue;
+
+            const lastModified = asDateOrNow(listing?.updatedAt || listing?.createdAt, now);
+
+            entries.push({
+              url: `${siteUrl}/boards/${encodeURIComponent(slug)}/${encodeURIComponent(String(listingId))}`,
+              lastModified,
+              changeFrequency: 'daily',
+              priority: 0.7,
+            });
+          }
+        } catch {
+          // keep the board page in the sitemap
+        }
+      }
+
+      hasMore = companies.length === limit;
+      page++;
+    }
+  } catch {
+    // If the companies API fails, continue
+  }
+
+  // --- Legacy branded company boards ---
   const fromEnv = parseCompanyPublicUrls();
   let companyPublicUrls = fromEnv;
 
@@ -128,8 +231,6 @@ export default async function sitemap() {
       companyPublicUrls = [];
     }
   }
-
-  if (companyPublicUrls.length === 0) return entries;
 
   for (const companyPublicUrl of companyPublicUrls) {
     const companySlug = encodeURIComponent(companyPublicUrl);
@@ -159,7 +260,7 @@ export default async function sitemap() {
         });
       }
     } catch {
-      // If the API is unreachable (WAF/403/etc.), still keep the company page in the sitemap.
+      // keep the company page in the sitemap
     }
   }
 

@@ -12,15 +12,43 @@ import '../utilities/ReactDatepicker.css';
 import '../index.css';
 
 import SiteHeader from './SiteHeader';
+import SiteFooter from './SiteFooter';
 
 export const metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: {
-    default: 'Fork Jobs',
-    template: '%s - Powered by forkhr.com',
+    default: 'Fork Jobs — Company Job Boards Powered by ForkHR',
+    template: '%s — Fork Jobs',
   },
-  description: 'Company job boards powered by Fork.',
+  description:
+    'Discover open job listings on company-powered job boards. Browse barista jobs, restaurant jobs, retail positions, and more — apply directly.',
   applicationName: 'Fork Jobs',
+  keywords: [
+    'jobs',
+    'hiring',
+    'job board',
+    'barista jobs',
+    'restaurant jobs',
+    'retail jobs',
+    'apply for jobs',
+    'local jobs',
+    'fork',
+    'forkhr',
+  ],
+  authors: [{ name: 'Fork', url: 'https://forkhr.com' }],
+  creator: 'ForkHR',
+  openGraph: {
+    type: 'website',
+    siteName: 'Fork Jobs',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -30,6 +58,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <SiteHeader />
           {children}
+          <SiteFooter />
         </Providers>
         <Script
           src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"

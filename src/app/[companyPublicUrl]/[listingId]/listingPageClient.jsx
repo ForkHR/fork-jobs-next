@@ -224,7 +224,7 @@ function Listing({ item }) {
 
   return (
     <>
-      <div className="flex-2 animation-slide-in">
+      <div className="flex-2 animation-fade-in">
         <div className="flex justify-between flex-sm-col mb-6">
           <div>
             <div className="fs-38 weight-500">{item.title}</div>
@@ -677,7 +677,7 @@ export default function ListingPageClient({ companyPublicUrl, listingId, company
         <div className="flex-1 flex flex-col">
           <div className="bg-brand text-light container py-6 flex flex-col justify-center align-center h-min-400-px">
             <h1
-              className="weight-400 fs-sm-48 text-center weight-500 pb-6 w-max-sm py-sm-4 line-height-1-3 animation-slide-in w-max-md"
+              className="weight-400 fs-sm-48 text-center weight-500 pb-6 w-max-sm py-sm-4 line-height-1-3 animation-fade-in w-max-md"
               style={{
                 fontSize: 'clamp(32px, 7vw, 58px)',
               }}
@@ -685,7 +685,7 @@ export default function ListingPageClient({ companyPublicUrl, listingId, company
               Work at {company?.name}
             </h1>
             <Link
-              className="pointer clickable px-5 py-2 fs-20 weight-500 hover-opacity-75 border-radius-rounded animation-slide-in"
+              className="pointer clickable px-5 py-2 fs-20 weight-500 hover-opacity-75 border-radius-rounded animation-fade-in"
               style={{
                 background: 'white',
                 color: '#333',

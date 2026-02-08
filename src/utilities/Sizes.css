@@ -1027,7 +1027,7 @@
     margin-left: 200px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 600px) {
     .w-set-md-auto {
         width: auto;
         min-width: auto;

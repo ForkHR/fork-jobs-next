@@ -1,7 +1,7 @@
 {
-  "name": "Fork",
-  "short_name": "Fork",
-  "id": "app.forkhr.com",
+  "name": "Fork Jobs",
+  "short_name": "Fork Jobs",
+  "id": "jobs.forkhr.com",
   "start_url": "/",
   "background_color": "#ffffff",
   "display": "standalone",
@@ -13,9 +13,9 @@
   "lang": "en-US",
   "categories": [
     "business",
-    "SAAS"
+    "jobs"
   ],
-  "description": "Manage your workforce with Fork. A comprehensive platform for workforce management, including employee onboarding, time tracking, and more.",
+  "description": "Discover open job listings on company-powered job boards. Browse barista jobs, restaurant jobs, retail positions, and more — apply directly.",
   "related_applications": [{
     "id": "app.forkhr.com",
     "platform": "webapp",

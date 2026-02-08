@@ -495,7 +495,7 @@
     }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 600px) {
     .flex-md-col {
         flex-direction: column;
     }

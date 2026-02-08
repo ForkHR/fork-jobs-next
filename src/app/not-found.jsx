@@ -1,37 +1,91 @@
 import Link from 'next/link';
-import { logoFullSvg } from '../assets/img/logo';
+
+export const metadata = {
+  title: 'Page Not Found',
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function NotFound() {
   return (
-    <div className="container h-100 flex flex-col">
-      <div className="sticky top-0 z-10 bg-main w-max-600-px mx-auto w-100">
-        <div className="py-4 px-3 flex justify-between align-center">
-          <div className="flex-1 flex flex-col justify-center">
-            <a
-              className="flex"
-              style={{
-                maxWidth: '100px',
-              }}
-              href="https://forkhr.com"
-            >
-              {logoFullSvg}
-            </a>
-          </div>
-        </div>
+    <div
+      style={{
+        minHeight: '60vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '3rem 1.5rem',
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '1.5rem' }}>
+        <span style={{ fontSize: '2.5rem', fontWeight: 600, color: '#111', lineHeight: 1 }}>404</span>
+        <span
+          style={{
+            width: 1,
+            height: 40,
+            background: '#ddd',
+          }}
+        />
+        <span style={{ fontSize: '1rem', fontWeight: 500, color: '#555' }}>Page not found</span>
       </div>
-      <div className="flex-1 align-center justify-center flex flex-col">
-        <div className="flex justify-center">
-            <div className="fs-38 border-right px-4 weight-500">404</div>
-            <div className="flex flex-col justify-center px-4">
-            <div className="fs-14 weight-500">Page not found</div>
-            </div>
-        </div>
-        <div className="fs-12 text-center my-4 px-3">The job board you were viewing is no longer active.</div>
-        <div className="text-center">
-            <Link className="text-underlined fs-12 weight-600 p-3 border-radius bg-secondary-hover" href="https://forkhr.com">
-            Go to Fork
-            </Link>
-        </div>
+
+      <p style={{ fontSize: '0.875rem', color: '#777', maxWidth: 360, marginBottom: '2rem', lineHeight: 1.6 }}>
+        The page you&apos;re looking for doesn&apos;t exist or the job board has been deactivated.
+      </p>
+
+      <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <Link
+          href="/jobs"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            padding: '0.625rem 1.25rem',
+            fontSize: '0.875rem',
+            fontWeight: 600,
+            color: '#fff',
+            background: '#111',
+            borderRadius: 8,
+            textDecoration: 'none',
+          }}
+        >
+          Browse Jobs
+        </Link>
+        <Link
+          href="/boards"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            padding: '0.625rem 1.25rem',
+            fontSize: '0.875rem',
+            fontWeight: 500,
+            color: '#333',
+            background: '#f5f5f5',
+            borderRadius: 8,
+            textDecoration: 'none',
+          }}
+        >
+          Browse Boards
+        </Link>
+        <Link
+          href="/"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            padding: '0.625rem 1.25rem',
+            fontSize: '0.875rem',
+            fontWeight: 500,
+            color: '#333',
+            background: '#f5f5f5',
+            borderRadius: 8,
+            textDecoration: 'none',
+          }}
+        >
+          Go Home
+        </Link>
       </div>
     </div>
   );

@@ -442,8 +442,8 @@ main {
   display: flex;
   flex-direction: column;
   flex: 1;
+  padding-top: 72px;
   flex-grow: 1;
-  height: 100%;
 }
 .container {
   padding-left: var(--p-container);

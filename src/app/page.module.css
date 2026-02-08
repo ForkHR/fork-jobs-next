@@ -1,200 +1,543 @@
+/* ── Page ─────────────────────────────────────────── */
 .page {
-  display: block;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #000000;
+  height: auto;
+  flex: none;
 }
 
+/* ── Hero ─────────────────────────────────────────── */
 .hero {
   position: relative;
   overflow: hidden;
-  padding: 72px 0 44px;
 }
 
-.heroInner {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 20px;
-  align-items: start;
+.heroContainer {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 96px 24px 96px;
 }
 
-.kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(10px);
-}
-
-.kickerDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: rgb(83, 58, 253);
-}
-
-.h1 {
-  font-size: 44px;
-  line-height: 1.05;
-  font-weight: 750;
-  letter-spacing: -0.02em;
-  margin: 12px 0 10px;
-}
-
-.sub {
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--text-secondary-light);
+.heroContent {
   max-width: 640px;
 }
 
-.heroActions {
-  margin-top: 16px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.heroBadge {
+  display: inline-flex;
   align-items: center;
-}
-
-.glassCard {
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 24px 80px rgba(2, 6, 23, 0.08);
-  overflow: hidden;
-}
-
-.cardHeader {
-  padding: 14px 14px 0;
-}
-
-.cardTitle {
+  gap: 8px;
   font-size: 14px;
+  font-weight: 500;
+  color: #000000;
+  background: rgba(15, 23, 42, 0.04);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 999px;
+  padding: 6px 16px;
+  margin-bottom: 16px;
+}
+
+.heroBadgeDot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+}
+
+.heroBadgeDot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #000000;
+  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  opacity: 0.75;
+}
+
+.heroBadgeDot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #000000;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.heroTitle {
+  font-size: 60px;
   font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: #000000;
+  margin: 0 0 24px;
 }
 
-.cardSub {
-  font-size: 12px;
-  color: var(--text-secondary-light);
-  margin-top: 4px;
+.accent {
+  color: #000000;
 }
 
-.cardBody {
-  padding: 14px;
+.heroSub {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #64748b;
+  margin: 0 0 40px;
+  max-width: 540px;
 }
 
-.featureGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.feature {
-  border-radius: 14px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  background: rgba(246, 246, 246, 0.55);
-  padding: 12px;
-}
-
-.featureTitle {
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.featureText {
-  font-size: 12px;
-  color: var(--text-secondary-light);
-  margin-top: 4px;
-  line-height: 1.4;
-}
-
-.section {
-  padding: 44px 0;
-}
-
-.sectionTitleRow {
+.heroCtas {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
+  gap: 12px;
+}
+
+.heroNote {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+/* ── Dark section button overrides ────────────────── */
+.btnWhite {
+  background: #fff !important;
+  color: #000000 !important;
+  border-color: #fff !important;
+}
+.btnWhite:hover {
+  background: #f1f5f9 !important;
+}
+
+.btnOutlineWhite {
+  background: transparent !important;
+  color: #cbd5e1 !important;
+  border-color: #334155 !important;
+}
+.btnOutlineWhite:hover {
+  border-color: #64748b !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #fff !important;
+}
+
+/* ── Sections ─────────────────────────────────────── */
+.section {
+  /* nothing — white background by default */
+}
+
+.sectionAlt {
+  background: rgba(248, 250, 252, 0.6);
+}
+
+.sectionInner {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 80px 24px;
+}
+
+.sectionLabel {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #000000;
+  margin-bottom: 12px;
 }
 
 .sectionTitle {
-  font-size: 20px;
+  font-size: 36px;
   font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #000000;
+  margin: 0 0 16px;
+  line-height: 1.15;
 }
 
-.muted {
-  font-size: 12px;
-  color: var(--text-secondary-light);
+.sectionSub {
+  font-size: 18px;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0 0 48px;
+  max-width: 600px;
 }
 
-.companyGrid {
+/* ── Step cards (Employer flow) ───────────────────── */
+.stepsGrid {
   display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
 }
 
-.companyCard {
-  border-radius: 14px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  background: rgba(255, 255, 255, 0.8);
-  padding: 14px;
-  text-decoration: none;
-  color: inherit;
-  transition: transform 120ms ease, box-shadow 120ms ease;
-}
-
-.companyCard:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.08);
-}
-
-.companyRow {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.logoBox {
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+.stepCard {
   background: #fff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 16px;
+  padding: 24px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.stepCard:hover {
+  border-color: rgba(15, 23, 42, 0.12);
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.04);
+}
+
+.stepNumber {
+  font-size: 40px;
+  font-weight: 700;
+  color: rgba(15, 23, 42, 0.06);
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+.stepTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 8px;
+}
+
+.stepDesc {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Stepper (Applicant flow) ─────────────────────── */
+.stepperRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-bottom: 48px;
+}
+
+.stepperItem {
+  text-align: center;
+  position: relative;
+  padding: 0 12px;
+}
+
+.stepperCircle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #000000;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 auto 16px;
+  position: relative;
+  z-index: 1;
 }
 
-.logoImg {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+.stepperLine {
+  position: absolute;
+  top: 24px;
+  left: calc(50% + 24px);
+  width: calc(100% - 48px);
+  height: 2px;
+  background: #e2e8f0;
+  z-index: 0;
+}
+
+.stepperTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 6px;
+}
+
+.stepperDesc {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Jobs grid ────────────────────────────────────── */
+.jobsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.jobCard {
+  display: block;
+  background: #fff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 16px;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.jobCard:hover {
+  border-color: rgba(15, 23, 42, 0.12);
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+}
+
+.jobCardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.jobTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 4px;
+}
+
+.jobCompany {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+.jobBadge {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  background: #f1f5f9;
+  border-radius: 999px;
+  padding: 4px 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.jobMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+/* ── Companies grid ───────────────────────────────── */
+.companiesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.companyCard {
+  display: block;
+  background: #fff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 16px;
+  padding: 20px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.companyCard:hover {
+  border-color: rgba(15, 23, 42, 0.12);
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.04);
+}
+
+.companyCardTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.companyLogo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid #f1f5f9;
+  flex-shrink: 0;
+}
+
+.companyLogoFallback {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #94a3b8;
+  flex-shrink: 0;
 }
 
 .companyName {
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 2px;
+}
+
+.companyJobs {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ── SEO content ──────────────────────────────────── */
+.seoContent {
+  max-width: 640px;
+}
+
+.seoContent p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #64748b;
+  margin: 0 0 16px;
+}
+
+.seoContent h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000000;
+  margin: 40px 0 12px;
+}
+
+.seoContent a {
+  color: #000000;
+  text-decoration: underline;
+  text-decoration-color: #cbd5e1;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s;
+}
+
+.seoContent a:hover {
+  text-decoration-color: #000000;
+}
+
+/* ── Dark section ─────────────────────────────────── */
+.sectionDark {
+  background: #000000;
+  position: relative;
+  overflow: hidden;
+}
+
+.darkGlow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: rgba(15, 23, 42, 0.15);
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+
+.darkInner {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  text-align: center;
+  position: relative;
+}
+
+.darkTitle {
+  font-size: 36px;
   font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #fff;
+  margin: 0 0 16px;
 }
 
-.companyMeta {
-  font-size: 12px;
-  color: var(--text-secondary-light);
-  margin-top: 2px;
+.darkSub {
+  font-size: 18px;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin: 0 auto 40px;
+  max-width: 560px;
 }
 
-@media (max-width: 920px) {
-  .heroInner {
+/* ── CTA row ──────────────────────────────────────── */
+.ctaRow {
+  text-align: center;
+}
+
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 768px) {
+  .heroContainer {
+    padding: 16px 24px 64px;
+  }
+  .heroTitle {
+    font-size: 42px;
+  }
+  .sectionInner {
+    padding: 64px 24px;
+  }
+  .sectionTitle {
+    font-size: 30px;
+  }
+  .stepsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .companiesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .darkTitle {
+    font-size: 30px;
+  }
+  .darkInner {
+    padding: 64px 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .heroContainer {
+    padding: 80px 20px 48px;
+  }
+  .heroTitle {
+    font-size: 36px;
+  }
+  .heroSub {
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+  .heroCtas > * {
+    width: 100%;
+    text-align: center;
+  }
+  .sectionInner {
+    padding: 48px 20px;
+  }
+  .sectionTitle {
+    font-size: 26px;
+  }
+  .sectionSub {
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+  .stepsGrid {
     grid-template-columns: 1fr;
   }
-
-  .h1 {
-    font-size: 38px;
+  .stepperRow {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+  .stepperLine {
+    display: none;
+  }
+  .jobsGrid {
+    grid-template-columns: 1fr;
+  }
+  .companiesGrid {
+    grid-template-columns: 1fr;
+  }
+  .darkTitle {
+    font-size: 26px;
   }
 }

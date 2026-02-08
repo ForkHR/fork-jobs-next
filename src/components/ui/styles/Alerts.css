@@ -69,8 +69,8 @@
     animation-name: slide-up;
     -webkit-animation-duration: 0.3s;
     animation-duration: 0.3s;
-    -webkit-animation-delay: calc(var(--slide-in-delay, 0) * 0.05);
-    animation-delay: calc(var(--slide-in-delay, 0) * 0.05);
+    -webkit-animation-delay: calc(var(--fade-in-delay, 0) * 0.05);
+    animation-delay: calc(var(--fade-in-delay, 0) * 0.05);
     -webkit-animation-fill-mode: forwards;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards; 
@@ -82,8 +82,8 @@
     animation-name: slide-down;
     -webkit-animation-duration: 0.3s;
     animation-duration: 0.3s;
-    -webkit-animation-delay: calc(var(--slide-in-delay, 0) * 0.05);
-    animation-delay: calc(var(--slide-in-delay, 0) * 0.05);
+    -webkit-animation-delay: calc(var(--fade-in-delay, 0) * 0.05);
+    animation-delay: calc(var(--fade-in-delay, 0) * 0.05);
     -webkit-animation-fill-mode: forwards;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards; 
