@@ -42,9 +42,18 @@ export const metadata = {
     type: 'website',
     siteName: 'Fork Jobs',
     locale: 'en_US',
+    images: [
+      {
+        url: '/assets/og-image.png',
+        width: 1200,
+        height: 750,
+        alt: 'Fork Jobs — Find Jobs. Apply Fast. Get Hired.',
+      },
+    ],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
+    images: ['/assets/og-image.png'],
   },
   robots: {
     index: true,

@@ -49,19 +49,14 @@ export async function generateMetadata({ params }) {
         description,
         url: `/${companyPublicUrl}`,
         images: logoUrl
-          ? [
-              {
-                url: logoUrl,
-                alt: `${companyName} logo`,
-              },
-            ]
-          : undefined,
+          ? [{ url: logoUrl, alt: `${companyName} logo` }]
+          : [{ url: '/assets/og-image.png', width: 1200, height: 750, alt: title }],
       },
       twitter: {
-        card: logoUrl ? 'summary' : 'summary',
+        card: 'summary_large_image',
         title,
         description,
-        images: logoUrl ? [logoUrl] : undefined,
+        images: logoUrl ? [logoUrl] : ['/assets/og-image.png'],
       },
     };
   } catch {

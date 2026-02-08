@@ -26,6 +26,20 @@ export async function generateMetadata({ searchParams }) {
       title,
       description,
       url: '/boards',
+      images: [
+        {
+          url: '/assets/og-image.png',
+          width: 1200,
+          height: 750,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/assets/og-image.png'],
     },
   };
 }

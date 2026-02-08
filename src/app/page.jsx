@@ -20,6 +20,21 @@ export const metadata = {
     description:
       'Discover local job openings on company-powered job boards. Browse and apply directly -- no middlemen, no recruiters.',
     url: '/',
+    images: [
+      {
+        url: '/assets/og-image.png',
+        width: 1200,
+        height: 750,
+        alt: 'Fork Jobs — Find Jobs. Apply Fast. Get Hired.',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Fork Jobs -- Find Jobs. Apply Fast. Get Hired.',
+    description:
+      'Discover local job openings on company-powered job boards. Browse and apply directly -- no middlemen, no recruiters.',
+    images: ['/assets/og-image.png'],
   },
 };
 

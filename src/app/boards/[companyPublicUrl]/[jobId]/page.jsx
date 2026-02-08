@@ -60,13 +60,15 @@ export async function generateMetadata({ params }) {
         title,
         description,
         url: `/boards/${companyPublicUrl}/${jobId}`,
-        images: logoUrl ? [{ url: logoUrl, alt: `${companyName} logo` }] : undefined,
+        images: logoUrl
+          ? [{ url: logoUrl, alt: `${companyName} logo` }]
+          : [{ url: '/assets/og-image.png', width: 1200, height: 750, alt: title }],
       },
       twitter: {
-        card: 'summary',
+        card: 'summary_large_image',
         title,
         description,
-        images: logoUrl ? [logoUrl] : undefined,
+        images: logoUrl ? [logoUrl] : ['/assets/og-image.png'],
       },
     };
   } catch {
