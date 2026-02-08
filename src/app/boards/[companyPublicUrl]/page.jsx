@@ -190,7 +190,7 @@ export default async function BoardDetailPage({ params }) {
 
         {company?.description && (
           <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6, margin: '0 0 24px' }}>
-            {stripHtml(company.description).slice(0, 240)}
+            {stripHtml(company.description).slice(0, 240) + (stripHtml(company.description).length > 240 ? '…' : '')}
           </p>
         )}
 

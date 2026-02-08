@@ -289,6 +289,9 @@ export default async function BoardJobDetailPage({ params }) {
           <Link href={`/boards/${companyPublicUrl}`} style={{ color: '#64748b', textDecoration: 'underline', textDecorationColor: '#cbd5e1' }}>
             ← Back to board
           </Link>
+          <Link href={`/${companyPublicUrl}`} style={{ color: '#64748b', textDecoration: 'underline', textDecorationColor: '#cbd5e1' }}>
+            Branded job board
+          </Link>
           <Link href="/boards" style={{ color: '#64748b', textDecoration: 'underline', textDecorationColor: '#cbd5e1' }}>
             Browse all boards
           </Link>

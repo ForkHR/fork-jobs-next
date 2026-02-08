@@ -316,7 +316,7 @@ export default async function JobsPage({ searchParams }) {
                     WebkitBoxOrient: 'vertical',
                     overflow: 'hidden',
                   }}>
-                    {desc.slice(0, 200)}
+                    {desc.slice(0, 200) + (desc.length > 200 ? '…' : '')}
                   </p>
                 )}
 

@@ -100,13 +100,13 @@ export default async function HomePage() {
             <div className={styles.heroCtas}>
               <Button
                 to="/jobs"
-                label="Browse Jobs"
+                label="Browse jobs"
                 variant="filled"
                 type="brand"
               />
               <Button
                 to="https://app.forkhr.com/hiring?new-job-listing=true"
-                label="Post a Job"
+                label="Post a job"
                 variant="outline"
                 target="_blank"
               />
@@ -214,7 +214,7 @@ export default async function HomePage() {
             <div className={styles.ctaRow}>
               <Button
                 to="/jobs"
-                label="View All Jobs"
+                label="View all jobs"
                 variant="outline"
                 size="lg"
               />
@@ -280,14 +280,14 @@ export default async function HomePage() {
           <div className={styles.heroCtas} style={{ justifyContent: 'center' }}>
             <Button
               to="/jobs"
-              label="Browse Jobs"
+              label="Browse jobs"
               variant="filled"
               size="lg"
               className={styles.btnWhite}
             />
             <Button
               to="https://app.forkhr.com/register"
-              label="Create a Job Board"
+              label="Create a job board"
               variant="outline"
               size="lg"
               target="_blank"
