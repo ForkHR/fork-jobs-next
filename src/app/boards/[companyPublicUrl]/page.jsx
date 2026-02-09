@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getCompanyJobsCached } from '../../../lib/jobBoardData';
 import { getSiteUrl } from '../../../lib/siteUrl';
+import { Icon } from '../../../components';
+import { locationIcon, moneyIcon, timeSheetsIcon } from '../../../assets/img/icons';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -199,44 +201,141 @@ export default async function BoardDetailPage({ params }) {
             const loc = formatLocation(listing.location);
             const pay = formatPay(listing);
             const ago = timeAgo(listing.createdAt);
+            const type =
+              listing.employmentType === 'full-time'
+                ? 'Full-time'
+                : listing.employmentType === 'part-time'
+                  ? 'Part-time'
+                  : null;
+            const category = typeof listing.category === 'string' ? listing.category : listing.category?.name || '';
+            const applicantsText = 'Apply directly';
 
             return (
-              <Link
+              <div
                 key={listing._id}
-                href={`/boards/${companyPublicUrl}/${listing._id}`}
                 className="bg-tertiary-hover"
                 style={{
                   display: 'block',
                   background: '#fff',
                   border: '1px solid #f1f5f9',
                   borderRadius: 12,
-                  padding: 20,
+                  padding: 16,
+                  paddingBottom: 8,
                   textDecoration: 'none',
                   color: 'inherit',
+                  transition: 'border-color 0.2s, box-shadow 0.2s',
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
-                  <div>
-                    <h2 style={{ fontSize: 16, fontWeight: 600, color: '#000000', margin: '0 0 4px' }}>
-                      {listing.title}
-                    </h2>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, fontSize: 13, color: '#94a3b8' }}>
-                      {loc && <span>📍 {loc}</span>}
-                      {pay && <span>💰 {pay}</span>}
-                      {ago && <span>🕐 {ago}</span>}
+                <Link href={`/boards/${companyPublicUrl}/${listing._id}`}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'flex-start',
+                      gap: 12,
+                      marginBottom: 16,
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                      {logoUrl ? (
+                        <img
+                          src={logoUrl}
+                          alt={`${companyName} logo`}
+                          width={48}
+                          height={48}
+                          style={{ borderRadius: 10, objectFit: 'cover', border: '1px solid #f1f5f9', flexShrink: 0 }}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div
+                          style={{
+                            width: 48,
+                            height: 48,
+                            borderRadius: 10,
+                            background: '#f1f5f9',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: 16,
+                            fontWeight: 700,
+                            color: '#94a3b8',
+                            flexShrink: 0,
+                          }}
+                        >
+                          {companyName.charAt(0)}
+                        </div>
+                      )}
+                      <div style={{ overflow: 'hidden' }}>
+                        <h2
+                          className="text-ellipsis-1"
+                          style={{ fontSize: 20, fontWeight: 500, color: '#242424', margin: '0 0 4px' }}
+                        >
+                          {listing.title}
+                        </h2>
+                        <p style={{ fontSize: 12, color: '#475569', margin: 0 }}>
+                          <span className="weight-600">{companyName}</span>
+                          {category ? ` / ${category}` : ''}
+                        </p>
+                      </div>
                     </div>
+                    {ago && (
+                      <span
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 600,
+                          color: '#475569',
+                          background: '#f1f5f9',
+                          borderRadius: 999,
+                          padding: '4px 10px',
+                          whiteSpace: 'nowrap',
+                          flexShrink: 0,
+                        }}
+                      >
+                        {ago}
+                      </span>
+                    )}
                   </div>
-                  {listing.employmentType && (
-                    <span style={{
-                      fontSize: 11, fontWeight: 600, color: '#475569',
-                      background: '#f1f5f9', borderRadius: 999, padding: '4px 10px',
-                      whiteSpace: 'nowrap', flexShrink: 0,
-                    }}>
-                      {listing.employmentType === 'full-time' ? 'Full-time' : 'Part-time'}
-                    </span>
-                  )}
+                  <div
+                    style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: 12, borderTop: '1px solid #f1f5f9' }}
+                    className="pb-2 text-soft pt-2"
+                  >
+                    {loc && (
+                      <span className="flex gap-1 align-center w-min-200-px">
+                        <Icon icon={locationIcon} size="xs" className="shrink-0" />
+                        {loc}
+                      </span>
+                    )}
+                    {pay && (
+                      <span className="flex gap-1 align-center w-min-200-px">
+                        <Icon icon={moneyIcon} size="xs" className="shrink-0" />
+                        {pay}
+                      </span>
+                    )}
+                    {type && (
+                      <span className="flex gap-1 align-center w-min-200-px">
+                        <Icon icon={timeSheetsIcon} size="xs" className="shrink-0" />
+                        {type}
+                      </span>
+                    )}
+                  </div>
+                </Link>
+                <div className="pt-2 flex justify-between align-center" style={{ borderTop: '1px solid #f1f5f9' }}>
+                  <div className="fs-10 text-secondary">{applicantsText}</div>
+                  <Link
+                    href={
+                      company?.publicUrl
+                        ? `/${company.publicUrl}/${listing._id}#application-form`
+                        : `/${company?._id || listing.company}/${listing._id}#application-form`
+                    }
+                    className="btn btn-xs px-3 btn-brand btn-filled"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    APPLY NOW
+                  </Link>
                 </div>
-              </Link>
+              </div>
             );
           })}
         </div>

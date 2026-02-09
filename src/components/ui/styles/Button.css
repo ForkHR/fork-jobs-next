@@ -77,7 +77,7 @@ a.btn-sm {
     height: 10px;
 }
 .btn-xs {
-    padding: 2px 4px;
+    padding: 2px 8px;
     font-size: 10px;
     height: 16px;
 }
@@ -90,7 +90,6 @@ a.btn-sm {
     font-size: 12px;
     height: 28px;
     max-height: 28px;
-    border-radius: 8px;
 }
 .btn-lg {
     padding: 8px 12px;

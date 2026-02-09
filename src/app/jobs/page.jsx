@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { searchJobListingsCached } from '../../lib/jobBoardData';
 import { getSiteUrl } from '../../lib/siteUrl';
 import JobsSearchFilters from './JobsSearchFilters';
+import { Icon } from '../../components';
+import { clockIcon, locationIcon, moneyIcon, timeSheetsIcon } from '../../assets/img/icons';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -227,7 +229,11 @@ export default async function JobsPage({ searchParams }) {
             const loc = formatLocation(job.location);
             const pay = formatPay(job);
             const ago = timeAgo(job.createdAt);
+            const category = job.category || '';
+            const type = job.employmentType === 'full-time' ? 'Full-time' : job.employmentType === 'part-time' ? 'Part-time' : null;
             const desc = stripHtml(job.description);
+            const applicantsCount = job.applicantsCount || 0;
+            const applicantsText = applicantsCount < 25 ? "Less than 25 applicants" : `${applicantsCount} applicants`;
             const publicS3 = process.env.NEXT_PUBLIC_PUBLIC_S3_API_URL || process.env.PUBLIC_S3_API_URL;
             const logoUrl =
               job.company?.logo && publicS3
@@ -235,37 +241,40 @@ export default async function JobsPage({ searchParams }) {
                 : null;
 
             return (
-              <Link
+              <div
                 key={job._id}
-                href={`/jobs/${job._id}`}
                 className="bg-tertiary-hover"
                 style={{
                   display: 'block',
                   background: '#fff',
                   border: '1px solid #f1f5f9',
                   borderRadius: 12,
-                  padding: 20,
+                  padding: 16,
+                  paddingBottom: 8,
                   textDecoration: 'none',
                   color: 'inherit',
                   transition: 'border-color 0.2s, box-shadow 0.2s',
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 8 }}>
+              <Link
+                href={`/jobs/${job._id}`}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 16, overflow: 'hidden' }}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                     {logoUrl ? (
                       <img
                         src={logoUrl}
                         alt={`${job.company?.name || 'Company'} logo`}
-                        width={44}
-                        height={44}
+                        width={48}
+                        height={48}
                         style={{ borderRadius: 10, objectFit: 'cover', border: '1px solid #f1f5f9', flexShrink: 0 }}
                         loading="lazy"
                       />
                     ) : (
                       <div
                         style={{
-                          width: 44,
-                          height: 44,
+                          width: 48,
+                          height: 48,
                           borderRadius: 10,
                           background: '#f1f5f9',
                           display: 'flex',
@@ -277,19 +286,19 @@ export default async function JobsPage({ searchParams }) {
                           flexShrink: 0,
                         }}
                       >
-                        {job.company?.name?.charAt(0) || '?'}
+                        {job.company?.name?.charAt(0) || 'A'}
                       </div>
                     )}
-                    <div>
-                      <h2 style={{ fontSize: 16, fontWeight: 600, color: '#000000', margin: '0 0 4px' }}>{job.title}</h2>
+                    <div style={{overflow: 'hidden'}}>
+                      <h2 className="text-ellipsis-1" style={{ fontSize: 20, fontWeight: 500, color: '#242424', margin: '0 0 4px' }}>{job.title}</h2>
                     {job.company?.name && (
-                      <p style={{ fontSize: 14, color: '#475569', margin: 0 }}>
-                        {job.company.name}
+                      <p style={{ fontSize: 12, color: '#475569', margin: 0 }}>
+                        <span className="weight-600">{job.company.name}</span> / <span className="text-secondary">{category}</span>
                       </p>
                     )}
                     </div>
                   </div>
-                  {job.employmentType && (
+                  {ago && (
                     <span style={{
                       fontSize: 11,
                       fontWeight: 600,
@@ -300,32 +309,40 @@ export default async function JobsPage({ searchParams }) {
                       whiteSpace: 'nowrap',
                       flexShrink: 0,
                     }}>
-                      {job.employmentType === 'full-time' ? 'Full-time' : 'Part-time'}
+                      {ago}
                     </span>
                   )}
                 </div>
-
-                {desc && (
-                  <p style={{
-                    fontSize: 13,
-                    color: '#64748b',
-                    lineHeight: 1.5,
-                    margin: '0 0 10px',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                  }}>
-                    {desc.slice(0, 200) + (desc.length > 200 ? '…' : '')}
-                  </p>
-                )}
-
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, fontSize: 13, color: '#94a3b8' }}>
-                  {loc && <span>📍 {loc}</span>}
-                  {pay && <span>💰 {pay}</span>}
-                  {ago && <span>🕐 {ago}</span>}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: 12, borderTop: '1px solid #f1f5f9' }} className="pb-2 text-soft pt-2">
+                  {loc && <span className="flex gap-1 align-center w-min-200-px">
+                    <Icon icon={locationIcon} size="xs" className="shrink-0" />{loc}
+                    </span>}
+                  {pay && <span className="flex gap-1 align-center w-min-200-px">
+                    <Icon icon={moneyIcon} size="xs" className="shrink-0" />{pay}
+                    </span>}
+                  {type && <span className="flex gap-1 align-center w-min-200-px">
+                    <Icon icon={timeSheetsIcon} size="xs" className="shrink-0" />{type}
+                    </span>}
                 </div>
               </Link>
+              <div className="pt-2 flex justify-between align-center" style={{ borderTop: '1px solid #f1f5f9'}}>
+                <div className="fs-10 text-secondary">
+                  {applicantsText}
+                </div>
+                <Link
+                  href={
+                    job.company?.publicUrl
+                      ? `/${job.company.publicUrl}/${job._id}#application-form`
+                      : `/${job.company?._id || job.company}/${job._id}#application-form`
+                  }
+                  className="btn btn-xs px-3 btn-brand btn-filled"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  APPLY NOW
+                </Link>
+              </div>
+              </div>
             );
           })}
         </div>

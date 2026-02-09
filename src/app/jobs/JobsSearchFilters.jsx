@@ -61,7 +61,7 @@ export default function JobsSearchFilters({ initialValues, totalResults }) {
 
       <div className="jobs-filters__row">
         <div className="fs-12 weight-500 px-2">
-          {totalResults} results for {q ? `"${q}"` : 'all jobs'}
+          {totalResults} results
         </div>
       <Dropdown
         widthUnset
