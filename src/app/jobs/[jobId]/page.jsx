@@ -191,7 +191,7 @@ export default async function JobDetailPage({ params }) {
       />
 
       {/* Breadcrumb */}
-      <nav style={{ padding: '24px 24px 0' }}>
+      <nav style={{ padding: '24px 32px 0' }}>
         <ol style={{ display: 'flex', gap: 8, listStyle: 'none', padding: 0, margin: 0, fontSize: 13, color: '#94a3b8' }}>
           <li><Link href="/" style={{ color: '#64748b', textDecoration: 'none' }}>Home</Link></li>
           <li>/</li>

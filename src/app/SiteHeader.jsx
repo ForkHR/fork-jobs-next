@@ -8,6 +8,7 @@ import './SiteHeader.css';
 
 import { logoFullSvg } from '../assets/img/logo';
 import { Button, InputSearch } from '../components';
+import { searchIcon } from '../assets/img/icons';
 
 export default function SiteHeader() {
   const pathname = usePathname();
@@ -48,16 +49,18 @@ export default function SiteHeader() {
             <Link href="/" className="jobs-site-header__logo" aria-label="Fork Jobs home">
               {logoFullSvg}
             </Link>
+            <div className="flex justify-end flex-1 gap-2">
               <Button
                 label="Boards"
                 to="/boards"
+                type="secondary"
+                variant={pathname.startsWith('/boards') ? 'filled' : 'text'}
               />
-              <div className="flex justify-end flex-1 gap-3">
               <Button
-                label="Search jobs"
+                label="Jobs"
                 to="/jobs"
                 type="secondary"
-                variant="filled"
+                variant={pathname.startsWith('/jobs') ? 'filled' : 'text'}
               />
             </div>
           </div>
