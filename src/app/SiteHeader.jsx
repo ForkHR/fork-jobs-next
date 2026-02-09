@@ -7,7 +7,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import './SiteHeader.css';
 
 import { logoFullSvg } from '../assets/img/logo';
-import { InputSearch } from '../components';
+import { Button, InputSearch } from '../components';
 
 export default function SiteHeader() {
   const pathname = usePathname();
@@ -48,19 +48,19 @@ export default function SiteHeader() {
             <Link href="/" className="jobs-site-header__logo" aria-label="Fork Jobs home">
               {logoFullSvg}
             </Link>
-              <Link
-                href="/jobs"
-                className="jobs-site-header__button"
-              >
-                Jobs
-              </Link>
-              <Link
-                href="/boards"
-                className="jobs-site-header__button"
-              >
-                Boards
-              </Link>
+              <Button
+                label="Boards"
+                to="/boards"
+              />
+              <div className="flex justify-end flex-1 gap-3">
+              <Button
+                label="Search jobs"
+                to="/jobs"
+                type="secondary"
+                variant="filled"
+              />
             </div>
+          </div>
       </div>
     </header>
   );

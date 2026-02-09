@@ -100,7 +100,7 @@ export default async function HomePage() {
             <div className={styles.heroCtas}>
               <Button
                 to="/jobs"
-                label="Browse jobs"
+                label="Search jobs"
                 variant="filled"
                 type="brand"
               />
