@@ -33,7 +33,7 @@ export async function GET(request) {
   };
 
   try {
-    const res = await axios.get(url, { headers, validateStatus: () => true });
+    const res = await axios.get(url, { headers, timeout: 10_000, validateStatus: () => true });
     const dataPreview = typeof res.data === 'string' ? res.data.slice(0, 400) : res.data;
 
     const responseHeaders = {

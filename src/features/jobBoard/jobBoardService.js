@@ -47,11 +47,14 @@ const getServerRequestHeaders = () => {
 
 
 
+const AXIOS_TIMEOUT_MS = 15_000; // 15s
+
 export const getCompanyJobs = async (id) => {
     console.log(`fetching : ${getJobBoardUrl()}?companyPublicUrl=` + id);
     const res = await axios.get(`${getJobBoardUrl()}?companyPublicUrl=${encodeURIComponent(id)}`,
         {
             headers: getServerRequestHeaders(),
+            timeout: AXIOS_TIMEOUT_MS,
         }
     );
     return res.data;
@@ -62,6 +65,7 @@ export const applyToListing = async (payload) => {
         headers: {
             "Content-Type": "multipart/form-data",
         },
+        timeout: AXIOS_TIMEOUT_MS,
     };
     const res = await axios.post(getJobBoardUrl() + "/" + payload._id, payload, config);
 
@@ -73,6 +77,7 @@ export const respondToInterview = async (payload) => {
         headers: {
             "Content-Type": "application/json",
         },
+        timeout: AXIOS_TIMEOUT_MS,
     };
     const res = await axios.post(getJobBoardUrl() + "/" + payload._id + `/interview?token=${payload.token}&response=${payload.response}`, payload, config);
 

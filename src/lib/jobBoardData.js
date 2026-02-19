@@ -34,11 +34,14 @@ const toAxiosLikeHttpError = (status, url, bodyPreview) => {
   return error;
 };
 
+const SSR_FETCH_TIMEOUT_MS = 10_000; // 10s – fail fast so the page can render a fallback
+
 const fetchJsonNoStore = async (url) => {
   const res = await fetch(url, {
     method: 'GET',
     headers: getServerRequestHeaders(),
     cache: 'no-store',
+    signal: AbortSignal.timeout(SSR_FETCH_TIMEOUT_MS),
   });
 
   const text = await res.text();
@@ -145,10 +148,17 @@ const aggregateJobsFromCompanies = async (params = {}) => {
     return { items: [], total: 0, page: 1, pages: 1 };
   }
 
-  // 2. Fetch listings for each company in parallel
+  // 2. Fetch listings for each company (batched to avoid overwhelming the API)
   const allListings = [];
-  const settled = await Promise.allSettled(
-    companies.map(async (company) => {
+  const CONCURRENCY = 6;
+  const batches = [];
+  for (let i = 0; i < companies.length; i += CONCURRENCY) {
+    batches.push(companies.slice(i, i + CONCURRENCY));
+  }
+  const settled = [];
+  for (const batch of batches) {
+    const results = await Promise.allSettled(
+      batch.map(async (company) => {
       const publicUrl = company.publicUrl || company._id;
       try {
         const data = await getCompanyJobsCached(publicUrl);
@@ -170,7 +180,9 @@ const aggregateJobsFromCompanies = async (params = {}) => {
         return [];
       }
     })
-  );
+    );
+    settled.push(...results);
+  }
 
   for (const result of settled) {
     if (result.status === 'fulfilled' && Array.isArray(result.value)) {
