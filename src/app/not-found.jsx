@@ -22,18 +22,18 @@ export default function NotFound() {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '1.5rem' }}>
-        <span style={{ fontSize: '2.5rem', fontWeight: 600, color: '#111', lineHeight: 1 }}>404</span>
+        <span style={{ fontSize: '2.5rem', fontWeight: 600, color: '#2A2623', lineHeight: 1 }}>404</span>
         <span
           style={{
             width: 1,
             height: 40,
-            background: '#ddd',
+            background: '#E2DDD2',
           }}
         />
-        <span style={{ fontSize: '1rem', fontWeight: 500, color: '#555' }}>Page not found</span>
+        <span style={{ fontSize: '1rem', fontWeight: 500, color: '#6B6560' }}>Page not found</span>
       </div>
 
-      <p style={{ fontSize: '0.875rem', color: '#777', maxWidth: 360, marginBottom: '2rem', lineHeight: 1.6 }}>
+      <p style={{ fontSize: '0.875rem', color: '#8A8480', maxWidth: 360, marginBottom: '2rem', lineHeight: 1.6 }}>
         The page you&apos;re looking for doesn&apos;t exist or the job board has been deactivated.
       </p>
 
@@ -47,7 +47,7 @@ export default function NotFound() {
             fontSize: '0.875rem',
             fontWeight: 600,
             color: '#fff',
-            background: '#111',
+            background: '#033C29',
             borderRadius: 8,
             textDecoration: 'none',
           }}
@@ -62,8 +62,8 @@ export default function NotFound() {
             padding: '0.625rem 1.25rem',
             fontSize: '0.875rem',
             fontWeight: 500,
-            color: '#333',
-            background: '#f5f5f5',
+            color: '#3D3935',
+            background: '#F8F6F1',
             borderRadius: 8,
             textDecoration: 'none',
           }}
@@ -78,8 +78,8 @@ export default function NotFound() {
             padding: '0.625rem 1.25rem',
             fontSize: '0.875rem',
             fontWeight: 500,
-            color: '#333',
-            background: '#f5f5f5',
+            color: '#3D3935',
+            background: '#F8F6F1',
             borderRadius: 8,
             textDecoration: 'none',
           }}

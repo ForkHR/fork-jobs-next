@@ -1,7 +1,7 @@
 /* ── Page ─────────────────────────────────────────── */
 .page {
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #000000;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  color: #2A2623;
   height: auto;
   flex: none;
 }
@@ -13,7 +13,7 @@
 }
 
 .heroContainer {
-  max-width: 600px;
+  max-width: var(--w-max-content, 900px);
   margin: 0 auto;
   padding: 96px 24px 96px;
 }
@@ -28,9 +28,9 @@
   gap: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: #000000;
-  background: rgba(15, 23, 42, 0.04);
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  color: #2A2623;
+  background: rgba(42, 38, 35, 0.04);
+  border: 1px solid rgba(42, 38, 35, 0.08);
   border-radius: 999px;
   padding: 6px 16px;
   margin-bottom: 16px;
@@ -48,7 +48,7 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: #000000;
+  background: #2A2623;
   animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
   opacity: 0.75;
 }
@@ -58,7 +58,7 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: #000000;
+  background: #2A2623;
 }
 
 @keyframes ping {
@@ -73,18 +73,18 @@
   font-weight: 700;
   line-height: 1.08;
   letter-spacing: -0.03em;
-  color: #000000;
+  color: #2A2623;
   margin: 0 0 24px;
 }
 
 .accent {
-  color: #000000;
+  color: #033C29;
 }
 
 .heroSub {
   font-size: 18px;
   line-height: 1.6;
-  color: #64748b;
+  color: #8A8480;
   margin: 0 0 40px;
   max-width: 540px;
 }
@@ -97,28 +97,98 @@
 .heroNote {
   margin-top: 16px;
   font-size: 14px;
-  color: #94a3b8;
+  color: #A9A49E;
+}
+
+/* ── Stats Bar ────────────────────────────────────── */
+.statsBar {
+  border-top: 1px solid #E2DDD2;
+  border-bottom: 1px solid #E2DDD2;
+  background: rgba(248, 246, 241, 0.5);
+}
+
+.statsInner {
+  max-width: var(--w-max-content, 900px);
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.statNumber {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2A2623;
+  letter-spacing: -0.02em;
+}
+
+.statLabel {
+  font-size: 14px;
+  color: #8A8480;
+  font-weight: 500;
+}
+
+.statDivider {
+  width: 1px;
+  height: 40px;
+  background: #E2DDD2;
+  flex-shrink: 0;
 }
 
 /* ── Dark section button overrides ────────────────── */
+/* Plum CTA */
 .btnWhite {
   background: #fff !important;
-  color: #000000 !important;
+  color: #140018 !important;
   border-color: #fff !important;
 }
 .btnWhite:hover {
-  background: #f1f5f9 !important;
+  background: #F0EDE6 !important;
 }
 
-.btnOutlineWhite {
+.btnOutlineLavender {
   background: transparent !important;
-  color: #cbd5e1 !important;
-  border-color: #334155 !important;
+  color: rgba(176, 176, 254, 0.85) !important;
+  border-color: rgba(176, 176, 254, 0.2) !important;
 }
-.btnOutlineWhite:hover {
-  border-color: #64748b !important;
-  background: rgba(255, 255, 255, 0.05) !important;
-  color: #fff !important;
+.btnOutlineLavender:hover {
+  border-color: rgba(176, 176, 254, 0.4) !important;
+  background: rgba(176, 176, 254, 0.06) !important;
+  color: #b0b0fe !important;
+}
+
+/* Forest CTA */
+.btnLime {
+  background: #D3FD74 !important;
+  color: #033C29 !important;
+  border-color: #D3FD74 !important;
+  font-weight: 600 !important;
+}
+.btnLime:hover {
+  background: #c8f55e !important;
+}
+
+.forestLink {
+  color: rgba(211, 253, 116, 0.85);
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 0;
+}
+.forestLink:hover {
+  color: #D3FD74;
 }
 
 /* ── Sections ─────────────────────────────────────── */
@@ -127,11 +197,11 @@
 }
 
 .sectionAlt {
-  background: rgba(248, 250, 252, 0.6);
+  background: rgba(248, 246, 241, 0.6);
 }
 
 .sectionInner {
-  max-width: 600px;
+  max-width: var(--w-max-content, 900px);
   margin: 0 auto;
   padding: 80px 24px;
 }
@@ -141,7 +211,15 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #000000;
+  color: #033C29;
+  margin-bottom: 12px;
+}
+
+.sectionLabelAccent {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   margin-bottom: 12px;
 }
 
@@ -149,17 +227,149 @@
   font-size: 36px;
   font-weight: 700;
   letter-spacing: -0.025em;
-  color: #000000;
+  color: #2A2623;
+  margin: 0 0 16px;
+  line-height: 1.15;
+}
+
+.sectionTitleLight {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #fff;
   margin: 0 0 16px;
   line-height: 1.15;
 }
 
 .sectionSub {
   font-size: 18px;
-  color: #64748b;
+  color: #8A8480;
   line-height: 1.6;
   margin: 0 0 48px;
-  max-width: 600px;
+  max-width: 640px;
+}
+
+.sectionSubLight {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  margin: 0 0 48px;
+  max-width: 640px;
+}
+
+/* ── Charcoal dark section ────────────────────────── */
+.sectionCharcoal {
+  background: #1A1614;
+  position: relative;
+  overflow: hidden;
+}
+
+.stepCardDark {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 28px 24px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.stepCardDark:hover {
+  border-color: rgba(236, 186, 106, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.stepNumberAmber {
+  font-size: 40px;
+  font-weight: 700;
+  color: rgba(236, 186, 106, 0.35);
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+.stepTitleLight {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 8px;
+}
+
+.stepDescLight {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Forest dark section ──────────────────────────── */
+.sectionForest {
+  background: #033C29;
+  position: relative;
+  overflow: hidden;
+}
+
+.forestGlow {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 500px;
+  background: rgba(211, 253, 116, 0.06);
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+
+/* ── Plum dark section ────────────────────────────── */
+.sectionPlum {
+  background: #140018;
+  position: relative;
+  overflow: hidden;
+}
+
+.plumGlow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: rgba(176, 176, 254, 0.06);
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+
+/* ── Shared dark inner ────────────────────────────── */
+.darkInner {
+  max-width: var(--w-max-content, 900px);
+  margin: 0 auto;
+  padding: 80px 24px;
+  text-align: center;
+  position: relative;
+}
+
+.darkTitle {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #fff;
+  margin: 0 0 16px;
+}
+
+.darkSubLavender {
+  font-size: 18px;
+  color: rgba(176, 176, 254, 0.7);
+  line-height: 1.6;
+  margin: 0 auto 40px;
+  max-width: 560px;
+}
+
+.darkSubLime {
+  font-size: 18px;
+  color: rgba(211, 253, 116, 0.7);
+  line-height: 1.6;
+  margin: 0 auto 40px;
+  max-width: 560px;
 }
 
 /* ── Step cards (Employer flow) ───────────────────── */
@@ -172,21 +382,21 @@
 
 .stepCard {
   background: #fff;
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  border: 1px solid rgba(226, 221, 210, 0.8);
   border-radius: 16px;
   padding: 24px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .stepCard:hover {
-  border-color: rgba(15, 23, 42, 0.12);
-  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.04);
+  border-color: rgba(42, 38, 35, 0.12);
+  box-shadow: 0 4px 24px rgba(42, 38, 35, 0.04);
 }
 
 .stepNumber {
   font-size: 40px;
   font-weight: 700;
-  color: rgba(15, 23, 42, 0.06);
+  color: rgba(42, 38, 35, 0.06);
   margin-bottom: 16px;
   line-height: 1;
 }
@@ -194,13 +404,13 @@
 .stepTitle {
   font-size: 18px;
   font-weight: 600;
-  color: #000000;
+  color: #2A2623;
   margin: 0 0 8px;
 }
 
 .stepDesc {
   font-size: 14px;
-  color: #64748b;
+  color: #8A8480;
   line-height: 1.6;
   margin: 0;
 }
@@ -223,8 +433,10 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #000000;
-  color: #fff;
+  background: #fff;
+  color: #2A2623;
+  box-shadow: 0 2px 8px rgba(42, 38, 35, 0.1);
+  border: 2px solid rgba(42, 38, 35, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -241,20 +453,20 @@
   left: calc(50% + 24px);
   width: calc(100% - 48px);
   height: 2px;
-  background: #e2e8f0;
+  background: #E2DDD2;
   z-index: 0;
 }
 
 .stepperTitle {
   font-size: 16px;
   font-weight: 600;
-  color: #000000;
+  color: #2A2623;
   margin: 0 0 6px;
 }
 
 .stepperDesc {
   font-size: 14px;
-  color: #64748b;
+  color: #8A8480;
   line-height: 1.5;
   margin: 0;
 }
@@ -262,7 +474,7 @@
 /* ── Jobs grid ────────────────────────────────────── */
 .jobsGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   margin-bottom: 16px;
 }
@@ -270,17 +482,18 @@
 .jobCard {
   display: block;
   background: #fff;
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  border: 1px solid rgba(226, 221, 210, 0.8);
   border-radius: 16px;
   padding: 24px;
   text-decoration: none;
   color: inherit;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 
 .jobCard:hover {
-  border-color: rgba(15, 23, 42, 0.12);
-  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+  border-color: rgba(42, 38, 35, 0.12);
+  box-shadow: 0 4px 24px rgba(42, 38, 35, 0.06);
+  transform: translateY(-2px);
 }
 
 .jobCardTop {
@@ -294,21 +507,21 @@
 .jobTitle {
   font-size: 16px;
   font-weight: 600;
-  color: #000000;
+  color: #2A2623;
   margin: 0 0 4px;
 }
 
 .jobCompany {
   font-size: 14px;
-  color: #64748b;
+  color: #8A8480;
   margin: 0;
 }
 
 .jobBadge {
   font-size: 12px;
   font-weight: 600;
-  color: #475569;
-  background: #f1f5f9;
+  color: #6B6560;
+  background: #F0EDE6;
   border-radius: 999px;
   padding: 4px 12px;
   white-space: nowrap;
@@ -320,7 +533,7 @@
   flex-wrap: wrap;
   gap: 16px;
   font-size: 14px;
-  color: #94a3b8;
+  color: #A9A49E;
 }
 
 /* ── Companies grid ───────────────────────────────── */
@@ -333,7 +546,7 @@
 .companyCard {
   display: block;
   background: #fff;
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  border: 1px solid rgba(226, 221, 210, 0.8);
   border-radius: 16px;
   padding: 20px;
   text-decoration: none;
@@ -342,8 +555,8 @@
 }
 
 .companyCard:hover {
-  border-color: rgba(15, 23, 42, 0.12);
-  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.04);
+  border-color: rgba(42, 38, 35, 0.12);
+  box-shadow: 0 4px 24px rgba(42, 38, 35, 0.04);
 }
 
 .companyCardTop {
@@ -357,7 +570,7 @@
   height: 44px;
   border-radius: 12px;
   object-fit: cover;
-  border: 1px solid #f1f5f9;
+  border: 1px solid #F0EDE6;
   flex-shrink: 0;
 }
 
@@ -365,102 +578,58 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: #f1f5f9;
+  background: #F0EDE6;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
   font-weight: 700;
-  color: #94a3b8;
+  color: #A9A49E;
   flex-shrink: 0;
 }
 
 .companyName {
   font-size: 15px;
   font-weight: 600;
-  color: #000000;
+  color: #2A2623;
   margin: 0 0 2px;
 }
 
 .companyJobs {
   font-size: 13px;
-  color: #64748b;
+  color: #8A8480;
   margin: 0;
 }
 
 /* ── SEO content ──────────────────────────────────── */
 .seoContent {
-  max-width: 640px;
+  max-width: 720px;
 }
 
 .seoContent p {
   font-size: 15px;
   line-height: 1.7;
-  color: #64748b;
+  color: #8A8480;
   margin: 0 0 16px;
 }
 
 .seoContent h3 {
   font-size: 20px;
   font-weight: 600;
-  color: #000000;
+  color: #2A2623;
   margin: 40px 0 12px;
 }
 
 .seoContent a {
-  color: #000000;
+  color: #2A2623;
   text-decoration: underline;
-  text-decoration-color: #cbd5e1;
+  text-decoration-color: #CCC5B6;
   text-underline-offset: 3px;
   transition: text-decoration-color 0.2s;
 }
 
 .seoContent a:hover {
-  text-decoration-color: #000000;
-}
-
-/* ── Dark section ─────────────────────────────────── */
-.sectionDark {
-  background: #000000;
-  position: relative;
-  overflow: hidden;
-}
-
-.darkGlow {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 800px;
-  height: 400px;
-  background: rgba(15, 23, 42, 0.15);
-  border-radius: 50%;
-  filter: blur(120px);
-  pointer-events: none;
-}
-
-.darkInner {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 80px 24px;
-  text-align: center;
-  position: relative;
-}
-
-.darkTitle {
-  font-size: 36px;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  color: #fff;
-  margin: 0 0 16px;
-}
-
-.darkSub {
-  font-size: 18px;
-  color: #94a3b8;
-  line-height: 1.6;
-  margin: 0 auto 40px;
-  max-width: 560px;
+  text-decoration-color: #2A2623;
 }
 
 /* ── CTA row ──────────────────────────────────────── */
@@ -479,10 +648,14 @@
   .sectionInner {
     padding: 64px 24px;
   }
-  .sectionTitle {
+  .sectionTitle,
+  .sectionTitleLight {
     font-size: 30px;
   }
   .stepsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .jobsGrid {
     grid-template-columns: repeat(2, 1fr);
   }
   .companiesGrid {
@@ -494,11 +667,17 @@
   .darkInner {
     padding: 64px 24px;
   }
+  .statsInner {
+    gap: 32px;
+  }
+  .statNumber {
+    font-size: 24px;
+  }
 }
 
 @media (max-width: 640px) {
   .heroContainer {
-    padding: 80px 20px 48px;
+    padding: 40px 20px 48px;
   }
   .heroTitle {
     font-size: 36px;
@@ -514,10 +693,12 @@
   .sectionInner {
     padding: 48px 20px;
   }
-  .sectionTitle {
+  .sectionTitle,
+  .sectionTitleLight {
     font-size: 26px;
   }
-  .sectionSub {
+  .sectionSub,
+  .sectionSubLight {
     font-size: 16px;
     margin-bottom: 32px;
   }
@@ -539,5 +720,17 @@
   }
   .darkTitle {
     font-size: 26px;
+  }
+  .darkInner {
+    padding: 48px 20px;
+  }
+  .statsInner {
+    flex-direction: column;
+    gap: 20px;
+    padding: 24px 20px;
+  }
+  .statDivider {
+    width: 60px;
+    height: 1px;
   }
 }

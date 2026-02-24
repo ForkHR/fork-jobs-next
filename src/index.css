@@ -6,22 +6,22 @@
   --border-radius-sm: 8px;
   --border-radius-xs: 4px;
 
-  --border: 1px solid #dee3e8;
+  --border: 1px solid #E2DDD2;
   --color-translucent: rgba(255, 255, 255, 0.1);
 
-  --color-brand: #000;
-  --color-brand-text: #000;
-  --color-brand-bg: #f5f5f5;
-  --color-brand-bg-hover: #d6d6d6;
-  --color-brand-border: #000;
-  --color-brand-rgb: 0, 0, 0;
+  --color-brand: #1c1c1c;
+  --color-brand-text: #1c1c1c;
+  --color-brand-bg: #ffffff;
+  --color-brand-bg-hover: #ffffff;
+  --color-brand-border: #1c1c1c;
+  --color-brand-rgb: 
 
-  --color-primary: #006aff;
-  --color-primary-10: rgba(30, 156, 241, 0.1);
-  --color-primary-20: rgba(30, 156, 241, 0.2);
-  --color-primary-text: #006aff;
-  --color-primary-bg: #e6f0ff;
-  --color-primary-bg-hover: #cce1ff;
+  --color-primary: #1c1c1c;
+  --color-primary-10: rgba(28, 28, 28, 0.1);
+  --color-primary-20: rgba(28, 28, 28, 0.2);
+  --color-primary-text: #1c1c1c;
+  --color-primary-bg: #faf2ec;
+  --color-primary-bg-hover: #f2e2d8;
 
   --color-danger: #cc0023;
   --color-danger-text: #dc3545;
@@ -39,10 +39,10 @@
   --color-warning-bg-hover: #fff0cc;
 
   --color-general-brand: 83, 58, 253;
-  --color-general-primary-text: 0, 106, 255;
-  --color-general-primary-bg: 230, 240, 255;
-  --color-general-primary-bg-hover: 204, 225, 255;
-  --color-general-primary-border: 176, 209, 255;
+  --color-general-primary-text: 28, 28, 28;
+  --color-general-primary-bg: 236, 250, 243;
+  --color-general-primary-bg-hover: 208, 242, 224;
+  --color-general-primary-border: 165, 227, 195;
   --color-general-danger-text: 220, 53, 69;
   --color-general-danger-bg: 255, 230, 230;
   --color-general-danger-bg-hover: 255, 204, 204;
@@ -55,33 +55,51 @@
   --color-general-warning-bg: 255, 247, 230;
   --color-general-warning-bg-hover: 255, 240, 204;
   --color-general-warning-border: 247, 226, 179;
-  --color-general-secondary-bg: 246, 246, 246;
-  --color-general-secondary-text: 0, 0, 0;
-  --color-general-secondary-bg-hover: 235, 235, 235;
-  --color-general-secondary-border: 0, 0, 0;
-  --color-general-brand-bg: 242, 240, 255;
-  --color-general-brand-text: 83, 58, 253;
-  --color-general-brand-bg-hover: 230, 227, 255;
-  --color-general-brand-border: 83, 58, 253;
+  --color-general-secondary-bg: 248, 246, 241;
+  --color-general-secondary-text: 42, 38, 35;
+  --color-general-secondary-bg-hover: 238, 235, 227;
+  --color-general-secondary-border: 42, 38, 35;
+  --color-general-brand-bg: 236, 250, 243;;
+  --color-general-brand-text: 236, 250, 243;
+  --color-general-brand-bg-hover: 236, 250, 243;
+  --color-general-brand-border: 236, 250, 243;
 
   --color-btn-overlay: rgba(255, 255, 255, 0.15);
   --color-scroll-overlay: rgba(190, 190, 190, 0.3);
 
-  --color-logo: #000;
+  --color-logo: #033C29;
 
   --color-main: #ffffff;
-  --color-secondary: #f6f6f6;
-  --color-secondary-hover: #f9f9f9;
-  --color-tertiary: #fbfbfb;
-  --color-border: #dee3e8;
-  --color-border-secondary: #ebeef1;
+  --color-secondary: #F8F6F1;
+  --color-secondary-hover: #FAF8F4;
+  --color-tertiary: #FCFBF8;
+  --color-border: #E2DDD2;
+  --color-border-secondary: #EEEBE3;
 
   --text-light: #ffffff;
-  --text-dark: #0f0f0f;
-  --text-secondary: #99a0ae;
-  --text-secondary-light: #596171;
+  --text-dark: #2A2623;
+  --text-secondary: #908779;
+  --text-secondary-light: #6F6860;
 
   --color-overlay: rgba(0, 0, 0, 0.25);
+
+  /* ── Dark section palettes ── */
+  --color-plum: #140018;
+  --color-plum-800: #1E0024;
+  --color-plum-600: #2D0038;
+  --color-plum-accent: #b0b0fe;
+
+  --color-charcoal: #1A1614;
+  --color-charcoal-800: #252019;
+  --color-charcoal-600: #3D362E;
+  --color-charcoal-accent: #ECBA6A;
+
+  --color-forest: #033C29;
+  --color-forest-800: #022B1D;
+  --color-forest-accent: #D3FD74;
+
+  /* ── Layout ── */
+  --w-max-content: 900px;
 
   --p-container-content: 32px;
   --p-container: 32px;
@@ -102,16 +120,16 @@
   --max-width: 800px;
 
   /* box shadow like in max */
-  --box-shadow-xs: 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
-  --box-shadow-sm: 0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);
-  --box-shadow: 0 2px 4px rgba(0,0,0,.1), 0 2px 8px rgba(0,0,0,.1);
-  --box-shadow-lg:rgba(0, 0, 0, 0.08) 0px 5px 15px 0px, rgba(25, 28, 33, 0.1) 0px 15px 35px -5px;
-  --box-shadow-nav: 4px 4px 2px 0 rgba(0,0,0,.1);
+  --box-shadow-xs: 0 1px 2px 0 rgba(42,38,35,.25), 0 1px 3px 1px rgba(42,38,35,.12);
+  --box-shadow-sm: 0 4px 6px -1px rgba(42,38,35,.08),0 2px 4px -2px rgba(42,38,35,.08);
+  --box-shadow: 0 2px 4px rgba(42,38,35,.08), 0 2px 8px rgba(42,38,35,.08);
+  --box-shadow-lg:rgba(42, 38, 35, 0.07) 0px 5px 15px 0px, rgba(42, 38, 35, 0.08) 0px 15px 35px -5px;
+  --box-shadow-nav: 4px 4px 2px 0 rgba(42,38,35,.1);
 
-  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-family-monospace: 'Source Code Pro', Menlo, Monaco, monospace;
   --font-family-signature: "cedarville cursive",sans-serif;
-  --font-family-title: "Signifier", ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
+  --font-family-title: var(--font-libre), ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
 
   --color-1-text: rgb(0, 68, 23);
   --color-1-bg: rgb(238, 255, 240);
@@ -185,19 +203,19 @@
   --peer-avatar-15: #B8C2CC;
   --peer-avatar-16: #9EAAB5;
 
-  --peer-avatar-0: #dee3e8;
+  --peer-avatar-0: #E2DDD2;
 }
 
 [data-theme='dark'] {
   --color-scheme: dark;
   --color-logo: #fff;
 
-  --color-main: #0f0f0f;
-  --color-secondary: #1e1e1e;
-  --color-secondary-hover: #252526;
-  --color-tertiary: #1b1b1b;
-  --color-border: #363636;
-  --color-border-secondary: #1e1e1e;
+  --color-main: #1A1614;
+  --color-secondary: #252019;
+  --color-secondary-hover: #2E2821;
+  --color-tertiary: #211D19;
+  --color-border: #3D362E;
+  --color-border-secondary: #252019;
   --color-translucent: rgba(0, 0, 0, 0.1);
 
   --color-overlay: rgba(0, 0, 0, 0.65);
@@ -229,10 +247,10 @@
   --color-warning-bg: #fdf8c9;
   --color-warning-bg-hover: #fff0cc;
   
-  --color-general-primary-text: 0, 149, 255;
-  --color-general-primary-bg-hover: 0, 41, 66;
-  --color-general-primary-bg: 2, 29, 48;
-  --color-general-primary-border: 29, 155, 240;
+  --color-general-primary-text: 107, 205, 160;
+  --color-general-primary-bg-hover: 2, 43, 29;
+  --color-general-primary-bg: 1, 28, 19;
+  --color-general-primary-border: 26, 139, 90;
   --color-general-danger-text: 231, 35, 54;
   --color-general-danger-bg-hover: 73, 1, 8;
   --color-general-danger-bg: 59, 0, 6;
@@ -245,13 +263,13 @@
   --color-general-warning-bg-hover: 71, 49, 0;
   --color-general-warning-bg: 54, 37, 0;
   --color-general-warning-border: 255, 178, 10;
-  --color-general-secondary-bg-hover: 45, 45, 46;
-  --color-general-secondary-bg: 37, 37, 38;
+  --color-general-secondary-bg-hover: 61, 54, 46;
+  --color-general-secondary-bg: 37, 32, 25;
   --color-general-secondary-text: 255, 255, 255;
-  --color-general-secondary-border: 145, 145, 145;
-  --color-general-brand-bg: 30, 30, 30;
+  --color-general-secondary-border: 169, 164, 158;
+  --color-general-brand-bg: 37, 32, 25;
   --color-general-brand-text: 255, 255, 255;
-  --color-general-brand-bg-hover: 30, 30, 30;
+  --color-general-brand-bg-hover: 37, 32, 25;
   --color-general-brand-border: 255, 255, 255;
 
   --box-shadow-xs: 0 1px 2px 0 rgba(230,240,250,.3), 0 1px 3px 1px rgba(230,240,250,.15);
@@ -268,8 +286,8 @@
   --text-secondary: #acacac;
   --text-secondary-light: #acacac;
 
-  --border: 1px solid #363636;
-  --border-light: 1px solid rgba(0, 0, 0, 0.25%);
+  --border: 1px solid #3D362E;
+  --border-light: 1px solid rgba(42, 38, 35, 0.25);
 
   --color-1-text: rgb(108, 248, 155);
   --color-1-bg: rgba(25,128,42,.2);
@@ -333,7 +351,7 @@
   margin: 0;
   padding: 0;
   -webkit-tap-highlight-color: transparent;
-  --font-family: 'Poppins', sans-serif;
+  --font-family: var(--font-geist-sans), ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"
 }
 /* *::-webkit-scrollbar {
   width: 6px;
@@ -355,7 +373,11 @@
 html,
 textarea,
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .fs-24, .fs-20, .fs-18 {
+  font-family: var(--font-libre), ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
 }
 
 #root {

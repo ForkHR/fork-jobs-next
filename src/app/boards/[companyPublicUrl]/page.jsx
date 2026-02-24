@@ -141,8 +141,8 @@ export default async function BoardDetailPage({ params }) {
   };
 
   return (
-    <main style={{ fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", 
-        maxWidth: 648,
+    <main style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", 
+        maxWidth: 900,
         width: '100%',
         margin: '0 auto', }} className="animation-fade-in"
     >
@@ -152,12 +152,12 @@ export default async function BoardDetailPage({ params }) {
       />
 
       <nav style={{ padding: '24px 32px 0' }}>
-        <ol style={{ display: 'flex', gap: 8, listStyle: 'none', padding: 0, margin: 0, fontSize: 13, color: '#94a3b8' }}>
-          <li><Link href="/" style={{ color: '#64748b', textDecoration: 'none' }}>Home</Link></li>
+        <ol style={{ display: 'flex', gap: 8, listStyle: 'none', padding: 0, margin: 0, fontSize: 13, color: '#A9A49E' }}>
+          <li><Link href="/" style={{ color: '#8A8480', textDecoration: 'none' }}>Home</Link></li>
           <li>/</li>
-          <li><Link href="/boards" style={{ color: '#64748b', textDecoration: 'none' }}>Boards</Link></li>
+          <li><Link href="/boards" style={{ color: '#8A8480', textDecoration: 'none' }}>Boards</Link></li>
           <li>/</li>
-          <li style={{ color: '#000000', fontWeight: 500 }}>{companyName}</li>
+          <li style={{ color: '#2A2623', fontWeight: 500 }}>{companyName}</li>
         </ol>
       </nav>
 
@@ -169,29 +169,29 @@ export default async function BoardDetailPage({ params }) {
               alt={`${companyName} logo`}
               width={56}
               height={56}
-              style={{ borderRadius: 12, border: '1px solid #f1f5f9', objectFit: 'cover', flexShrink: 0 }}
+              style={{ borderRadius: 12, border: '1px solid #E2DDD2', objectFit: 'cover', flexShrink: 0 }}
             />
           ) : (
             <div style={{
-              width: 56, height: 56, borderRadius: 12, background: '#f1f5f9',
+              width: 56, height: 56, borderRadius: 12, background: '#F0EDE6',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 22, fontWeight: 700, color: '#94a3b8', flexShrink: 0,
+              fontSize: 22, fontWeight: 700, color: '#A9A49E', flexShrink: 0,
             }}>
               {companyName.charAt(0)}
             </div>
           )}
           <div>
-            <h1 style={{ fontSize: 24, fontWeight: 700, color: '#000000', margin: '0 0 4px', letterSpacing: '-0.02em' }}>
+            <h1 style={{ fontSize: 24, fontWeight: 700, color: '#2A2623', margin: '0 0 4px', letterSpacing: '-0.02em' }}>
               {companyName}
             </h1>
-            <p style={{ fontSize: 14, color: '#64748b', margin: 0 }}>
+            <p style={{ fontSize: 14, color: '#8A8480', margin: 0 }}>
               {listings.length} open {listings.length === 1 ? 'position' : 'positions'}
             </p>
           </div>
         </div>
 
         {company?.description && (
-          <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6, margin: '0 0 24px' }}>
+          <p style={{ fontSize: 14, color: '#8A8480', lineHeight: 1.6, margin: '0 0 24px' }}>
             {stripHtml(company.description).slice(0, 240) + (stripHtml(company.description).length > 240 ? '…' : '')}
           </p>
         )}
@@ -217,7 +217,7 @@ export default async function BoardDetailPage({ params }) {
                 style={{
                   display: 'block',
                   background: '#fff',
-                  border: '1px solid #f1f5f9',
+                  border: '1px solid #E2DDD2',
                   borderRadius: 12,
                   padding: 16,
                   paddingBottom: 8,
@@ -244,7 +244,7 @@ export default async function BoardDetailPage({ params }) {
                           alt={`${companyName} logo`}
                           width={48}
                           height={48}
-                          style={{ borderRadius: 10, objectFit: 'cover', border: '1px solid #f1f5f9', flexShrink: 0 }}
+                          style={{ borderRadius: 10, objectFit: 'cover', border: '1px solid #E2DDD2', flexShrink: 0 }}
                           loading="lazy"
                         />
                       ) : (
@@ -253,13 +253,13 @@ export default async function BoardDetailPage({ params }) {
                             width: 48,
                             height: 48,
                             borderRadius: 10,
-                            background: '#f1f5f9',
+                            background: '#F0EDE6',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             fontSize: 16,
                             fontWeight: 700,
-                            color: '#94a3b8',
+                            color: '#A9A49E',
                             flexShrink: 0,
                           }}
                         >
@@ -269,11 +269,11 @@ export default async function BoardDetailPage({ params }) {
                       <div style={{ overflow: 'hidden' }}>
                         <h2
                           className="text-ellipsis-1"
-                          style={{ fontSize: 20, fontWeight: 500, color: '#242424', margin: '0 0 4px' }}
+                          style={{ fontSize: 20, fontWeight: 500, color: '#2A2623', margin: '0 0 4px' }}
                         >
                           {listing.title}
                         </h2>
-                        <p style={{ fontSize: 12, color: '#475569', margin: 0 }}>
+                        <p style={{ fontSize: 12, color: '#6B6560', margin: 0 }}>
                           <span className="weight-600">{companyName}</span>
                           {category ? ` / ${category}` : ''}
                         </p>
@@ -284,8 +284,8 @@ export default async function BoardDetailPage({ params }) {
                         style={{
                           fontSize: 11,
                           fontWeight: 600,
-                          color: '#475569',
-                          background: '#f1f5f9',
+                          color: '#6B6560',
+                          background: '#F0EDE6',
                           borderRadius: 999,
                           padding: '4px 10px',
                           whiteSpace: 'nowrap',
@@ -297,7 +297,7 @@ export default async function BoardDetailPage({ params }) {
                     )}
                   </div>
                   <div
-                    style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: 12, borderTop: '1px solid #f1f5f9' }}
+                    style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: 12, borderTop: '1px solid #E2DDD2' }}
                     className="pb-2 text-soft pt-2"
                   >
                     {loc && (
@@ -320,7 +320,7 @@ export default async function BoardDetailPage({ params }) {
                     )}
                   </div>
                 </Link>
-                <div className="pt-2 flex justify-between align-center" style={{ borderTop: '1px solid #f1f5f9' }}>
+                <div className="pt-2 flex justify-between align-center" style={{ borderTop: '1px solid #E2DDD2' }}>
                   <div className="fs-10 text-secondary">{applicantsText}</div>
                   <Link
                     href={
@@ -341,7 +341,7 @@ export default async function BoardDetailPage({ params }) {
         </div>
 
         {listings.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '48px 0', color: '#64748b' }}>
+          <div style={{ textAlign: 'center', padding: '48px 0', color: '#8A8480' }}>
             <p style={{ fontSize: 16, fontWeight: 500, marginBottom: 8 }}>No open positions</p>
             <p style={{ fontSize: 14 }}>This company doesn&apos;t have any active job listings right now.</p>
           </div>

@@ -176,8 +176,8 @@ export default async function JobDetailPage({ params }) {
   };
 
   return (
-    <main style={{ fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", 
-        maxWidth: 648,
+    <main style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", 
+        maxWidth: 900,
         width: '100%',
         margin: '0 auto', }} className="animation-fade-in"
     >
@@ -192,12 +192,12 @@ export default async function JobDetailPage({ params }) {
 
       {/* Breadcrumb */}
       <nav style={{ padding: '24px 32px 0' }}>
-        <ol style={{ display: 'flex', gap: 8, listStyle: 'none', padding: 0, margin: 0, fontSize: 13, color: '#94a3b8' }}>
-          <li><Link href="/" style={{ color: '#64748b', textDecoration: 'none' }}>Home</Link></li>
+        <ol style={{ display: 'flex', gap: 8, listStyle: 'none', padding: 0, margin: 0, fontSize: 13, color: '#A9A49E' }}>
+          <li><Link href="/" style={{ color: '#8A8480', textDecoration: 'none' }}>Home</Link></li>
           <li>/</li>
-          <li><Link href="/jobs" style={{ color: '#64748b', textDecoration: 'none' }}>Jobs</Link></li>
+          <li><Link href="/jobs" style={{ color: '#8A8480', textDecoration: 'none' }}>Jobs</Link></li>
           <li>/</li>
-          <li style={{ color: '#000000', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 200 }}>
+          <li style={{ color: '#2A2623', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 200 }}>
             {listing.title}
           </li>
         </ol>
@@ -212,26 +212,26 @@ export default async function JobDetailPage({ params }) {
               alt={`${companyName} logo`}
               width={56}
               height={56}
-              style={{ borderRadius: 12, border: '1px solid #f1f5f9', objectFit: 'cover', flexShrink: 0 }}
+              style={{ borderRadius: 12, border: '1px solid #E2DDD2', objectFit: 'cover', flexShrink: 0 }}
             />
           ) : (
             <div style={{
-              width: 56, height: 56, borderRadius: 12, background: '#f1f5f9',
+              width: 56, height: 56, borderRadius: 12, background: '#F0EDE6',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 22, fontWeight: 700, color: '#94a3b8', flexShrink: 0,
+              fontSize: 22, fontWeight: 700, color: '#A9A49E', flexShrink: 0,
             }}>
               {companyName.charAt(0)}
             </div>
           )}
           <div>
-            <h1 style={{ fontSize: 24, fontWeight: 700, color: '#000000', margin: '0 0 4px', letterSpacing: '-0.02em' }}>
+            <h1 style={{ fontSize: 24, fontWeight: 700, color: '#2A2623', margin: '0 0 4px', letterSpacing: '-0.02em' }}>
               {listing.title}
             </h1>
-            <p style={{ fontSize: 15, color: '#475569', margin: 0 }}>
+            <p style={{ fontSize: 15, color: '#6B6560', margin: 0 }}>
               {company?.publicUrl ? (
                 <Link
                   href={`/boards/${company.publicUrl}`}
-                  style={{ color: '#000000', textDecoration: 'underline', textDecorationColor: '#cbd5e1', textUnderlineOffset: 2 }}
+                  style={{ color: '#2A2623', textDecoration: 'underline', textDecorationColor: '#CCC5B6', textUnderlineOffset: 2 }}
                 >
                   {companyName}
                 </Link>
@@ -245,27 +245,27 @@ export default async function JobDetailPage({ params }) {
         {/* Meta chips */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 }}>
           {listing.employmentType && (
-            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#f1f5f9', borderRadius: 999, color: '#475569' }}>
+            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#F0EDE6', borderRadius: 999, color: '#6B6560' }}>
               {listing.employmentType === 'full-time' ? 'Full-time' : 'Part-time'}
             </span>
           )}
           {location && (
-            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#f1f5f9', borderRadius: 999, color: '#475569' }}>
+            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#F0EDE6', borderRadius: 999, color: '#6B6560' }}>
               📍 {location}
             </span>
           )}
           {pay && (
-            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#f1f5f9', borderRadius: 999, color: '#475569' }}>
+            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#F0EDE6', borderRadius: 999, color: '#6B6560' }}>
               💰 {pay}
             </span>
           )}
           {listing.category && (
-            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#f1f5f9', borderRadius: 999, color: '#475569' }}>
+            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#F0EDE6', borderRadius: 999, color: '#6B6560' }}>
               {listing.category}
             </span>
           )}
           {postedDate && (
-            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#f1f5f9', borderRadius: 999, color: '#94a3b8' }}>
+            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#F0EDE6', borderRadius: 999, color: '#A9A49E' }}>
               Posted {postedDate}
             </span>
           )}
@@ -282,7 +282,7 @@ export default async function JobDetailPage({ params }) {
             style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
               padding: '12px 24px', fontSize: 15, fontWeight: 600, color: '#fff',
-              background: '#000000', borderRadius: 999, textDecoration: 'none',
+              background: 'var(--color-brand)', borderRadius: 999, textDecoration: 'none',
             }}
           >
             Apply Now
@@ -292,7 +292,7 @@ export default async function JobDetailPage({ params }) {
         {/* Job description */}
         {listing.description && (
           <div style={{ marginBottom: 32 }}>
-            <h2 style={{ fontSize: 18, fontWeight: 600, color: '#000000', margin: '0 0 16px' }}>
+            <h2 style={{ fontSize: 18, fontWeight: 600, color: '#2A2623', margin: '0 0 16px' }}>
               Description
             </h2>
             <div
@@ -301,7 +301,7 @@ export default async function JobDetailPage({ params }) {
               style={{
                 fontSize: 15,
                 lineHeight: 1.7,
-                color: '#475569',
+                color: '#6B6560',
               }}
             />
           </div>
@@ -309,7 +309,7 @@ export default async function JobDetailPage({ params }) {
 
         {/* Related links */}
         <div style={{
-          borderTop: '1px solid #f1f5f9',
+          borderTop: '1px solid #E2DDD2',
           paddingTop: 24,
           display: 'flex',
           flexWrap: 'wrap',
@@ -317,7 +317,7 @@ export default async function JobDetailPage({ params }) {
           fontSize: 14,
         }}>
           <ShareJobButton jobUrl={`${siteUrl}/jobs/${jobId}`} jobTitle={listing.title} />
-            <Link href={`/${company?.publicUrl || company._id}`} style={{ color: '#64748b', textDecoration: 'underline', textDecorationColor: '#cbd5e1' }} target="_blank" rel="noopener noreferrer">
+            <Link href={`/${company?.publicUrl || company._id}`} style={{ color: '#8A8480', textDecoration: 'underline', textDecorationColor: '#CCC5B6' }} target="_blank" rel="noopener noreferrer">
               More jobs at {companyName}
             </Link>
         </div>
@@ -329,7 +329,7 @@ export default async function JobDetailPage({ params }) {
         .job-description-content h3 {
           font-size: 16px;
           font-weight: 600;
-          color: #000000;
+          color: #2A2623;
           margin: 24px 0 8px;
         }
         .job-description-content p {
@@ -344,7 +344,7 @@ export default async function JobDetailPage({ params }) {
           margin-bottom: 4px;
         }
         .job-description-content a {
-          color: #000000;
+          color: #2A2623;
           text-decoration: underline;
         }
       `}</style>

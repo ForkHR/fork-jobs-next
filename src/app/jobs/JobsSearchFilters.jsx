@@ -102,14 +102,14 @@ export default function JobsSearchFilters({ initialValues, totalResults }) {
           align-items: center;
           gap: 12px;
           background: #fff;
-          border: 1px solid #e2e8f0;
+          border: 1px solid #E2DDD2;
           border-radius: 12px;
           padding: 12px 16px;
           margin-bottom: 12px;
           transition: border-color 0.2s;
         }
         .jobs-filters__search:focus-within {
-          border-color: #000000;
+          border-color: #2A2623;
         }
         .jobs-filters__input {
           flex: 1;
@@ -117,11 +117,11 @@ export default function JobsSearchFilters({ initialValues, totalResults }) {
           outline: none;
           font-size: 15px;
           font-family: inherit;
-          color: #000000;
+          color: #2A2623;
           background: transparent;
         }
         .jobs-filters__input::placeholder {
-          color: #94a3b8;
+          color: #A9A49E;
         }
         .jobs-filters__row {
           display: flex;
@@ -139,30 +139,30 @@ export default function JobsSearchFilters({ initialValues, totalResults }) {
           font-size: 13px;
           font-weight: 500;
           font-family: inherit;
-          border: 1px solid #e2e8f0;
+          border: 1px solid #E2DDD2;
           border-radius: 999px;
           background: #fff;
-          color: #475569;
+          color: #6B6560;
           cursor: pointer;
           transition: all 0.15s;
         }
         .jobs-filter-chip:hover {
-          border-color: #cbd5e1;
+          border-color: #CCC5B6;
         }
         .jobs-filter-chip--active {
-          background: #000000;
+          background: #033C29;
           color: #fff;
-          border-color: #000000;
+          border-color: #033C29;
         }
         .jobs-filters__select {
           padding: 6px 12px;
           font-size: 13px;
           font-weight: 500;
           font-family: inherit;
-          border: 1px solid #e2e8f0;
+          border: 1px solid #E2DDD2;
           border-radius: 24px;
           background: #fff;
-          color: #475569;
+          color: #6B6560;
           cursor: pointer;
         }
       `}</style>

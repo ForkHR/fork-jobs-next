@@ -102,7 +102,7 @@ export default async function HomePage() {
                 to="/jobs"
                 label="Search jobs"
                 variant="filled"
-                type="brand"
+                type="primary"
               />
               <Button
                 to="https://app.forkhr.com/hiring?new-job-listing=true"
@@ -121,28 +121,45 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── Employer Flow ─── */}
-      <section className={styles.sectionAlt}>
+      {/* ─── Stats Bar ─── */}
+      <section className={styles.statsBar}>
+        <div className={styles.statsInner}>
+          <div className={styles.statItem}>
+            <span className={styles.statNumber}>{totalJobs > 0 ? `${totalJobs.toLocaleString()}+` : '—'}</span>
+            <span className={styles.statLabel}>Open Positions</span>
+          </div>
+          <div className={styles.statDivider} />
+          <div className={styles.statItem}>
+            <span className={styles.statNumber}>100%</span>
+            <span className={styles.statLabel}>Free for Job Seekers</span>
+          </div>
+          <div className={styles.statDivider} />
+          <div className={styles.statItem}>
+            <span className={styles.statNumber}>Direct</span>
+            <span className={styles.statLabel}>Apply to Employers</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Employer Flow (Charcoal dark section) ─── */}
+      <section className={styles.sectionCharcoal}>
         <div className={styles.sectionInner}>
-          <div className={styles.sectionLabel}>For Employers</div>
-          <h2 className={styles.sectionTitle}>Your own job board in minutes</h2>
-          <p className={styles.sectionSub}>
-            Create listings, accept applications, and hire -- all from one platform. No fees, no contracts.{' '}
-            <a href="https://medium.com/@bohdankhv/how-to-post-a-job-on-fork-in-under-2-minutes-bf957c35d46d" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline', textDecorationColor: '#cbd5e1', textUnderlineOffset: 2 }}>
-              Learn how →
-            </a>
+          <div className={styles.sectionLabelAccent} style={{ color: '#ECBA6A' }}>For Employers</div>
+          <h2 className={styles.sectionTitleLight}>Your own job board in minutes</h2>
+          <p className={styles.sectionSubLight}>
+            Create listings, accept applications, and hire — all from one platform. No fees, no contracts.
           </p>
           <div className={styles.stepsGrid}>
             {[
               { step: '01', title: 'Create a listing', desc: 'Add job details, requirements, screening questions, and pay information.' },
-              { step: '02', title: 'Publish to your board', desc: 'Your company gets its own SEO-friendly job board -- branded and shareable.' },
+              { step: '02', title: 'Publish to your board', desc: 'Your company gets its own SEO-friendly job board — branded and shareable.' },
               { step: '03', title: 'Accept applications', desc: 'Applicants apply directly. Review resumes, AI summaries, and responses.' },
-              { step: '04', title: 'Hire & onboard', desc: 'Send interviews, extend offers, and onboard -- all in Fork.' },
+              { step: '04', title: 'Hire & onboard', desc: 'Send interviews, extend offers, and onboard — all in Fork.' },
             ].map((s) => (
-              <div key={s.step} className={styles.stepCard}>
-                <div className={styles.stepNumber}>{s.step}</div>
-                <h3 className={styles.stepTitle}>{s.title}</h3>
-                <p className={styles.stepDesc}>{s.desc}</p>
+              <div key={s.step} className={styles.stepCardDark}>
+                <div className={styles.stepNumberAmber}>{s.step}</div>
+                <h3 className={styles.stepTitleLight}>{s.title}</h3>
+                <p className={styles.stepDescLight}>{s.desc}</p>
               </div>
             ))}
           </div>
@@ -152,7 +169,7 @@ export default async function HomePage() {
       {/* ─── Applicant Flow ─── */}
       <section className={styles.section}>
         <div className={styles.sectionInner}>
-          <div className={styles.sectionLabel}>For Applicants</div>
+          <div className={styles.sectionLabel} style={{ color: '#2A2623' }}>For Applicants</div>
           <h2 className={styles.sectionTitle}>From application to offer</h2>
           <p className={styles.sectionSub}>
             Apply directly on company job boards. No account needed, no third-party recruiter.
@@ -162,7 +179,7 @@ export default async function HomePage() {
               { num: 1, title: 'Apply', desc: 'Submit your info and resume directly to the company.' },
               { num: 2, title: 'Review', desc: 'The hiring team reviews your application and resume.' },
               { num: 3, title: 'Interview', desc: 'Get interview invitations with one-click scheduling.' },
-              { num: 4, title: 'Get hired', desc: 'Accept an offer and onboard -- all through Fork.' },
+              { num: 4, title: 'Get hired', desc: 'Accept an offer and onboard — all through Fork.' },
             ].map((s, i) => (
               <div key={s.num} className={styles.stepperItem}>
                 <div className={styles.stepperCircle}><span>{s.num}</span></div>
@@ -175,9 +192,38 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ─── Employer CTA (Forest dark section) ─── */}
+      <section className={styles.sectionForest}>
+        <div className={styles.forestGlow} />
+        <div className={styles.darkInner}>
+          <h2 className={styles.darkTitle}>Start hiring today — no fees, no contracts</h2>
+          <p className={styles.darkSubLime}>
+            Create your free company job board, post your first listing, and start accepting applications in under 2 minutes.
+          </p>
+          <div className={styles.heroCtas} style={{ justifyContent: 'center' }}>
+            <Button
+              to="https://app.forkhr.com/register"
+              label="Create your free board"
+              variant="filled"
+              size="lg"
+              target="_blank"
+              className={styles.btnLime}
+            />
+            <a
+              href="https://medium.com/@bohdankhv/how-to-post-a-job-on-fork-in-under-2-minutes-bf957c35d46d"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.forestLink}
+            >
+              Learn how it works →
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* ─── Recent Jobs ─── */}
       {recentJobs.length > 0 && (
-        <section className={styles.sectionAlt}>
+        <section className={styles.section}>
           <div className={styles.sectionInner}>
             <div className={styles.sectionLabel}>Latest Openings</div>
             <h2 className={styles.sectionTitle}>Recently posted jobs</h2>
@@ -231,7 +277,7 @@ export default async function HomePage() {
             <p>
               Fork job boards are company-owned hiring pages powered by{' '}
               <a href="https://forkhr.com" target="_blank" rel="noopener noreferrer">ForkHR</a>.
-              Each business creates and manages its own job board -- listing open positions for
+              Each business creates and manages its own job board — listing open positions for
               barista jobs, restaurant jobs, coffee shop hiring, retail positions, and more.
             </p>
             <p>
@@ -241,21 +287,21 @@ export default async function HomePage() {
             </p>
             <p>
               Whether you&apos;re looking for local jobs near you, part-time work, or a full-time
-              career in hospitality, retail, or food service -- Fork makes it easy to find open
+              career in hospitality, retail, or food service — Fork makes it easy to find open
               positions and apply fast.
             </p>
             <h3>How it works for job seekers</h3>
             <p>
               Browse open positions on the <Link href="/jobs">jobs page</Link> or explore
               company job boards on the <Link href="/boards">boards page</Link>. Filter by keyword
-              and apply directly. Your application -- including your resume and screening question
-              answers -- goes straight to the employer. No account required.
+              and apply directly. Your application — including your resume and screening question
+              answers — goes straight to the employer. No account required.
             </p>
             <h3>How it works for employers</h3>
             <p>
               Employers on Fork get a free, SEO-friendly job board that lives at their own URL.
               Post job listings, accept applications, review resumes with AI summaries, schedule
-              interviews, and onboard new hires -- all in one system.{' '}
+              interviews, and onboard new hires — all in one system.{' '}
               <a href="https://app.forkhr.com/register" target="_blank" rel="noopener noreferrer">
                 Get started free
               </a>{' '}
@@ -268,13 +314,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── Final CTA ─── */}
-      <section className={styles.sectionDark}>
-        <div className={styles.darkGlow} />
+      {/* ─── Final CTA (Plum dark section) ─── */}
+      <section className={styles.sectionPlum}>
+        <div className={styles.plumGlow} />
         <div className={styles.darkInner}>
           <h2 className={styles.darkTitle}>Ready to find your next opportunity?</h2>
-          <p className={styles.darkSub}>
-            Browse open positions from companies hiring right now -- or create your own free job
+          <p className={styles.darkSubLavender}>
+            Browse open positions from companies hiring right now — or create your own free job
             board to start accepting applications today.
           </p>
           <div className={styles.heroCtas} style={{ justifyContent: 'center' }}>
@@ -291,7 +337,7 @@ export default async function HomePage() {
               variant="outline"
               size="lg"
               target="_blank"
-              className={styles.btnOutlineWhite}
+              className={styles.btnOutlineLavender}
             />
           </div>
         </div>

@@ -1,24 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 import './SiteHeader.css';
 
 import { logoFullSvg } from '../assets/img/logo';
-import { Button, InputSearch } from '../components';
-import { searchIcon } from '../assets/img/icons';
 
 export default function SiteHeader() {
   const pathname = usePathname();
-  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
-  const searchParams = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Don't show the global header on branded company boards
-  // (they have their own branded header via jobBoardClient)
   const isBrandedBoard =
     pathname &&
     pathname !== '/' &&
@@ -36,35 +30,156 @@ export default function SiteHeader() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Close mobile menu on route change
   useEffect(() => {
-    setSearchQuery(searchParams?.get('q') || '');
-  }, [searchParams]);
+    setMobileOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
+  const toggleMobile = useCallback(() => setMobileOpen((v) => !v), []);
 
   if (isBrandedBoard) return null;
 
+  const isActive = (path) => {
+    if (path === '/') return pathname === '/';
+    return pathname.startsWith(path);
+  };
+
   return (
-    <header className="jobs-site-header">
-      <div className="jobs-site-header__wrap">
-          <div className={`jobs-site-header__bar${isScrolled ? ' jobs-site-header__bar--scrolled' : ''}`}>
-            <Link href="/" className="jobs-site-header__logo" aria-label="Fork Jobs home">
+    <>
+      <header className="site-header">
+        <div className="site-header__wrap">
+          <div className={`site-header__bar${isScrolled ? ' site-header__bar--scrolled' : ''}`}>
+            {/* Logo */}
+            <Link href="/" className="site-header__logo" aria-label="Fork Jobs home">
               {logoFullSvg}
             </Link>
-            <div className="flex justify-end flex-1 gap-2">
-              <Button
-                label="Boards"
-                to="/boards"
-                type="secondary"
-                variant={pathname.startsWith('/boards') ? 'filled' : 'text'}
-              />
-              <Button
-                label="Jobs"
-                to="/jobs"
-                type="secondary"
-                variant={pathname.startsWith('/jobs') ? 'filled' : 'text'}
-              />
+
+            {/* Desktop Nav */}
+            <nav className="site-header__nav">
+              <Link
+                href="/jobs"
+                className={`site-header__link${isActive('/jobs') ? ' site-header__link--active' : ''}`}
+              >
+                Browse Jobs
+              </Link>
+              <Link
+                href="/boards"
+                className={`site-header__link${isActive('/boards') ? ' site-header__link--active' : ''}`}
+              >
+                Browse Boards
+              </Link>
+              <a
+                href="https://forkhr.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="site-header__link"
+              >
+                For Employers
+              </a>
+            </nav>
+
+            {/* Desktop Actions */}
+            <div className="site-header__actions">
+              <a
+                href="https://app.forkhr.com/login"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="site-header__sign-in"
+              >
+                Sign in
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+              <a
+                href="https://app.forkhr.com/hiring?new-job-listing=true"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="site-header__cta"
+              >
+                Post a Job
+              </a>
             </div>
+
+            {/* Mobile Hamburger */}
+            <button
+              className="site-header__hamburger"
+              onClick={toggleMobile}
+              aria-label="Toggle menu"
+              aria-expanded={mobileOpen}
+            >
+              <span className={`site-header__hamburger-line${mobileOpen ? ' site-header__hamburger-line--open' : ''}`} />
+            </button>
           </div>
+        </div>
+      </header>
+
+      {/* Mobile overlay menu */}
+      <div className={`site-mobile-menu${mobileOpen ? ' site-mobile-menu--open' : ''}`}>
+        <div className="site-mobile-menu__backdrop" onClick={toggleMobile} />
+        <div className="site-mobile-menu__panel">
+          <div className="site-mobile-menu__header">
+            <Link href="/" className="site-header__logo" aria-label="Fork Jobs home" onClick={toggleMobile}>
+              {logoFullSvg}
+            </Link>
+            <button className="site-mobile-menu__close" onClick={toggleMobile} aria-label="Close menu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
+          <nav className="site-mobile-menu__nav">
+            <Link
+              href="/jobs"
+              className={`site-mobile-menu__link${isActive('/jobs') ? ' site-mobile-menu__link--active' : ''}`}
+              onClick={toggleMobile}
+            >
+              Browse Jobs
+            </Link>
+            <Link
+              href="/boards"
+              className={`site-mobile-menu__link${isActive('/boards') ? ' site-mobile-menu__link--active' : ''}`}
+              onClick={toggleMobile}
+            >
+              Browse Boards
+            </Link>
+            <a
+              href="https://forkhr.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="site-mobile-menu__link"
+              onClick={toggleMobile}
+            >
+              For Employers
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </nav>
+          <div className="site-mobile-menu__footer">
+            <a
+              href="https://app.forkhr.com/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="site-mobile-menu__btn site-mobile-menu__btn--ghost"
+            >
+              Sign in
+            </a>
+            <a
+              href="https://app.forkhr.com/hiring?new-job-listing=true"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="site-mobile-menu__btn site-mobile-menu__btn--filled"
+            >
+              Post a Job
+            </a>
+          </div>
+        </div>
       </div>
-    </header>
+    </>
   );
 }

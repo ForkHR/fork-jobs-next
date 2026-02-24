@@ -31,9 +31,9 @@ export default function ShareJobButton({ jobUrl, jobTitle }) {
     <button
       onClick={handleShare}
       style={{
-        color: '#64748b',
+        color: '#8A8480',
         textDecoration: 'underline',
-        textDecorationColor: '#cbd5e1',
+        textDecorationColor: '#CCC5B6',
         background: 'none',
         border: 'none',
         padding: 0,

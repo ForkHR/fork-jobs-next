@@ -193,8 +193,8 @@ export default async function JobsPage({ searchParams }) {
   };
 
   return (
-    <main style={{ fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", 
-        maxWidth: 648,
+    <main style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", 
+        maxWidth: 900,
         width: '100%',
         margin: '0 auto', }} className="animation-fade-in"
     >
@@ -211,10 +211,10 @@ export default async function JobsPage({ searchParams }) {
 
       {/* Breadcrumb */}
       <nav style={{ padding: '24px 32px 0' }}>
-        <ol style={{ display: 'flex', gap: 8, listStyle: 'none', padding: 0, margin: 0, fontSize: 13, color: '#94a3b8' }}>
-          <li><Link href="/" style={{ color: '#64748b', textDecoration: 'none' }}>Home</Link></li>
+        <ol style={{ display: 'flex', gap: 8, listStyle: 'none', padding: 0, margin: 0, fontSize: 13, color: '#A9A49E' }}>
+          <li><Link href="/" style={{ color: '#8A8480', textDecoration: 'none' }}>Home</Link></li>
           <li>/</li>
-          <li style={{ color: '#000000', fontWeight: 500 }}>Jobs</li>
+          <li style={{ color: '#2A2623', fontWeight: 500 }}>Jobs</li>
         </ol>
       </nav>
 
@@ -247,7 +247,7 @@ export default async function JobsPage({ searchParams }) {
                 style={{
                   display: 'block',
                   background: '#fff',
-                  border: '1px solid #f1f5f9',
+                  border: '1px solid #E2DDD2',
                   borderRadius: 12,
                   padding: 16,
                   paddingBottom: 8,
@@ -267,7 +267,7 @@ export default async function JobsPage({ searchParams }) {
                         alt={`${job.company?.name || 'Company'} logo`}
                         width={48}
                         height={48}
-                        style={{ borderRadius: 10, objectFit: 'cover', border: '1px solid #f1f5f9', flexShrink: 0 }}
+                        style={{ borderRadius: 10, objectFit: 'cover', border: '1px solid #E2DDD2', flexShrink: 0 }}
                         loading="lazy"
                       />
                     ) : (
@@ -276,13 +276,13 @@ export default async function JobsPage({ searchParams }) {
                           width: 48,
                           height: 48,
                           borderRadius: 10,
-                          background: '#f1f5f9',
+                          background: '#F0EDE6',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           fontSize: 16,
                           fontWeight: 700,
-                          color: '#94a3b8',
+                          color: '#A9A49E',
                           flexShrink: 0,
                         }}
                       >
@@ -290,9 +290,9 @@ export default async function JobsPage({ searchParams }) {
                       </div>
                     )}
                     <div style={{overflow: 'hidden'}}>
-                      <h2 className="text-ellipsis-1" style={{ fontSize: 20, fontWeight: 500, color: '#242424', margin: '0 0 4px' }}>{job.title}</h2>
+                      <h2 className="text-ellipsis-1" style={{ fontSize: 20, fontWeight: 500, color: '#2A2623', margin: '0 0 4px' }}>{job.title}</h2>
                     {job.company?.name && (
-                      <p style={{ fontSize: 12, color: '#475569', margin: 0 }}>
+                      <p style={{ fontSize: 12, color: '#6B6560', margin: 0 }}>
                         <span className="weight-600">{job.company.name}</span> / <span className="text-secondary">{category}</span>
                       </p>
                     )}
@@ -302,8 +302,8 @@ export default async function JobsPage({ searchParams }) {
                     <span style={{
                       fontSize: 11,
                       fontWeight: 600,
-                      color: '#475569',
-                      background: '#f1f5f9',
+                      color: '#6B6560',
+                      background: '#F0EDE6',
                       borderRadius: 999,
                       padding: '4px 10px',
                       whiteSpace: 'nowrap',
@@ -313,7 +313,7 @@ export default async function JobsPage({ searchParams }) {
                     </span>
                   )}
                 </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: 12, borderTop: '1px solid #f1f5f9' }} className="pb-2 text-soft pt-2">
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: 12, borderTop: '1px solid #E2DDD2' }} className="pb-2 text-soft pt-2">
                   {loc && <span className="flex gap-1 align-center w-min-200-px">
                     <Icon icon={locationIcon} size="xs" className="shrink-0" />{loc}
                     </span>}
@@ -325,7 +325,7 @@ export default async function JobsPage({ searchParams }) {
                     </span>}
                 </div>
               </Link>
-              <div className="pt-2 flex justify-between align-center" style={{ borderTop: '1px solid #f1f5f9'}}>
+              <div className="pt-2 flex justify-between align-center" style={{ borderTop: '1px solid #E2DDD2'}}>
                 <div className="fs-10 text-secondary">
                   {applicantsText}
                 </div>
@@ -349,10 +349,10 @@ export default async function JobsPage({ searchParams }) {
 
         {/* Empty state */}
         {items.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '48px 0', color: '#64748b' }}>
+          <div style={{ textAlign: 'center', padding: '48px 0', color: '#8A8480' }}>
             <p style={{ fontSize: 16, fontWeight: 500, marginBottom: 8 }}>No jobs found</p>
             <p style={{ fontSize: 14 }}>Try adjusting your search or filters.</p>
-            <Link href="/jobs" style={{ fontSize: 14, color: '#000000', textDecoration: 'underline', textDecorationColor: '#cbd5e1' }}>
+            <Link href="/jobs" style={{ fontSize: 14, color: '#2A2623', textDecoration: 'underline', textDecorationColor: '#CCC5B6' }}>
               Clear all filters
             </Link>
           </div>
@@ -366,15 +366,15 @@ export default async function JobsPage({ searchParams }) {
                 padding: '8px 16px',
                 fontSize: 14,
                 fontWeight: 500,
-                color: '#000000',
-                border: '1px solid #e2e8f0',
+                color: '#2A2623',
+                border: '1px solid #E2DDD2',
                 borderRadius: 8,
                 textDecoration: 'none',
               }}>
                 ← Previous
               </Link>
             )}
-            <span style={{ padding: '8px 16px', fontSize: 14, color: '#64748b' }}>
+            <span style={{ padding: '8px 16px', fontSize: 14, color: '#8A8480' }}>
               Page {page} of {pages}
             </span>
             {page < pages && (
@@ -382,8 +382,8 @@ export default async function JobsPage({ searchParams }) {
                 padding: '8px 16px',
                 fontSize: 14,
                 fontWeight: 500,
-                color: '#000000',
-                border: '1px solid #e2e8f0',
+                color: '#2A2623',
+                border: '1px solid #E2DDD2',
                 borderRadius: 8,
                 textDecoration: 'none',
               }}>

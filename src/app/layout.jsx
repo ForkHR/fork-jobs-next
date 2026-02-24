@@ -1,7 +1,19 @@
 import { Suspense } from 'react';
 import Script from 'next/script';
+import { Geist, Libre_Baskerville } from 'next/font/google';
 import Providers from './providers';
 import { getSiteUrl } from '../lib/siteUrl';
+
+const geistSans = Geist({
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+});
+
+const libreBaskerville = Libre_Baskerville({
+  subsets: ['latin'],
+  variable: '--font-libre',
+  weight: ['400', '700'],
+});
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -64,7 +76,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${libreBaskerville.variable}`} suppressHydrationWarning>
         <Providers>
           <Suspense>
             <SiteHeader />
