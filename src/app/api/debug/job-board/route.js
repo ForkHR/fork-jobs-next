@@ -14,27 +14,40 @@ export async function GET(request) {
   // ?mode=layer runs the real data-layer calls the pages use, so their
   // failure mode is observable in the response instead of only in logs.
   if (searchParams.get('mode') === 'layer') {
-    const out = { search: null, companies: null, errors: {} };
+    // Replay the pages' exact data-layer calls. Params override the defaults,
+    // e.g. ?mode=layer&limit=20&page=1&sort=recent mirrors /jobs,
+    // ?mode=layer&csort=jobs&climit=24&cpage=1 mirrors /boards.
+    const searchArgs = {
+      limit: Number(searchParams.get('limit')) || 8,
+      sort: searchParams.get('sort') || 'recent',
+    };
+    if (searchParams.get('page')) searchArgs.page = Number(searchParams.get('page'));
+    if (searchParams.get('q')) searchArgs.q = searchParams.get('q');
+    if (searchParams.get('employmentType')) searchArgs.employmentType = searchParams.get('employmentType');
+
+    const companiesArgs = { limit: Number(searchParams.get('climit')) || 100 };
+    if (searchParams.get('csort')) companiesArgs.sort = searchParams.get('csort');
+    if (searchParams.get('cpage')) companiesArgs.page = Number(searchParams.get('cpage'));
+
+    const errInfo = (e) => ({
+      message: e?.message,
+      status: e?.status,
+      bodyPreview: typeof e?.bodyPreview === 'string' ? e.bodyPreview.slice(0, 300) : e?.bodyPreview,
+    });
+
+    const out = { searchArgs, companiesArgs, search: null, companies: null, errors: {} };
     const t0 = Date.now();
     try {
-      const res = await searchJobListingsCached({ limit: 8, sort: 'recent' });
+      const res = await searchJobListingsCached(searchArgs);
       out.search = { items: res?.items?.length ?? 0, total: res?.total ?? 0 };
     } catch (e) {
-      out.errors.search = {
-        message: e?.message,
-        status: e?.status,
-        bodyPreview: typeof e?.bodyPreview === 'string' ? e.bodyPreview.slice(0, 300) : e?.bodyPreview,
-      };
+      out.errors.search = errInfo(e);
     }
     try {
-      const res = await searchJobBoardCompaniesCached({ limit: 100 });
+      const res = await searchJobBoardCompaniesCached(companiesArgs);
       out.companies = { items: res?.items?.length ?? 0 };
     } catch (e) {
-      out.errors.companies = {
-        message: e?.message,
-        status: e?.status,
-        bodyPreview: typeof e?.bodyPreview === 'string' ? e.bodyPreview.slice(0, 300) : e?.bodyPreview,
-      };
+      out.errors.companies = errInfo(e);
     }
     out.elapsedMs = Date.now() - t0;
     return NextResponse.json(out);
