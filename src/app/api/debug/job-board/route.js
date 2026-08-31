@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
+import { searchJobListingsCached, searchJobBoardCompaniesCached } from '../../../../lib/jobBoardData';
 
 const normalizeBaseUrl = (baseUrl) => {
   const trimmed = String(baseUrl || '').trim().replace(/\/+$/, '');
@@ -9,6 +10,35 @@ const normalizeBaseUrl = (baseUrl) => {
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const companyPublicUrl = searchParams.get('companyPublicUrl') || 'hg';
+
+  // ?mode=layer runs the real data-layer calls the pages use, so their
+  // failure mode is observable in the response instead of only in logs.
+  if (searchParams.get('mode') === 'layer') {
+    const out = { search: null, companies: null, errors: {} };
+    const t0 = Date.now();
+    try {
+      const res = await searchJobListingsCached({ limit: 8, sort: 'recent' });
+      out.search = { items: res?.items?.length ?? 0, total: res?.total ?? 0 };
+    } catch (e) {
+      out.errors.search = {
+        message: e?.message,
+        status: e?.status,
+        bodyPreview: typeof e?.bodyPreview === 'string' ? e.bodyPreview.slice(0, 300) : e?.bodyPreview,
+      };
+    }
+    try {
+      const res = await searchJobBoardCompaniesCached({ limit: 100 });
+      out.companies = { items: res?.items?.length ?? 0 };
+    } catch (e) {
+      out.errors.companies = {
+        message: e?.message,
+        status: e?.status,
+        bodyPreview: typeof e?.bodyPreview === 'string' ? e.bodyPreview.slice(0, 300) : e?.bodyPreview,
+      };
+    }
+    out.elapsedMs = Date.now() - t0;
+    return NextResponse.json(out);
+  }
 
   const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
   const ssrToken = process.env.FORK_JOBS_SSR_TOKEN || process.env.JOBS_SSR_TOKEN;
