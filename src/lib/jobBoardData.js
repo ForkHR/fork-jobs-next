@@ -1,7 +1,3 @@
-import axios from 'axios';
-import http from 'node:http';
-import https from 'node:https';
-
 const getApiBaseUrl = () => {
   const base = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "https://app.forkhr.com/api";
   if (!base) {
@@ -40,27 +36,15 @@ const toAxiosLikeHttpError = (status, url, bodyPreview) => {
 
 const SSR_FETCH_TIMEOUT_MS = 10_000; // 10s – fail fast so the page can render a fallback
 
-// keepAlive off: warm lambda instances were reusing sockets the Heroku
-// router / Cloudflare had already closed, so the first request after idle
-// failed and pages rendered empty. A fresh connection per request avoids it.
-const ssrHttpAgent = new http.Agent({ keepAlive: false });
-const ssrHttpsAgent = new https.Agent({ keepAlive: false });
-
-// Uses axios (not native fetch): Cloudflare's bot protection challenges
-// undici's TLS fingerprint from datacenter IPs (e.g. Vercel), while axios's
-// Node http client passes — the /api/debug/job-board route proved this.
-const fetchJsonOnce = async (url) => {
-  const res = await axios.get(url, {
+const fetchJsonNoStore = async (url) => {
+  const res = await fetch(url, {
+    method: 'GET',
     headers: getServerRequestHeaders(),
-    timeout: SSR_FETCH_TIMEOUT_MS,
-    validateStatus: () => true,
-    responseType: 'text',
-    transformResponse: [(data) => data],
-    httpAgent: ssrHttpAgent,
-    httpsAgent: ssrHttpsAgent,
+    cache: 'no-store',
+    signal: AbortSignal.timeout(SSR_FETCH_TIMEOUT_MS),
   });
 
-  const text = typeof res.data === 'string' ? res.data : '';
+  const text = await res.text();
   let json;
   try {
     json = text ? JSON.parse(text) : null;
@@ -68,26 +52,11 @@ const fetchJsonOnce = async (url) => {
     throw toAxiosLikeHttpError(res.status, url, text?.slice?.(0, 400));
   }
 
-  if (res.status < 200 || res.status >= 300) {
+  if (!res.ok) {
     throw toAxiosLikeHttpError(res.status, url, json);
   }
 
   return json;
-};
-
-const fetchJsonNoStore = async (url) => {
-  let lastErr;
-  for (let attempt = 1; attempt <= 2; attempt++) {
-    try {
-      return await fetchJsonOnce(url);
-    } catch (err) {
-      lastErr = err;
-      const preview = typeof err?.bodyPreview === 'string' ? err.bodyPreview.slice(0, 200) : '';
-      console.error(`[ssr-fetch] attempt ${attempt} failed: ${err?.message}`, preview);
-      if (attempt === 1) await new Promise((r) => setTimeout(r, 300));
-    }
-  }
-  throw lastErr;
 };
 
 const fetchCompanyJobsServer = async (companyPublicUrl) => {

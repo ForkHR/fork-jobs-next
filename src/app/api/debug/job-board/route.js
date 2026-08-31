@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
-import { searchJobListingsCached, searchJobBoardCompaniesCached } from '../../../../lib/jobBoardData';
 
 const normalizeBaseUrl = (baseUrl) => {
   const trimmed = String(baseUrl || '').trim().replace(/\/+$/, '');
@@ -10,48 +9,6 @@ const normalizeBaseUrl = (baseUrl) => {
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const companyPublicUrl = searchParams.get('companyPublicUrl') || 'hg';
-
-  // ?mode=layer runs the real data-layer calls the pages use, so their
-  // failure mode is observable in the response instead of only in logs.
-  if (searchParams.get('mode') === 'layer') {
-    // Replay the pages' exact data-layer calls. Params override the defaults,
-    // e.g. ?mode=layer&limit=20&page=1&sort=recent mirrors /jobs,
-    // ?mode=layer&csort=jobs&climit=24&cpage=1 mirrors /boards.
-    const searchArgs = {
-      limit: Number(searchParams.get('limit')) || 8,
-      sort: searchParams.get('sort') || 'recent',
-    };
-    if (searchParams.get('page')) searchArgs.page = Number(searchParams.get('page'));
-    if (searchParams.get('q')) searchArgs.q = searchParams.get('q');
-    if (searchParams.get('employmentType')) searchArgs.employmentType = searchParams.get('employmentType');
-
-    const companiesArgs = { limit: Number(searchParams.get('climit')) || 100 };
-    if (searchParams.get('csort')) companiesArgs.sort = searchParams.get('csort');
-    if (searchParams.get('cpage')) companiesArgs.page = Number(searchParams.get('cpage'));
-
-    const errInfo = (e) => ({
-      message: e?.message,
-      status: e?.status,
-      bodyPreview: typeof e?.bodyPreview === 'string' ? e.bodyPreview.slice(0, 300) : e?.bodyPreview,
-    });
-
-    const out = { searchArgs, companiesArgs, search: null, companies: null, errors: {} };
-    const t0 = Date.now();
-    try {
-      const res = await searchJobListingsCached(searchArgs);
-      out.search = { items: res?.items?.length ?? 0, total: res?.total ?? 0 };
-    } catch (e) {
-      out.errors.search = errInfo(e);
-    }
-    try {
-      const res = await searchJobBoardCompaniesCached(companiesArgs);
-      out.companies = { items: res?.items?.length ?? 0 };
-    } catch (e) {
-      out.errors.companies = errInfo(e);
-    }
-    out.elapsedMs = Date.now() - t0;
-    return NextResponse.json(out);
-  }
 
   const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
   const ssrToken = process.env.FORK_JOBS_SSR_TOKEN || process.env.JOBS_SSR_TOKEN;
@@ -69,16 +26,9 @@ export async function GET(request) {
   const base = normalizeBaseUrl(apiBase);
   const url = `${base}/job-board?companyPublicUrl=${encodeURIComponent(companyPublicUrl)}`;
 
-  // ?ua=chrome sends a plain browser UA instead of the SSR bot-style UA,
-  // to test whether Cloudflare's challenge keys on the User-Agent.
-  const uaOverride =
-    searchParams.get('ua') === 'chrome'
-      ? 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
-      : null;
-
   const headers = {
     Accept: 'application/json',
-    'User-Agent': uaOverride || 'Mozilla/5.0 (compatible; ForkJobsSSR/1.0; +https://jobs.forkhr.com)',
+    'User-Agent': 'Mozilla/5.0 (compatible; ForkJobsSSR/1.0; +https://jobs.forkhr.com)',
     ...(ssrToken ? { 'x-fork-jobs-ssr-token': ssrToken } : {}),
   };
 
