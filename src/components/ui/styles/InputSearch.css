@@ -29,8 +29,9 @@
     /* background-color: rgb(var(--color-general-secondary-bg)); */
     border-color: var(--color-secondary);
 }
+.input-search-container .icon-btn svg,
 .input-search-container .icon-btn.icon-btn-secondary svg {
-    fill: var(--text-dark);
+    fill: var(--text-dark)!important;
 }
 
 .input-search-container input::placeholder {
