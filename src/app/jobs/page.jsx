@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { searchJobListingsCached } from '../../lib/jobBoardData';
 import { getSiteUrl } from '../../lib/siteUrl';
 import JobsSearchFilters from './JobsSearchFilters';
+import JobsClientFallback from './JobsClientFallback';
 import { Icon } from '../../components';
 import { clockIcon, locationIcon, moneyIcon, timeSheetsIcon } from '../../assets/img/icons';
 
@@ -347,15 +348,11 @@ export default async function JobsPage({ searchParams }) {
           })}
         </div>
 
-        {/* Empty state */}
+        {/* Empty SSR result: retry from the visitor's browser (handles the
+            Cloudflare challenge on server-side requests), with the regular
+            empty state rendered by the fallback when it finds nothing too. */}
         {items.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '48px 0', color: '#8A8480' }}>
-            <p style={{ fontSize: 16, fontWeight: 500, marginBottom: 8 }}>No jobs found</p>
-            <p style={{ fontSize: 14 }}>Try adjusting your search or filters.</p>
-            <Link href="/jobs" style={{ fontSize: 14, color: '#2A2623', textDecoration: 'underline', textDecorationColor: '#CCC5B6' }}>
-              Clear all filters
-            </Link>
-          </div>
+          <JobsClientFallback q={q} type={type} sort={sort} />
         )}
 
         {/* Pagination */}

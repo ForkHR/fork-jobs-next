@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { searchJobListingsCached } from '../lib/jobBoardData';
 import styles from './page.module.css';
 import { getSiteUrl } from '../lib/siteUrl';
+import HomeJobsFallback from './HomeJobsFallback';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -142,17 +143,21 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Latest openings */}
-      {recentJobs.length > 0 && (
-        <section className={styles.jobsSection}>
-          <div className={styles.sectionInner}>
-            <div className={styles.jobsHeader}>
-              <h2 className={styles.sectionTitle}>Latest openings</h2>
-              <Link href="/jobs" className={styles.jobsAllLink}>
-                View all {totalJobs > recentJobs.length ? totalJobs.toLocaleString() : ''} jobs
-              </Link>
-            </div>
+      {/* Latest openings — when the server fetch came back empty (e.g. the
+          Cloudflare challenge on SSR requests), the visitor's browser
+          refetches via HomeJobsFallback. */}
+      <section className={styles.jobsSection}>
+        <div className={styles.sectionInner}>
+          <div className={styles.jobsHeader}>
+            <h2 className={styles.sectionTitle}>Latest openings</h2>
+            <Link href="/jobs" className={styles.jobsAllLink}>
+              View all {totalJobs > recentJobs.length ? totalJobs.toLocaleString() : ''} jobs
+            </Link>
+          </div>
 
+          {recentJobs.length === 0 ? (
+            <HomeJobsFallback publicS3={publicS3 || ''} />
+          ) : (
             <ul className={styles.jobList}>
               {recentJobs.map((job) => {
                 const pay = formatPay(job);
@@ -200,9 +205,9 @@ export default async function HomePage() {
                 );
               })}
             </ul>
-          </div>
-        </section>
-      )}
+          )}
+        </div>
+      </section>
 
       {/* How it works */}
       <section className={styles.howSection}>

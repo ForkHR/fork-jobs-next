@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getCompanyAndListingCached } from '../../../../lib/jobBoardData';
+import ClientRedirect from '../../../../components/ClientRedirect';
 import { getSiteUrl } from '../../../../lib/siteUrl';
 import ShareJobButton from '../../../jobs/[jobId]/ShareJobButton';
 
@@ -82,16 +83,23 @@ export default async function BoardJobDetailPage({ params }) {
   if (!companyPublicUrl || !jobId) notFound();
 
   let data;
+  let fetchFailed = false;
   try {
     data = await getCompanyAndListingCached(companyPublicUrl, jobId);
   } catch (e) {
     if (e?.status === 404 || e?.response?.status === 404) notFound();
+    fetchFailed = true;
     data = null;
   }
 
   const listing = data?.listing;
   const company = data?.company;
 
+  // Transient SSR fetch failure (e.g. Cloudflare challenge): send the visitor
+  // to the company-board listing page, which loads its data client-side.
+  if ((!listing || !company) && fetchFailed) {
+    return <ClientRedirect to={`/${companyPublicUrl}/${jobId}`} />;
+  }
   if (!listing || !company) notFound();
 
   const siteUrl = getSiteUrl();

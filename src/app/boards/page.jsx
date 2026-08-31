@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { searchJobBoardCompaniesCached } from '../../lib/jobBoardData';
 import { getSiteUrl } from '../../lib/siteUrl';
 import BoardsSearchFilters from './BoardsSearchFilters';
+import BoardsClientFallback from './BoardsClientFallback';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -197,11 +198,10 @@ export default async function BoardsPage({ searchParams }) {
           })}
         </div>
 
+        {/* Empty SSR result: retry from the visitor's browser (handles the
+            Cloudflare challenge on server-side requests). */}
         {items.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '48px 0', color: '#8A8480' }}>
-            <p style={{ fontSize: 16, fontWeight: 500, marginBottom: 8 }}>No boards found</p>
-            <p style={{ fontSize: 14 }}>Try a different search term.</p>
-          </div>
+          <BoardsClientFallback q={q} sort={sort} publicS3={publicS3 || ''} />
         )}
 
         {pages > 1 && (

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getJobListingByIdCached } from '../../../lib/jobBoardData';
+import JobDetailRescue from './JobDetailRescue';
 import { getSiteUrl } from '../../../lib/siteUrl';
 import JobApplySection from './JobApplySection';
 import ShareJobButton from './ShareJobButton';
@@ -96,16 +97,21 @@ export default async function JobDetailPage({ params }) {
   if (!jobId) notFound();
 
   let data;
+  let fetchFailed = false;
   try {
     data = await getJobListingByIdCached(jobId);
   } catch (e) {
     if (e?.status === 404 || e?.response?.status === 404) notFound();
+    fetchFailed = true;
     data = null;
   }
 
   const listing = data?.listing;
   const company = data?.company || listing?.company;
 
+  // A transient fetch failure (e.g. Cloudflare challenging SSR requests) is
+  // not a 404 — let the visitor's browser resolve the listing instead.
+  if (!listing && fetchFailed) return <JobDetailRescue jobId={jobId} />;
   if (!listing) notFound();
 
   const siteUrl = getSiteUrl();
