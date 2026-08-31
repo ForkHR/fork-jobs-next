@@ -39,22 +39,6 @@ export default function NotFound() {
 
       <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
         <Link
-          href="/jobs"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            padding: '0.625rem 1.25rem',
-            fontSize: '0.875rem',
-            fontWeight: 600,
-            color: '#fff',
-            background: '#033C29',
-            borderRadius: 8,
-            textDecoration: 'none',
-          }}
-        >
-          Browse Jobs
-        </Link>
-        <Link
           href="/boards"
           style={{
             display: 'inline-flex',
@@ -64,7 +48,7 @@ export default function NotFound() {
             fontWeight: 500,
             color: '#3D3935',
             background: '#F8F6F1',
-            borderRadius: 8,
+            borderRadius: 24,
             textDecoration: 'none',
           }}
         >
@@ -80,7 +64,7 @@ export default function NotFound() {
             fontWeight: 500,
             color: '#3D3935',
             background: '#F8F6F1',
-            borderRadius: 8,
+            borderRadius: 24,
             textDecoration: 'none',
           }}
         >

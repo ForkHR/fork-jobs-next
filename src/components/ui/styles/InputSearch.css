@@ -32,6 +32,7 @@
 .input-search-container .icon-btn svg,
 .input-search-container .icon-btn.icon-btn-secondary svg {
     fill: var(--text-dark)!important;
+    color: var(--text-dark)!important;
 }
 
 .input-search-container input::placeholder {
