@@ -53,6 +53,7 @@ export default async function BoardsPage({ searchParams }) {
   let items = [];
   let total = 0;
   let pages = 1;
+  let fetchError = null;
 
   try {
     const res = await searchJobBoardCompaniesCached({
@@ -65,7 +66,9 @@ export default async function BoardsPage({ searchParams }) {
     items = Array.isArray(res?.items) ? res.items : [];
     total = res?.total || items.length;
     pages = res?.pages || Math.ceil(total / LIMIT) || 1;
-  } catch {
+  } catch (err) {
+    console.error('[BoardsPage] Failed to fetch companies:', err?.message || err, err?.status ? `(status ${err.status})` : '', err?.url || '');
+    fetchError = [err?.message, err?.status && `status ${err.status}`, err?.url].filter(Boolean).join(' | ');
     items = [];
   }
 
@@ -109,6 +112,7 @@ export default async function BoardsPage({ searchParams }) {
         width: '100%',
         margin: '0 auto', }} className="animation-fade-in"
     >
+      {sp?.debug === '1' && fetchError && <div hidden data-fetch-error={fetchError} />}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}

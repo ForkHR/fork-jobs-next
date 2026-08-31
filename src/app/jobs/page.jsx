@@ -99,6 +99,7 @@ export default async function JobsPage({ searchParams }) {
   let items = [];
   let total = 0;
   let pages = 1;
+  let fetchError = null;
 
   try {
     const params = { limit: LIMIT, page, sort };
@@ -119,6 +120,7 @@ export default async function JobsPage({ searchParams }) {
     pages = res?.pages || res?.totalPages || Math.ceil(total / LIMIT) || 1;
   } catch (err) {
     console.error('[JobsPage] Failed to fetch jobs:', err?.message || err, err?.status ? `(status ${err.status})` : '', err?.url || '');
+    fetchError = [err?.message, err?.status && `status ${err.status}`, err?.url].filter(Boolean).join(' | ');
     items = [];
   }
 
@@ -208,6 +210,8 @@ export default async function JobsPage({ searchParams }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingSchemas) }}
         />
       )}
+
+      {sp?.debug === '1' && fetchError && <div hidden data-fetch-error={fetchError} />}
 
       {/* Breadcrumb */}
       <nav style={{ padding: '24px 32px 0' }}>
