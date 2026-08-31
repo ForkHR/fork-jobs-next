@@ -6,16 +6,16 @@
   --border-radius-sm: 8px;
   --border-radius-xs: 4px;
 
-  --border: 1px solid #E2DDD2;
+  --border: 1px solid #d4d4d4;
   --color-translucent: rgba(255, 255, 255, 0.1);
 
-  --color-brand: #1c1c1c;
-  --color-brand-text: #1c1c1c;
-  --color-brand-bg: #ffffff;
-  --color-brand-bg-hover: #ffffff;
-  --color-brand-border: #1c1c1c;
-  --color-brand-rgb: 
-
+  --color-brand: #1b1b1b;
+  --color-brand-text: #1b1b1b;
+  --color-brand-bg: #eeebe8;
+  --color-brand-bg-hover: #f7f5f2;
+  --color-brand-border: #1b1b1b;
+  --color-brand-rgb: 27, 27, 27;
+  
   --color-primary: #1c1c1c;
   --color-primary-10: rgba(28, 28, 28, 0.1);
   --color-primary-20: rgba(28, 28, 28, 0.2);
@@ -55,26 +55,30 @@
   --color-general-warning-bg: 255, 247, 230;
   --color-general-warning-bg-hover: 255, 240, 204;
   --color-general-warning-border: 247, 226, 179;
-  --color-general-secondary-bg: 248, 246, 241;
-  --color-general-secondary-text: 42, 38, 35;
-  --color-general-secondary-bg-hover: 238, 235, 227;
-  --color-general-secondary-border: 42, 38, 35;
-  --color-general-brand-bg: 236, 250, 243;;
-  --color-general-brand-text: 236, 250, 243;
-  --color-general-brand-bg-hover: 236, 250, 243;
-  --color-general-brand-border: 236, 250, 243;
+  --color-general-secondary-bg-hover: 45, 45, 46;
+  --color-general-secondary-bg: 37, 37, 38;
+  --color-general-secondary-text: 255, 255, 255;
+  --color-general-secondary-border: 145, 145, 145;
+  --color-general-brand: 255, 255, 255;
+  --color-general-brand-bg: 30, 30, 30;
+  --color-general-brand-text: 30, 30, 30;
+  --color-general-brand-bg-hover: 30, 30, 30;
+  --color-general-brand-border: 255, 255, 255;
 
   --color-btn-overlay: rgba(255, 255, 255, 0.15);
   --color-scroll-overlay: rgba(190, 190, 190, 0.3);
 
   --color-logo: #033C29;
 
-  --color-main: #ffffff;
-  --color-secondary: #F8F6F1;
-  --color-secondary-hover: #FAF8F4;
-  --color-tertiary: #FCFBF8;
-  --color-border: #E2DDD2;
-  --color-border-secondary: #EEEBE3;
+  --color-main: #fcfcfc;
+  --color-soft: #363636;
+  --color-soft-bg: #fffefb;
+  --color-secondary: #ebebeb;
+  --color-secondary-hover: #e0e0e0;
+  --color-tertiary: #eeeeee;
+  --color-border: #d4d4d4;
+  --color-border-secondary: #e6e6e6;
+  --color-border-light: #f1f1f1; 
 
   --text-light: #ffffff;
   --text-dark: #2A2623;
@@ -203,7 +207,7 @@
   --peer-avatar-15: #B8C2CC;
   --peer-avatar-16: #9EAAB5;
 
-  --peer-avatar-0: #E2DDD2;
+  --peer-avatar-0: #d4d4d4;
 }
 
 [data-theme='dark'] {
@@ -222,8 +226,8 @@
   
   --color-brand: #fff;
   --color-brand-text: #fff;
-  --color-brand-bg: #22212c;
-  --color-brand-bg-hover: #22212c;
+  --color-brand-bg: #1c1c1c;
+  --color-brand-bg-hover: #1c1c1c;
   --color-brand-border: #fff;
 
   --color-primary: #1d9bf0;

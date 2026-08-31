@@ -151,8 +151,8 @@ export default async function BoardsPage({ searchParams }) {
                   gap: 12,
                   padding: 20,
                   background: '#fff',
-                  border: '1px solid #E2DDD2',
-                  borderRadius: 12,
+                  border: '1px solid #d4d4d4',
+                  borderRadius: 24,
                   textDecoration: 'none',
                   color: 'inherit',
                   transition: 'border-color 0.2s, box-shadow 0.2s',
@@ -164,7 +164,7 @@ export default async function BoardsPage({ searchParams }) {
                     alt={`${company.name} logo`}
                     width={40}
                     height={40}
-                    style={{ borderRadius: 10, objectFit: 'cover', border: '1px solid #E2DDD2', flexShrink: 0 }}
+                    style={{ borderRadius: 10, objectFit: 'cover', border: '1px solid #d4d4d4', flexShrink: 0 }}
                     loading="lazy"
                   />
                 ) : (
@@ -173,7 +173,7 @@ export default async function BoardsPage({ searchParams }) {
                       width: 40,
                       height: 40,
                       borderRadius: 10,
-                      background: '#F0EDE6',
+                      background: '#ebebeb',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -214,7 +214,7 @@ export default async function BoardsPage({ searchParams }) {
                   fontSize: 14,
                   fontWeight: 500,
                   color: '#2A2623',
-                  border: '1px solid #E2DDD2',
+                  border: '1px solid #d4d4d4',
                   borderRadius: 8,
                   textDecoration: 'none',
                 }}
@@ -233,7 +233,7 @@ export default async function BoardsPage({ searchParams }) {
                   fontSize: 14,
                   fontWeight: 500,
                   color: '#2A2623',
-                  border: '1px solid #E2DDD2',
+                  border: '1px solid #d4d4d4',
                   borderRadius: 8,
                   textDecoration: 'none',
                 }}

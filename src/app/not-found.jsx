@@ -27,7 +27,7 @@ export default function NotFound() {
           style={{
             width: 1,
             height: 40,
-            background: '#E2DDD2',
+            background: '#d4d4d4',
           }}
         />
         <span style={{ fontSize: '1rem', fontWeight: 500, color: '#6B6560' }}>Page not found</span>

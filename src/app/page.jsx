@@ -2,47 +2,71 @@ import Link from 'next/link';
 import { searchJobListingsCached } from '../lib/jobBoardData';
 import styles from './page.module.css';
 import { getSiteUrl } from '../lib/siteUrl';
-import Button from '../components/ui/Button';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata = {
-  title: 'Fork Jobs -- Find Jobs. Apply Fast. Get Hired.',
+  title: 'Fork Jobs — Local Jobs, Straight from the Companies Hiring',
   description:
-    'Discover local job openings on company-powered job boards. Browse barista jobs, restaurant jobs, retail positions, and more -- apply directly with no middlemen.',
+    'Browse open positions on company-run job boards — barista jobs, restaurant jobs, retail and more. Apply directly to the employer. No recruiters, no account needed.',
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
-    title: 'Fork Jobs -- Find Jobs. Apply Fast. Get Hired.',
+    title: 'Fork Jobs — Local Jobs, Straight from the Companies Hiring',
     description:
-      'Discover local job openings on company-powered job boards. Browse and apply directly -- no middlemen, no recruiters.',
+      'Browse open positions on company-run job boards and apply directly to the employer. No recruiters, no account needed.',
     url: '/',
     images: [
       {
         url: '/assets/og-image.png',
         width: 1200,
         height: 750,
-        alt: 'Fork Jobs — Find Jobs. Apply Fast. Get Hired.',
+        alt: 'Fork Jobs — local jobs, straight from the companies hiring',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Fork Jobs -- Find Jobs. Apply Fast. Get Hired.',
+    title: 'Fork Jobs — Local Jobs, Straight from the Companies Hiring',
     description:
-      'Discover local job openings on company-powered job boards. Browse and apply directly -- no middlemen, no recruiters.',
+      'Browse open positions on company-run job boards and apply directly to the employer. No recruiters, no account needed.',
     images: ['/assets/og-image.png'],
   },
+};
+
+const timeAgo = (dateStr) => {
+  if (!dateStr) return null;
+  const then = new Date(dateStr).getTime();
+  if (Number.isNaN(then)) return null;
+  const days = Math.floor((Date.now() - then) / 86400000);
+  if (days <= 0) return 'Today';
+  if (days === 1) return 'Yesterday';
+  if (days < 7) return `${days} days ago`;
+  const weeks = Math.floor(days / 7);
+  if (weeks < 5) return weeks === 1 ? 'Last week' : `${weeks} weeks ago`;
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+};
+
+const formatAmount = (n) =>
+  n >= 1000 ? `${Math.round(n / 1000)}k` : String(n);
+
+const formatPay = (job) => {
+  if (!job.payRateFrom || job.payRateFrom <= 0) return null;
+  let pay = `$${formatAmount(job.payRateFrom)}`;
+  if (job.payRateTo > job.payRateFrom) pay += `–$${formatAmount(job.payRateTo)}`;
+  if (job.payType === 'hourly') pay += '/hr';
+  else if (job.payType === 'salary') pay += '/yr';
+  return pay;
 };
 
 export default async function HomePage() {
   let recentJobs = [];
   let totalJobs = 0;
   try {
-    const res = await searchJobListingsCached({ limit: 6, sort: 'recent' });
+    const res = await searchJobListingsCached({ limit: 8, sort: 'recent' });
     const items = res?.items || res?.listings || [];
     recentJobs = Array.isArray(items) ? items : [];
     totalJobs = Number(res?.total) || recentJobs.length;
@@ -51,6 +75,7 @@ export default async function HomePage() {
     totalJobs = 0;
   }
   const siteUrl = getSiteUrl();
+  const publicS3 = process.env.NEXT_PUBLIC_PUBLIC_S3_API_URL || process.env.PUBLIC_S3_API_URL;
 
   const websiteJsonLd = {
     '@context': 'https://schema.org',
@@ -80,227 +105,194 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify([websiteJsonLd, orgJsonLd]) }}
       />
 
-      {/* ─── Hero ─── */}
+      {/* Hero + search */}
       <section className={styles.hero}>
-        <div className={styles.heroContainer}>
-          <div className={styles.heroContent}>
-            <div className={styles.heroBadge}>
-              <span className={styles.heroBadgeDot} />
-              Company job boards powered by Fork
-            </div>
-
-            <h1 className={styles.heroTitle}>
-              Find Jobs.<br />Apply Fast.<br />Get Hired<span className={styles.accent}>.</span>
-            </h1>
-
-            <p className={styles.heroSub}>
-              Fork replaces traditional job sites with company-powered job boards. Browse open positions and apply directly to the employer -- no recruiters, no middlemen.
-            </p>
-
-            <div className={styles.heroCtas}>
-              <Button
-                to="/jobs"
-                label="Search jobs"
-                variant="filled"
-                type="primary"
-              />
-              <Button
-                to="https://app.forkhr.com/hiring?new-job-listing=true"
-                label="Post a job"
-                variant="outline"
-                target="_blank"
-              />
-            </div>
-
-            <p className={styles.heroNote}>
-              {totalJobs > 0
-                ? `${totalJobs.toLocaleString()} open positions available`
-                : 'New positions added daily'}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Stats Bar ─── */}
-      <section className={styles.statsBar}>
-        <div className={styles.statsInner}>
-          <div className={styles.statItem}>
-            <span className={styles.statNumber}>{totalJobs > 0 ? `${totalJobs.toLocaleString()}+` : '—'}</span>
-            <span className={styles.statLabel}>Open Positions</span>
-          </div>
-          <div className={styles.statDivider} />
-          <div className={styles.statItem}>
-            <span className={styles.statNumber}>100%</span>
-            <span className={styles.statLabel}>Free for Job Seekers</span>
-          </div>
-          <div className={styles.statDivider} />
-          <div className={styles.statItem}>
-            <span className={styles.statNumber}>Direct</span>
-            <span className={styles.statLabel}>Apply to Employers</span>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Employer Flow (Charcoal dark section) ─── */}
-      <section className={styles.sectionCharcoal}>
-        <div className={styles.sectionInner}>
-          <div className={styles.sectionLabelAccent} style={{ color: '#ECBA6A' }}>For Employers</div>
-          <h2 className={styles.sectionTitleLight}>Your own job board in minutes</h2>
-          <p className={styles.sectionSubLight}>
-            Create listings, accept applications, and hire — all from one platform. No fees, no contracts.
+        <div className={styles.heroInner}>
+          <h1 className={styles.heroTitle}>
+            Local jobs, straight from the companies hiring.
+          </h1>
+          <p className={styles.heroSub}>
+            Fork hosts job boards for real businesses — cafés, restaurants, shops, and more.
+            When you apply, your application goes to the person doing the hiring, not a recruiter.
           </p>
-          <div className={styles.stepsGrid}>
-            {[
-              { step: '01', title: 'Create a listing', desc: 'Add job details, requirements, screening questions, and pay information.' },
-              { step: '02', title: 'Publish to your board', desc: 'Your company gets its own SEO-friendly job board — branded and shareable.' },
-              { step: '03', title: 'Accept applications', desc: 'Applicants apply directly. Review resumes, AI summaries, and responses.' },
-              { step: '04', title: 'Hire & onboard', desc: 'Send interviews, extend offers, and onboard — all in Fork.' },
-            ].map((s) => (
-              <div key={s.step} className={styles.stepCardDark}>
-                <div className={styles.stepNumberAmber}>{s.step}</div>
-                <h3 className={styles.stepTitleLight}>{s.title}</h3>
-                <p className={styles.stepDescLight}>{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ─── Applicant Flow ─── */}
-      <section className={styles.section}>
-        <div className={styles.sectionInner}>
-          <div className={styles.sectionLabel} style={{ color: '#2A2623' }}>For Applicants</div>
-          <h2 className={styles.sectionTitle}>From application to offer</h2>
-          <p className={styles.sectionSub}>
-            Apply directly on company job boards. No account needed, no third-party recruiter.
-          </p>
-          <div className={styles.stepperRow}>
-            {[
-              { num: 1, title: 'Apply', desc: 'Submit your info and resume directly to the company.' },
-              { num: 2, title: 'Review', desc: 'The hiring team reviews your application and resume.' },
-              { num: 3, title: 'Interview', desc: 'Get interview invitations with one-click scheduling.' },
-              { num: 4, title: 'Get hired', desc: 'Accept an offer and onboard — all through Fork.' },
-            ].map((s, i) => (
-              <div key={s.num} className={styles.stepperItem}>
-                <div className={styles.stepperCircle}><span>{s.num}</span></div>
-                {i < 3 && <div className={styles.stepperLine} />}
-                <h3 className={styles.stepperTitle}>{s.title}</h3>
-                <p className={styles.stepperDesc}>{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Employer CTA (Forest dark section) ─── */}
-      <section className={styles.sectionForest}>
-        <div className={styles.forestGlow} />
-        <div className={styles.darkInner}>
-          <h2 className={styles.darkTitle}>Start hiring today — no fees, no contracts</h2>
-          <p className={styles.darkSubLime}>
-            Create your free company job board, post your first listing, and start accepting applications in under 2 minutes.
-          </p>
-          <div className={styles.heroCtas} style={{ justifyContent: 'center' }}>
-            <Button
-              to="https://app.forkhr.com/register"
-              label="Create your free board"
-              variant="filled"
-              size="lg"
-              target="_blank"
-              className={styles.btnLime}
+          <form action="/jobs" role="search" className={styles.searchForm}>
+            <input
+              type="search"
+              name="q"
+              placeholder="Job title, company, or keyword"
+              aria-label="Search jobs"
+              className={styles.searchInput}
             />
-            <a
-              href="https://medium.com/@bohdankhv/how-to-post-a-job-on-fork-in-under-2-minutes-bf957c35d46d"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.forestLink}
-            >
-              Learn how it works →
-            </a>
-          </div>
+            <button type="submit" className={styles.searchBtn}>Search jobs</button>
+          </form>
+
+          <p className={styles.heroTrail}>
+            {totalJobs > 0 ? (
+              <>{totalJobs.toLocaleString()} open positions right now. </>
+            ) : (
+              <>New positions are added daily. </>
+            )}
+            Free to apply, no account needed. Try{' '}
+            <Link href="/jobs?q=barista">barista</Link>,{' '}
+            <Link href="/jobs?q=server">server</Link>,{' '}
+            <Link href="/jobs?q=cook">cook</Link>, or{' '}
+            <Link href="/jobs?type=part-time">part-time work</Link>.
+          </p>
         </div>
       </section>
 
-      {/* ─── Recent Jobs ─── */}
+      {/* Latest openings */}
       {recentJobs.length > 0 && (
-        <section className={styles.section}>
+        <section className={styles.jobsSection}>
           <div className={styles.sectionInner}>
-            <div className={styles.sectionLabel}>Latest Openings</div>
-            <h2 className={styles.sectionTitle}>Recently posted jobs</h2>
-            <p className={styles.sectionSub}>Fresh openings from companies hiring right now.</p>
-            <div className={styles.jobsGrid}>
-              {recentJobs.map((job) => (
-                <Link key={job._id} href={`/jobs/${job._id}`} className={styles.jobCard}>
-                  <div className={styles.jobCardTop}>
-                    <div>
-                      <h3 className={styles.jobTitle}>{job.title}</h3>
-                      <p className={styles.jobCompany}>{job.company?.name}</p>
-                    </div>
-                    {job.employmentType && (
-                      <span className={styles.jobBadge}>
-                        {job.employmentType === 'full-time' ? 'Full-time' : 'Part-time'}
-                      </span>
-                    )}
-                  </div>
-                  <div className={styles.jobMeta}>
-                    {job.location?.city && (
-                      <span>{job.location.city}{job.location.state ? `, ${job.location.state}` : ''}</span>
-                    )}
-                    {job.payRateFrom > 0 && (
-                      <span>
-                        ${job.payRateFrom}
-                        {job.payRateTo > job.payRateFrom ? ` - $${job.payRateTo}` : ''}
-                        {job.payType === 'hourly' ? '/hr' : job.payType === 'salary' ? '/yr' : ''}
-                      </span>
-                    )}
-                  </div>
-                </Link>
-              ))}
+            <div className={styles.jobsHeader}>
+              <h2 className={styles.sectionTitle}>Latest openings</h2>
+              <Link href="/jobs" className={styles.jobsAllLink}>
+                View all {totalJobs > recentJobs.length ? totalJobs.toLocaleString() : ''} jobs
+              </Link>
             </div>
-            <div className={styles.ctaRow}>
-              <Button
-                to="/jobs"
-                label="View all jobs"
-                variant="outline"
-                size="lg"
-              />
-            </div>
+
+            <ul className={styles.jobList}>
+              {recentJobs.map((job) => {
+                const pay = formatPay(job);
+                const ago = timeAgo(job.createdAt);
+                const city = job.location?.city
+                  ? `${job.location.city}${job.location.state ? `, ${job.location.state}` : ''}`
+                  : null;
+                const logoUrl =
+                  job.company?.logo && publicS3
+                    ? `${String(publicS3).replace(/\/+$/, '')}/${job.company.logo}`
+                    : null;
+                return (
+                  <li key={job._id}>
+                    <Link href={`/jobs/${job._id}`} className={styles.jobRow}>
+                      {logoUrl ? (
+                        <img
+                          src={logoUrl}
+                          alt=""
+                          width={40}
+                          height={40}
+                          loading="lazy"
+                          className={styles.jobLogo}
+                        />
+                      ) : (
+                        <span className={styles.jobLogoFallback} aria-hidden="true">
+                          {job.company?.name?.charAt(0) || '·'}
+                        </span>
+                      )}
+                      <span className={styles.jobMain}>
+                        <span className={styles.jobTitle}>{job.title}</span>
+                        <span className={styles.jobCompany}>
+                          {job.company?.name}
+                          {city ? ` · ${city}` : ''}
+                          {job.employmentType
+                            ? ` · ${job.employmentType === 'full-time' ? 'Full-time' : 'Part-time'}`
+                            : ''}
+                        </span>
+                      </span>
+                      <span className={styles.jobSide}>
+                        {pay && <span className={styles.jobPay}>{pay}</span>}
+                        {ago && <span className={styles.jobAgo}>{ago}</span>}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </section>
       )}
 
-      {/* ─── SEO Content ─── */}
-      <section className={styles.sectionAlt}>
+      {/* How it works */}
+      <section className={styles.howSection}>
         <div className={styles.sectionInner}>
-          <h2 className={styles.sectionTitle}>What are Fork job boards?</h2>
-          <div className={styles.seoContent}>
+          <div className={styles.howGrid}>
+            <div className={styles.howCol}>
+              <h2 className={styles.sectionTitle}>Looking for work?</h2>
+              <p className={styles.howIntro}>
+                Every listing here belongs to a company that manages its own board on Fork.
+                There&apos;s no middle layer between you and the employer.
+              </p>
+              <ol className={styles.howList}>
+                <li>Search <Link href="/jobs">open positions</Link> or browse <Link href="/boards">company boards</Link>.</li>
+                <li>Apply with your resume and answers — no account required.</li>
+                <li>The hiring team reviews it and reaches out directly for interviews and offers.</li>
+              </ol>
+            </div>
+            <div className={styles.howCol}>
+              <h2 className={styles.sectionTitle}>Hiring?</h2>
+              <p className={styles.howIntro}>
+                Fork gives your company its own job board at its own URL — free, with no contracts.
+                Applications, resumes, interviews, and onboarding all live in one place.
+              </p>
+              <ol className={styles.howList}>
+                <li>Create a listing with pay, requirements, and screening questions.</li>
+                <li>Publish it to your board and share the link anywhere.</li>
+                <li>Review applicants, schedule interviews, and hire from Fork.</li>
+              </ol>
+              <a
+                href="https://medium.com/@bohdankhv/how-to-post-a-job-on-fork-in-under-2-minutes-bf957c35d46d"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.howLink}
+              >
+                Read: how to post a job in under 2 minutes
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Employer band */}
+      <section className={styles.employerBand}>
+        <div className={styles.employerInner}>
+          <div>
+            <h2 className={styles.employerTitle}>Put your openings where people can find them</h2>
+            <p className={styles.employerSub}>
+              Set up your company&apos;s job board and start accepting applications in a few minutes.
+            </p>
+          </div>
+          <a
+            href="https://app.forkhr.com/register"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.employerBtn}
+          >
+            Create a free job board
+          </a>
+        </div>
+      </section>
+
+      {/* About / SEO content */}
+      <section className={styles.aboutSection}>
+        <div className={styles.sectionInner}>
+          <h2 className={styles.sectionTitle}>About Fork job boards</h2>
+          <div className={styles.aboutContent}>
             <p>
               Fork job boards are company-owned hiring pages powered by{' '}
               <a href="https://forkhr.com" target="_blank" rel="noopener noreferrer">ForkHR</a>.
-              Each business creates and manages its own job board — listing open positions for
+              Each business creates and manages its own board — listing open positions for
               barista jobs, restaurant jobs, coffee shop hiring, retail positions, and more.
             </p>
             <p>
-              Unlike traditional job sites, Fork job boards connect you directly with the
-              employer. There are no recruiters, no middlemen, and no fees. You apply once, and
-              your application goes straight to the hiring manager.
+              Unlike traditional job sites, Fork connects you directly with the employer.
+              There are no recruiters, no middlemen, and no fees. You apply once, and your
+              application goes straight to the hiring manager. Whether you&apos;re looking for
+              local jobs near you, part-time work, or a full-time career in hospitality,
+              retail, or food service, Fork makes it easy to find open positions and apply fast.
             </p>
-            <p>
-              Whether you&apos;re looking for local jobs near you, part-time work, or a full-time
-              career in hospitality, retail, or food service — Fork makes it easy to find open
-              positions and apply fast.
-            </p>
-            <h3>How it works for job seekers</h3>
+            <h3>For job seekers</h3>
             <p>
               Browse open positions on the <Link href="/jobs">jobs page</Link> or explore
-              company job boards on the <Link href="/boards">boards page</Link>. Filter by keyword
-              and apply directly. Your application — including your resume and screening question
-              answers — goes straight to the employer. No account required.
+              company boards on the <Link href="/boards">boards page</Link>. Filter by keyword
+              and apply directly — your resume and screening answers go straight to the
+              employer, and you never need to create an account.
             </p>
-            <h3>How it works for employers</h3>
+            <h3>For employers</h3>
             <p>
               Employers on Fork get a free, SEO-friendly job board that lives at their own URL.
-              Post job listings, accept applications, review resumes with AI summaries, schedule
+              Post listings, accept applications, review resumes with AI summaries, schedule
               interviews, and onboard new hires — all in one system.{' '}
               <a href="https://app.forkhr.com/register" target="_blank" rel="noopener noreferrer">
                 Get started free
@@ -310,35 +302,6 @@ export default async function HomePage() {
                 how to post a job on Fork in under 2 minutes
               </a>.
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Final CTA (Plum dark section) ─── */}
-      <section className={styles.sectionPlum}>
-        <div className={styles.plumGlow} />
-        <div className={styles.darkInner}>
-          <h2 className={styles.darkTitle}>Ready to find your next opportunity?</h2>
-          <p className={styles.darkSubLavender}>
-            Browse open positions from companies hiring right now — or create your own free job
-            board to start accepting applications today.
-          </p>
-          <div className={styles.heroCtas} style={{ justifyContent: 'center' }}>
-            <Button
-              to="/jobs"
-              label="Browse jobs"
-              variant="filled"
-              size="lg"
-              className={styles.btnWhite}
-            />
-            <Button
-              to="https://app.forkhr.com/register"
-              label="Create a job board"
-              variant="outline"
-              size="lg"
-              target="_blank"
-              className={styles.btnOutlineLavender}
-            />
           </div>
         </div>
       </section>

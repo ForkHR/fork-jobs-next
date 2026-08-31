@@ -102,8 +102,8 @@ export default function JobsSearchFilters({ initialValues, totalResults }) {
           align-items: center;
           gap: 12px;
           background: #fff;
-          border: 1px solid #E2DDD2;
-          border-radius: 12px;
+          border: 1px solid #d4d4d4;
+          border-radius: 24px;
           padding: 12px 16px;
           margin-bottom: 12px;
           transition: border-color 0.2s;
@@ -139,7 +139,7 @@ export default function JobsSearchFilters({ initialValues, totalResults }) {
           font-size: 13px;
           font-weight: 500;
           font-family: inherit;
-          border: 1px solid #E2DDD2;
+          border: 1px solid #d4d4d4;
           border-radius: 999px;
           background: #fff;
           color: #6B6560;
@@ -159,7 +159,7 @@ export default function JobsSearchFilters({ initialValues, totalResults }) {
           font-size: 13px;
           font-weight: 500;
           font-family: inherit;
-          border: 1px solid #E2DDD2;
+          border: 1px solid #d4d4d4;
           border-radius: 24px;
           background: #fff;
           color: #6B6560;

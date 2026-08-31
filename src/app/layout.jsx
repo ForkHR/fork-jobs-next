@@ -75,8 +75,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${libreBaskerville.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${geistSans.variable} ${libreBaskerville.variable}`}>
+      <body suppressHydrationWarning>
         <Providers>
           <Suspense>
             <SiteHeader />

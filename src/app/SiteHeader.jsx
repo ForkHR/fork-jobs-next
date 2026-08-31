@@ -97,7 +97,6 @@ export default function SiteHeader() {
                 className="site-header__sign-in"
               >
                 Sign in
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               </a>
               <a
                 href="https://app.forkhr.com/hiring?new-job-listing=true"

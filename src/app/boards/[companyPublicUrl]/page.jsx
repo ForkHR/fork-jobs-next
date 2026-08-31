@@ -169,11 +169,11 @@ export default async function BoardDetailPage({ params }) {
               alt={`${companyName} logo`}
               width={56}
               height={56}
-              style={{ borderRadius: 12, border: '1px solid #E2DDD2', objectFit: 'cover', flexShrink: 0 }}
+              style={{ borderRadius: 12, border: '1px solid #d4d4d4', objectFit: 'cover', flexShrink: 0 }}
             />
           ) : (
             <div style={{
-              width: 56, height: 56, borderRadius: 12, background: '#F0EDE6',
+              width: 56, height: 56, borderRadius: 12, background: '#ebebeb',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 22, fontWeight: 700, color: '#A9A49E', flexShrink: 0,
             }}>
@@ -217,8 +217,8 @@ export default async function BoardDetailPage({ params }) {
                 style={{
                   display: 'block',
                   background: '#fff',
-                  border: '1px solid #E2DDD2',
-                  borderRadius: 12,
+                  border: '1px solid #d4d4d4',
+                  borderRadius: 24,
                   padding: 16,
                   paddingBottom: 8,
                   textDecoration: 'none',
@@ -244,7 +244,7 @@ export default async function BoardDetailPage({ params }) {
                           alt={`${companyName} logo`}
                           width={48}
                           height={48}
-                          style={{ borderRadius: 10, objectFit: 'cover', border: '1px solid #E2DDD2', flexShrink: 0 }}
+                          style={{ borderRadius: 10, objectFit: 'cover', border: '1px solid #d4d4d4', flexShrink: 0 }}
                           loading="lazy"
                         />
                       ) : (
@@ -253,7 +253,7 @@ export default async function BoardDetailPage({ params }) {
                             width: 48,
                             height: 48,
                             borderRadius: 10,
-                            background: '#F0EDE6',
+                            background: '#ebebeb',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -285,7 +285,7 @@ export default async function BoardDetailPage({ params }) {
                           fontSize: 11,
                           fontWeight: 600,
                           color: '#6B6560',
-                          background: '#F0EDE6',
+                          background: '#ebebeb',
                           borderRadius: 999,
                           padding: '4px 10px',
                           whiteSpace: 'nowrap',
@@ -297,7 +297,7 @@ export default async function BoardDetailPage({ params }) {
                     )}
                   </div>
                   <div
-                    style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: 12, borderTop: '1px solid #E2DDD2' }}
+                    style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: 12, borderTop: '1px solid #d4d4d4' }}
                     className="pb-2 text-soft pt-2"
                   >
                     {loc && (
@@ -320,7 +320,7 @@ export default async function BoardDetailPage({ params }) {
                     )}
                   </div>
                 </Link>
-                <div className="pt-2 flex justify-between align-center" style={{ borderTop: '1px solid #E2DDD2' }}>
+                <div className="pt-2 flex justify-between align-center" style={{ borderTop: '1px solid #d4d4d4' }}>
                   <div className="fs-10 text-secondary">{applicantsText}</div>
                   <Link
                     href={

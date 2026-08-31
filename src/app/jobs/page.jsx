@@ -247,8 +247,8 @@ export default async function JobsPage({ searchParams }) {
                 style={{
                   display: 'block',
                   background: '#fff',
-                  border: '1px solid #E2DDD2',
-                  borderRadius: 12,
+                  border: '1px solid #d4d4d4',
+                  borderRadius: 24,
                   padding: 16,
                   paddingBottom: 8,
                   textDecoration: 'none',
@@ -267,7 +267,7 @@ export default async function JobsPage({ searchParams }) {
                         alt={`${job.company?.name || 'Company'} logo`}
                         width={48}
                         height={48}
-                        style={{ borderRadius: 10, objectFit: 'cover', border: '1px solid #E2DDD2', flexShrink: 0 }}
+                        style={{ borderRadius: 10, objectFit: 'cover', border: '1px solid #d4d4d4', flexShrink: 0 }}
                         loading="lazy"
                       />
                     ) : (
@@ -276,7 +276,7 @@ export default async function JobsPage({ searchParams }) {
                           width: 48,
                           height: 48,
                           borderRadius: 10,
-                          background: '#F0EDE6',
+                          background: '#ebebeb',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -303,7 +303,7 @@ export default async function JobsPage({ searchParams }) {
                       fontSize: 11,
                       fontWeight: 600,
                       color: '#6B6560',
-                      background: '#F0EDE6',
+                      background: '#ebebeb',
                       borderRadius: 999,
                       padding: '4px 10px',
                       whiteSpace: 'nowrap',
@@ -313,7 +313,7 @@ export default async function JobsPage({ searchParams }) {
                     </span>
                   )}
                 </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: 12, borderTop: '1px solid #E2DDD2' }} className="pb-2 text-soft pt-2">
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: 12, borderTop: '1px solid #d4d4d4' }} className="pb-2 text-soft pt-2">
                   {loc && <span className="flex gap-1 align-center w-min-200-px">
                     <Icon icon={locationIcon} size="xs" className="shrink-0" />{loc}
                     </span>}
@@ -325,7 +325,7 @@ export default async function JobsPage({ searchParams }) {
                     </span>}
                 </div>
               </Link>
-              <div className="pt-2 flex justify-between align-center" style={{ borderTop: '1px solid #E2DDD2'}}>
+              <div className="pt-2 flex justify-between align-center" style={{ borderTop: '1px solid #d4d4d4'}}>
                 <div className="fs-10 text-secondary">
                   {applicantsText}
                 </div>
@@ -367,7 +367,7 @@ export default async function JobsPage({ searchParams }) {
                 fontSize: 14,
                 fontWeight: 500,
                 color: '#2A2623',
-                border: '1px solid #E2DDD2',
+                border: '1px solid #d4d4d4',
                 borderRadius: 8,
                 textDecoration: 'none',
               }}>
@@ -383,7 +383,7 @@ export default async function JobsPage({ searchParams }) {
                 fontSize: 14,
                 fontWeight: 500,
                 color: '#2A2623',
-                border: '1px solid #E2DDD2',
+                border: '1px solid #d4d4d4',
                 borderRadius: 8,
                 textDecoration: 'none',
               }}>

@@ -196,11 +196,11 @@ export default async function BoardJobDetailPage({ params }) {
               alt={`${companyName} logo`}
               width={56}
               height={56}
-              style={{ borderRadius: 12, border: '1px solid #E2DDD2', objectFit: 'cover', flexShrink: 0 }}
+              style={{ borderRadius: 12, border: '1px solid #d4d4d4', objectFit: 'cover', flexShrink: 0 }}
             />
           ) : (
             <div style={{
-              width: 56, height: 56, borderRadius: 12, background: '#F0EDE6',
+              width: 56, height: 56, borderRadius: 12, background: '#ebebeb',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 22, fontWeight: 700, color: '#A9A49E', flexShrink: 0,
             }}>
@@ -224,27 +224,27 @@ export default async function BoardJobDetailPage({ params }) {
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 }}>
           {listing.employmentType && (
-            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#F0EDE6', borderRadius: 999, color: '#6B6560' }}>
+            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#ebebeb', borderRadius: 999, color: '#6B6560' }}>
               {listing.employmentType === 'full-time' ? 'Full-time' : 'Part-time'}
             </span>
           )}
           {location && (
-            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#F0EDE6', borderRadius: 999, color: '#6B6560' }}>
+            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#ebebeb', borderRadius: 999, color: '#6B6560' }}>
               📍 {location}
             </span>
           )}
           {pay && (
-            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#F0EDE6', borderRadius: 999, color: '#6B6560' }}>
+            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#ebebeb', borderRadius: 999, color: '#6B6560' }}>
               💰 {pay}
             </span>
           )}
           {listing.category && (
-            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#F0EDE6', borderRadius: 999, color: '#6B6560' }}>
+            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#ebebeb', borderRadius: 999, color: '#6B6560' }}>
               {listing.category}
             </span>
           )}
           {listing?.createdAt && (
-            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#F0EDE6', borderRadius: 999, color: '#A9A49E' }}>
+            <span style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, background: '#ebebeb', borderRadius: 999, color: '#A9A49E' }}>
               Posted {new Date(listing.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
             </span>
           )}
@@ -284,7 +284,7 @@ export default async function BoardJobDetailPage({ params }) {
         )}
 
         <div style={{
-          borderTop: '1px solid #E2DDD2',
+          borderTop: '1px solid #d4d4d4',
           paddingTop: 24,
           display: 'flex',
           flexWrap: 'wrap',
