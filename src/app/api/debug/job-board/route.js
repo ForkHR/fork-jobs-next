@@ -69,9 +69,16 @@ export async function GET(request) {
   const base = normalizeBaseUrl(apiBase);
   const url = `${base}/job-board?companyPublicUrl=${encodeURIComponent(companyPublicUrl)}`;
 
+  // ?ua=chrome sends a plain browser UA instead of the SSR bot-style UA,
+  // to test whether Cloudflare's challenge keys on the User-Agent.
+  const uaOverride =
+    searchParams.get('ua') === 'chrome'
+      ? 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+      : null;
+
   const headers = {
     Accept: 'application/json',
-    'User-Agent': 'Mozilla/5.0 (compatible; ForkJobsSSR/1.0; +https://jobs.forkhr.com)',
+    'User-Agent': uaOverride || 'Mozilla/5.0 (compatible; ForkJobsSSR/1.0; +https://jobs.forkhr.com)',
     ...(ssrToken ? { 'x-fork-jobs-ssr-token': ssrToken } : {}),
   };
 
