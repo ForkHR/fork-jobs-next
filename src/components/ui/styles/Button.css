@@ -473,6 +473,7 @@ a.btn-lg {
 }
 .btn.btn-text.btn-secondary:hover {
     background-color: rgb(var(--color-general-secondary-bg))!important;
+    color: var(--text-light);
 }
 .btn.btn-text.btn-danger:hover {
     background-color: rgb(var(--color-general-danger-bg))!important;
