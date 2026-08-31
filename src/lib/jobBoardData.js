@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const getApiBaseUrl = () => {
   const base = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "https://app.forkhr.com/api";
   if (!base) {
@@ -36,15 +38,19 @@ const toAxiosLikeHttpError = (status, url, bodyPreview) => {
 
 const SSR_FETCH_TIMEOUT_MS = 10_000; // 10s – fail fast so the page can render a fallback
 
+// Uses axios (not native fetch): Cloudflare's bot protection challenges
+// undici's TLS fingerprint from datacenter IPs (e.g. Vercel), while axios's
+// Node http client passes — the /api/debug/job-board route proved this.
 const fetchJsonNoStore = async (url) => {
-  const res = await fetch(url, {
-    method: 'GET',
+  const res = await axios.get(url, {
     headers: getServerRequestHeaders(),
-    cache: 'no-store',
-    signal: AbortSignal.timeout(SSR_FETCH_TIMEOUT_MS),
+    timeout: SSR_FETCH_TIMEOUT_MS,
+    validateStatus: () => true,
+    responseType: 'text',
+    transformResponse: [(data) => data],
   });
 
-  const text = await res.text();
+  const text = typeof res.data === 'string' ? res.data : '';
   let json;
   try {
     json = text ? JSON.parse(text) : null;
@@ -52,7 +58,7 @@ const fetchJsonNoStore = async (url) => {
     throw toAxiosLikeHttpError(res.status, url, text?.slice?.(0, 400));
   }
 
-  if (!res.ok) {
+  if (res.status < 200 || res.status >= 300) {
     throw toAxiosLikeHttpError(res.status, url, json);
   }
 

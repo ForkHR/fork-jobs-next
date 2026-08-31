@@ -70,7 +70,8 @@ export default async function HomePage() {
     const items = res?.items || res?.listings || [];
     recentJobs = Array.isArray(items) ? items : [];
     totalJobs = Number(res?.total) || recentJobs.length;
-  } catch {
+  } catch (err) {
+    console.error('[home] failed to load recent jobs:', err?.message, err?.bodyPreview || '');
     recentJobs = [];
     totalJobs = 0;
   }
