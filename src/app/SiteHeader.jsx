@@ -1,18 +1,24 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import './SiteHeader.css';
 
 import { logoFullSvg } from '../assets/img/logo';
+import { ArrowUpRightIcon, MenuIcon, XIcon } from '../components/jobs/icons';
+import { POST_JOB_URL } from '../components/jobs/EmployerBand';
+
+const LOGIN_URL = 'https://app.forkhr.com/login';
+const EMPLOYERS_URL = 'https://forkhr.com/hiring';
 
 export default function SiteHeader() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // A company's own board (/<company>) carries no site chrome.
   const isBrandedBoard =
     pathname &&
     pathname !== '/' &&
@@ -30,153 +36,89 @@ export default function SiteHeader() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => {
       document.body.style.overflow = '';
-    }
-    return () => { document.body.style.overflow = ''; };
+    };
   }, [mobileOpen]);
 
   const toggleMobile = useCallback(() => setMobileOpen((v) => !v), []);
 
   if (isBrandedBoard) return null;
 
-  const isActive = (path) => {
-    if (path === '/') return pathname === '/';
-    return pathname.startsWith(path);
-  };
+  const isActive = (path) => (path === '/' ? pathname === '/' : pathname.startsWith(path));
+  const linkClass = (path) => `jb-header__link${isActive(path) ? ' jb-header__link--active' : ''}`;
+  const menuClass = (path) => `jb-menu__link${isActive(path) ? ' jb-menu__link--active' : ''}`;
 
   return (
     <>
-      <header className="site-header">
-        <div className="site-header__wrap">
-          <div className={`site-header__bar${isScrolled ? ' site-header__bar--scrolled' : ''}`}>
-            {/* Logo */}
-            <Link href="/" className="site-header__logo" aria-label="Fork Jobs home">
-              {logoFullSvg}
+      <header className={`jb jb-header${isScrolled ? ' jb-header--scrolled' : ''}${mobileOpen ? ' jb-header--open' : ''}`}>
+        <div className="jb-wrap jb-header__bar">
+          <Link href="/" className="jb-header__logo" aria-label="Fork Jobs home">
+            {logoFullSvg}
+          </Link>
+
+          <nav className="jb-header__nav" aria-label="Main">
+            <Link href="/jobs" className={linkClass('/jobs')}>
+              Jobs
             </Link>
+            <Link href="/boards" className={linkClass('/boards')}>
+              Companies
+            </Link>
+            <a href={EMPLOYERS_URL} target="_blank" rel="noopener noreferrer" className="jb-header__link">
+              For employers
+              <ArrowUpRightIcon size={13} />
+            </a>
+          </nav>
 
-            {/* Desktop Nav */}
-            <nav className="site-header__nav">
-              <Link
-                href="/jobs"
-                className={`site-header__link${isActive('/jobs') ? ' site-header__link--active' : ''}`}
-              >
-                Browse Jobs
-              </Link>
-              <Link
-                href="/boards"
-                className={`site-header__link${isActive('/boards') ? ' site-header__link--active' : ''}`}
-              >
-                Browse Boards
-              </Link>
-              <a
-                href="https://forkhr.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="site-header__link"
-              >
-                For Employers
-              </a>
-            </nav>
-
-            {/* Desktop Actions */}
-            <div className="site-header__actions">
-              <a
-                href="https://app.forkhr.com/login"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="site-header__sign-in"
-              >
-                Sign in
-              </a>
-              <a
-                href="https://app.forkhr.com/hiring?new-job-listing=true"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="site-header__cta"
-              >
-                Post a Job
-              </a>
-            </div>
-
-            {/* Mobile Hamburger */}
-            <button
-              className="site-header__hamburger"
-              onClick={toggleMobile}
-              aria-label="Toggle menu"
-              aria-expanded={mobileOpen}
-            >
-              <span className={`site-header__hamburger-line${mobileOpen ? ' site-header__hamburger-line--open' : ''}`} />
-            </button>
+          <div className="jb-header__actions">
+            <a href={LOGIN_URL} target="_blank" rel="noopener noreferrer" className="jb-btn jb-btn--ghost jb-btn--sm">
+              Sign in
+            </a>
+            <a href={POST_JOB_URL} target="_blank" rel="noopener noreferrer" className="jb-btn jb-btn--ink jb-btn--sm">
+              Post a job
+            </a>
           </div>
+
+          <button
+            type="button"
+            className="jb-header__burger"
+            onClick={toggleMobile}
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileOpen}
+            aria-controls="jb-mobile-menu"
+          >
+            {mobileOpen ? <XIcon size={22} /> : <MenuIcon size={22} />}
+          </button>
         </div>
       </header>
 
-      {/* Mobile overlay menu */}
-      <div className={`site-mobile-menu${mobileOpen ? ' site-mobile-menu--open' : ''}`}>
-        <div className="site-mobile-menu__backdrop" onClick={toggleMobile} />
-        <div className="site-mobile-menu__panel">
-          <div className="site-mobile-menu__header">
-            <Link href="/" className="site-header__logo" aria-label="Fork Jobs home" onClick={toggleMobile}>
-              {logoFullSvg}
-            </Link>
-            <button className="site-mobile-menu__close" onClick={toggleMobile} aria-label="Close menu">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            </button>
-          </div>
-          <nav className="site-mobile-menu__nav">
-            <Link
-              href="/jobs"
-              className={`site-mobile-menu__link${isActive('/jobs') ? ' site-mobile-menu__link--active' : ''}`}
-              onClick={toggleMobile}
-            >
-              Browse Jobs
-            </Link>
-            <Link
-              href="/boards"
-              className={`site-mobile-menu__link${isActive('/boards') ? ' site-mobile-menu__link--active' : ''}`}
-              onClick={toggleMobile}
-            >
-              Browse Boards
-            </Link>
-            <a
-              href="https://forkhr.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="site-mobile-menu__link"
-              onClick={toggleMobile}
-            >
-              For Employers
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            </a>
-          </nav>
-          <div className="site-mobile-menu__footer">
-            <a
-              href="https://app.forkhr.com/login"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="site-mobile-menu__btn site-mobile-menu__btn--ghost"
-            >
-              Sign in
-            </a>
-            <a
-              href="https://app.forkhr.com/hiring?new-job-listing=true"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="site-mobile-menu__btn site-mobile-menu__btn--filled"
-            >
-              Post a Job
-            </a>
-          </div>
+      <div id="jb-mobile-menu" className={`jb jb-menu${mobileOpen ? ' jb-menu--open' : ''}`} aria-hidden={!mobileOpen}>
+        <nav className="jb-menu__nav" aria-label="Main">
+          <Link href="/jobs" className={menuClass('/jobs')} onClick={toggleMobile}>
+            Jobs
+          </Link>
+          <Link href="/boards" className={menuClass('/boards')} onClick={toggleMobile}>
+            Companies
+          </Link>
+          <a href={EMPLOYERS_URL} target="_blank" rel="noopener noreferrer" className="jb-menu__link" onClick={toggleMobile}>
+            For employers
+            <ArrowUpRightIcon size={18} />
+          </a>
+        </nav>
+        <p className="jb-menu__hint">Every listing is posted by the business itself. Apply straight to the employer, no account needed.</p>
+        <div className="jb-menu__footer">
+          <a href={LOGIN_URL} target="_blank" rel="noopener noreferrer" className="jb-btn jb-btn--outline">
+            Sign in
+          </a>
+          <a href={POST_JOB_URL} target="_blank" rel="noopener noreferrer" className="jb-btn jb-btn--ink">
+            Post a job
+          </a>
         </div>
       </div>
     </>

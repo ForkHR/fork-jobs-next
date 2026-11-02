@@ -3,45 +3,15 @@ import { notFound } from 'next/navigation';
 import { getCompanyJobsCached } from '../../../lib/jobBoardData';
 import ClientRedirect from '../../../components/ClientRedirect';
 import { getSiteUrl } from '../../../lib/siteUrl';
-import { Icon } from '../../../components';
-import { locationIcon, moneyIcon, timeSheetsIcon } from '../../../assets/img/icons';
+import { boardHref, excerpt, formatCity, getPublicS3, logoUrl, plural, stripHtml } from '../../../lib/jobFormat';
+import Breadcrumb from '../../../components/jobs/Breadcrumb';
+import CompanyLogo from '../../../components/jobs/CompanyLogo';
+import JobCard from '../../../components/jobs/JobCard';
+import EmptyState from '../../../components/jobs/EmptyState';
+import { ArrowUpRightIcon, BriefcaseIcon, MapPinIcon } from '../../../components/jobs/icons';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-
-const stripHtml = (html) => {
-  if (!html) return '';
-  return String(html)
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-};
-
-const formatPay = (listing) => {
-  if (!listing.payRateFrom || listing.payRateFrom <= 0) return null;
-  let pay = `$${listing.payRateFrom}`;
-  if (listing.payRateTo > listing.payRateFrom) pay += `–$${listing.payRateTo}`;
-  if (listing.payType === 'hourly') pay += '/hr';
-  else if (listing.payType === 'salary') pay += '/yr';
-  return pay;
-};
-
-const timeAgo = (dateStr) => {
-  if (!dateStr) return '';
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const days = Math.floor(diff / 86400000);
-  if (days === 0) return 'Today';
-  if (days === 1) return '1 day ago';
-  if (days < 30) return `${days} days ago`;
-  const months = Math.floor(days / 30);
-  return months === 1 ? '1 month ago' : `${months} months ago`;
-};
-
-const formatLocation = (loc) => {
-  if (!loc) return null;
-  const parts = [loc.city, loc.state].filter(Boolean);
-  return parts.length > 0 ? parts.join(', ') : loc.name || null;
-};
 
 export async function generateMetadata({ params }) {
   const { companyPublicUrl } = await params;
@@ -59,10 +29,7 @@ export async function generateMetadata({ params }) {
     const description =
       stripHtml(company?.description)?.slice(0, 160) ||
       `Explore ${jobCount} open job${jobCount !== 1 ? 's' : ''} at ${companyName}. Apply directly on their board.`;
-
-    const publicS3 = process.env.NEXT_PUBLIC_PUBLIC_S3_API_URL || process.env.PUBLIC_S3_API_URL;
-    const logoUrl =
-      company?.logo && publicS3 ? `${String(publicS3).replace(/\/+$/, '')}/${company.logo}` : undefined;
+    const logo = logoUrl(company);
 
     return {
       title,
@@ -73,15 +40,15 @@ export async function generateMetadata({ params }) {
         title,
         description,
         url: `/boards/${companyPublicUrl}`,
-        images: logoUrl
-          ? [{ url: logoUrl, alt: `${companyName} logo` }]
+        images: logo
+          ? [{ url: logo, alt: `${companyName} logo` }]
           : [{ url: '/assets/og-image.png', width: 1200, height: 750, alt: title }],
       },
       twitter: {
         card: 'summary_large_image',
         title,
         description,
-        images: logoUrl ? [logoUrl] : ['/assets/og-image.png'],
+        images: logo ? [logo] : ['/assets/og-image.png'],
       },
     };
   } catch {
@@ -113,9 +80,11 @@ export default async function BoardDetailPage({ params }) {
 
   const companyName = company?.name || 'Company';
   const siteUrl = getSiteUrl();
-  const publicS3 = process.env.NEXT_PUBLIC_PUBLIC_S3_API_URL || process.env.PUBLIC_S3_API_URL;
-  const logoUrl =
-    company?.logo && publicS3 ? `${String(publicS3).replace(/\/+$/, '')}/${company.logo}` : undefined;
+  const publicS3 = getPublicS3();
+  const logo = logoUrl(company, publicS3);
+  const description = excerpt(company?.description, 420);
+  const cities = [...new Set(listings.map((l) => formatCity(l.location)).filter(Boolean))];
+  const where = cities.length > 3 ? `${cities.slice(0, 3).join(', ')} +${cities.length - 3}` : cities.join(', ');
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -132,7 +101,7 @@ export default async function BoardDetailPage({ params }) {
     '@type': 'Organization',
     name: companyName,
     url: `${siteUrl}/boards/${companyPublicUrl}`,
-    logo: logoUrl || undefined,
+    logo: logo || undefined,
   };
 
   const itemListJsonLd = {
@@ -147,211 +116,78 @@ export default async function BoardDetailPage({ params }) {
   };
 
   return (
-    <main style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", 
-        maxWidth: 900,
-        width: '100%',
-        margin: '0 auto', }} className="animation-fade-in"
-    >
+    <main className="jb jb-main">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbJsonLd, orgJsonLd, itemListJsonLd]) }}
       />
 
-      <nav style={{ padding: '24px 32px 0' }}>
-        <ol style={{ display: 'flex', gap: 8, listStyle: 'none', padding: 0, margin: 0, fontSize: 13, color: '#A9A49E' }}>
-          <li><Link href="/" style={{ color: '#8A8480', textDecoration: 'none' }}>Home</Link></li>
-          <li>/</li>
-          <li><Link href="/boards" style={{ color: '#8A8480', textDecoration: 'none' }}>Boards</Link></li>
-          <li>/</li>
-          <li style={{ color: '#2A2623', fontWeight: 500 }}>{companyName}</li>
-        </ol>
-      </nav>
-
-      <div style={{ padding: '24px 24px 64px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
-          {logoUrl ? (
-            <img
-              src={logoUrl}
-              alt={`${companyName} logo`}
-              width={56}
-              height={56}
-              style={{ borderRadius: 12, border: '1px solid #d4d4d4', objectFit: 'cover', flexShrink: 0 }}
-            />
-          ) : (
-            <div style={{
-              width: 56, height: 56, borderRadius: 12, background: '#ebebeb',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 22, fontWeight: 700, color: '#A9A49E', flexShrink: 0,
-            }}>
-              {companyName.charAt(0)}
-            </div>
-          )}
-          <div>
-            <h1 style={{ fontSize: 24, fontWeight: 700, color: '#2A2623', margin: '0 0 4px', letterSpacing: '-0.02em' }}>
-              {companyName}
-            </h1>
-            <p style={{ fontSize: 14, color: '#8A8480', margin: 0 }}>
-              {listings.length} open {listings.length === 1 ? 'position' : 'positions'}
-            </p>
-          </div>
-        </div>
-
-        {company?.description && (
-          <p style={{ fontSize: 14, color: '#8A8480', lineHeight: 1.6, margin: '0 0 24px' }}>
-            {stripHtml(company.description).slice(0, 240) + (stripHtml(company.description).length > 240 ? '…' : '')}
-          </p>
-        )}
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {listings.map((listing) => {
-            const loc = formatLocation(listing.location);
-            const pay = formatPay(listing);
-            const ago = timeAgo(listing.createdAt);
-            const type =
-              listing.employmentType === 'full-time'
-                ? 'Full-time'
-                : listing.employmentType === 'part-time'
-                  ? 'Part-time'
-                  : null;
-            const category = typeof listing.category === 'string' ? listing.category : listing.category?.name || '';
-            const applicantsText = 'Apply directly';
-
-            return (
-              <div
-                key={listing._id}
-                className="bg-tertiary-hover"
-                style={{
-                  display: 'block',
-                  background: '#fff',
-                  border: '1px solid #d4d4d4',
-                  borderRadius: 24,
-                  padding: 16,
-                  paddingBottom: 8,
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  transition: 'border-color 0.2s, box-shadow 0.2s',
-                }}
-              >
-                <Link href={`/boards/${companyPublicUrl}/${listing._id}`}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'flex-start',
-                      gap: 12,
-                      marginBottom: 16,
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-                      {logoUrl ? (
-                        <img
-                          src={logoUrl}
-                          alt={`${companyName} logo`}
-                          width={48}
-                          height={48}
-                          style={{ borderRadius: 10, objectFit: 'cover', border: '1px solid #d4d4d4', flexShrink: 0 }}
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div
-                          style={{
-                            width: 48,
-                            height: 48,
-                            borderRadius: 10,
-                            background: '#ebebeb',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: 16,
-                            fontWeight: 700,
-                            color: '#A9A49E',
-                            flexShrink: 0,
-                          }}
-                        >
-                          {companyName.charAt(0)}
-                        </div>
-                      )}
-                      <div style={{ overflow: 'hidden' }}>
-                        <h2
-                          className="text-ellipsis-1"
-                          style={{ fontSize: 20, fontWeight: 500, color: '#2A2623', margin: '0 0 4px' }}
-                        >
-                          {listing.title}
-                        </h2>
-                        <p style={{ fontSize: 12, color: '#6B6560', margin: 0 }}>
-                          <span className="weight-600">{companyName}</span>
-                          {category ? ` / ${category}` : ''}
-                        </p>
-                      </div>
-                    </div>
-                    {ago && (
-                      <span
-                        style={{
-                          fontSize: 11,
-                          fontWeight: 600,
-                          color: '#6B6560',
-                          background: '#ebebeb',
-                          borderRadius: 999,
-                          padding: '4px 10px',
-                          whiteSpace: 'nowrap',
-                          flexShrink: 0,
-                        }}
-                      >
-                        {ago}
-                      </span>
-                    )}
-                  </div>
-                  <div
-                    style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: 12, borderTop: '1px solid #d4d4d4' }}
-                    className="pb-2 text-soft pt-2"
-                  >
-                    {loc && (
-                      <span className="flex gap-1 align-center w-min-200-px">
-                        <Icon icon={locationIcon} size="xs" className="shrink-0" />
-                        {loc}
-                      </span>
-                    )}
-                    {pay && (
-                      <span className="flex gap-1 align-center w-min-200-px">
-                        <Icon icon={moneyIcon} size="xs" className="shrink-0" />
-                        {pay}
-                      </span>
-                    )}
-                    {type && (
-                      <span className="flex gap-1 align-center w-min-200-px">
-                        <Icon icon={timeSheetsIcon} size="xs" className="shrink-0" />
-                        {type}
-                      </span>
-                    )}
-                  </div>
-                </Link>
-                <div className="pt-2 flex justify-between align-center" style={{ borderTop: '1px solid #d4d4d4' }}>
-                  <div className="fs-10 text-secondary">{applicantsText}</div>
-                  <Link
-                    href={
-                      company?.publicUrl
-                        ? `/${company.publicUrl}/${listing._id}#application-form`
-                        : `/${company?._id || listing.company}/${listing._id}#application-form`
-                    }
-                    className="btn btn-xs px-3 btn-brand btn-filled"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    APPLY NOW
-                  </Link>
+      <section className="jb-cohead">
+        <div className="jb-wrap jb-wrap--narrow">
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Companies', href: '/boards' }, { label: companyName }]} />
+          <div className="jb-cohead__row">
+            <div className="jb-cohead__id">
+              <CompanyLogo company={company} size={72} publicS3={publicS3} className="jb-cohead__logo" eager />
+              <div style={{ minWidth: 0 }}>
+                <h1>{companyName}</h1>
+                <div className="jb-cohead__sub">
+                  <span className="jb-meta">
+                    <BriefcaseIcon size={15} />
+                    {plural(listings.length, 'open position')}
+                  </span>
+                  {where && (
+                    <span className="jb-meta">
+                      <MapPinIcon size={15} />
+                      {where}
+                    </span>
+                  )}
                 </div>
               </div>
-            );
-          })}
-        </div>
-
-        {listings.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '48px 0', color: '#8A8480' }}>
-            <p style={{ fontSize: 16, fontWeight: 500, marginBottom: 8 }}>No open positions</p>
-            <p style={{ fontSize: 14 }}>This company doesn&apos;t have any active job listings right now.</p>
+            </div>
+            <div className="jb-cohead__actions">
+              <a href={boardHref(company)} target="_blank" rel="noopener noreferrer" className="jb-btn jb-btn--outline">
+                Visit their job board
+                <ArrowUpRightIcon size={15} />
+              </a>
+            </div>
           </div>
-        )}
+          {description && <p className="jb-cohead__desc">{description}</p>}
+        </div>
+      </section>
+
+      <div className="jb-wrap jb-wrap--narrow">
+        <section className="jb-section--tight">
+          <div className="jb-sechead" style={{ marginBottom: 18 }}>
+            <h2 className="jb-h3">Open positions</h2>
+            <Link href="/jobs" className="jb-link jb-link--muted jb-small">
+              Browse every job
+            </Link>
+          </div>
+
+          {listings.length > 0 ? (
+            <div className="jb-list">
+              {listings.map((listing) => (
+                <JobCard
+                  key={listing._id}
+                  job={listing}
+                  company={company}
+                  href={`/boards/${companyPublicUrl}/${listing._id}`}
+                  publicS3={publicS3}
+                  hideCompany
+                />
+              ))}
+            </div>
+          ) : (
+            <EmptyState
+              title="No open positions right now"
+              text={`${companyName} isn’t hiring at the moment. Check back later, or browse the other businesses on Fork.`}
+            >
+              <Link href="/jobs" className="jb-btn jb-btn--outline jb-btn--sm">
+                Browse all jobs
+              </Link>
+            </EmptyState>
+          )}
+        </section>
       </div>
     </main>
   );

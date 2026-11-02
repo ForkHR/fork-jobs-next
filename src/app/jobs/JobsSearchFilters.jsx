@@ -1,8 +1,20 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useRef, useState, useEffect } from 'react';
-import { Button, Dropdown, InputSearch } from '../../components';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import SearchBox, { SortSelect } from '../../components/jobs/SearchBox';
+
+const TYPES = [
+  ['', 'All jobs'],
+  ['full-time', 'Full-time'],
+  ['part-time', 'Part-time'],
+];
+
+const SORTS = [
+  ['recent', 'Most recent'],
+  ['created', 'Newest posted'],
+];
 
 export default function JobsSearchFilters({ initialValues, totalResults }) {
   const router = useRouter();
@@ -20,8 +32,9 @@ export default function JobsSearchFilters({ initialValues, totalResults }) {
       if (vals.q) params.set('q', vals.q);
       if (vals.employmentType) params.set('type', vals.employmentType);
       if (vals.sort && vals.sort !== 'recent') params.set('sort', vals.sort);
-      // Reset to page 1 on filter change
-      router.push(`/jobs?${params.toString()}`, { scroll: false });
+      // Back to page 1 on every filter change.
+      const qs = params.toString();
+      router.push(`/jobs${qs ? `?${qs}` : ''}`, { scroll: false });
     },
     [q, employmentType, sort, router]
   );
@@ -42,130 +55,44 @@ export default function JobsSearchFilters({ initialValues, totalResults }) {
     pushParams({ sort: value });
   };
 
-  // Sync with URL on back/forward
+  // Follow the URL on back / forward.
   useEffect(() => {
     setQ(searchParams.get('q') || '');
     setEmploymentType(searchParams.get('type') || '');
     setSort(searchParams.get('sort') || 'recent');
   }, [searchParams]);
 
-  return (
-    <div className="jobs-filters">
-        <InputSearch
-          placeholder="Search jobs by title or keyword"
-          value={q}
-          onChange={(e) => handleSearch(e.target.value)}
-          clearable
-          className="mb-2"
-        />
+  const filtered = Boolean(q || employmentType);
+  const n = Number(totalResults) || 0;
 
-      <div className="jobs-filters__row">
-        <div className="fs-12 weight-500 px-2">
-          {totalResults} results
+  return (
+    <div className="jb-toolbar">
+      <SearchBox value={q} onChange={handleSearch} placeholder="Search by job title or keyword" label="Search jobs" />
+
+      <div className="jb-toolbar__row">
+        <div className="jb-chips" role="group" aria-label="Employment type">
+          {TYPES.map(([value, label]) => (
+            <button
+              key={value || 'all'}
+              type="button"
+              className={`jb-chip${employmentType === value ? ' jb-chip--on' : ''}`}
+              aria-pressed={employmentType === value}
+              onClick={() => handleType(value)}
+            >
+              {label}
+            </button>
+          ))}
         </div>
-      <Dropdown
-        widthUnset
-        closeOnSelect
-        label={sort === 'recent' ? 'Most Recent' : sort === 'created' ? 'Date Created' : 'Sort'}
-      >
-        <Button
-          variant="text"
-          fullWidth
-          label="Most recent"
-          className="w-100 justify-start"
-          borderRadius="md"
-          type={sort === 'recent' ? 'brand' : 'secondary'}
-          onClick={() => {
-            handleSort('recent');
-          }}
-        />
-        <Button
-          variant="text"
-          fullWidth
-          label="Date created"
-          className="w-100 justify-start"
-          borderRadius="md"
-          type={sort === 'created' ? 'brand' : 'secondary'}
-          onClick={() => {
-            handleSort('created');
-          }}
-        />
-      </Dropdown>
+        <SortSelect value={sort} onChange={handleSort} options={SORTS} />
       </div>
 
-      <style jsx>{`
-        .jobs-filters {
-          margin-bottom: 12px;
-        }
-        .jobs-filters__search {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          background: #fff;
-          border: 1px solid #d4d4d4;
-          border-radius: 24px;
-          padding: 12px 16px;
-          margin-bottom: 12px;
-          transition: border-color 0.2s;
-        }
-        .jobs-filters__search:focus-within {
-          border-color: #2A2623;
-        }
-        .jobs-filters__input {
-          flex: 1;
-          border: none;
-          outline: none;
-          font-size: 15px;
-          font-family: inherit;
-          color: #2A2623;
-          background: transparent;
-        }
-        .jobs-filters__input::placeholder {
-          color: #A9A49E;
-        }
-        .jobs-filters__row {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 12px;
-          flex-wrap: wrap;
-        }
-        .jobs-filters__chips {
-          display: flex;
-          gap: 8px;
-        }
-        .jobs-filter-chip {
-          padding: 6px 14px;
-          font-size: 13px;
-          font-weight: 500;
-          font-family: inherit;
-          border: 1px solid #d4d4d4;
-          border-radius: 999px;
-          background: #fff;
-          color: #6B6560;
-          cursor: pointer;
-          transition: all 0.15s;
-        }
-        .jobs-filter-chip:hover {
-          border-color: #CCC5B6;
-        }
-        .jobs-filter-chip--active {
-          background: #033C29;
-          color: #fff;
-          border-color: #033C29;
-        }
-        .jobs-filters__select {
-          padding: 6px 12px;
-          font-size: 13px;
-          font-weight: 500;
-          font-family: inherit;
-          border: 1px solid #d4d4d4;
-          border-radius: 24px;
-          background: #fff;
-          color: #6B6560;
-          cursor: pointer;
-        }
-      `}</style>
+      {n > 0 && (
+        <p className="jb-results" aria-live="polite">
+          <b>{n.toLocaleString('en-US')}</b> {n === 1 ? 'job' : 'jobs'}
+          {q ? ` for “${q}”` : ''}
+          {filtered && <Link href="/jobs">Clear filters</Link>}
+        </p>
+      )}
     </div>
   );
 }

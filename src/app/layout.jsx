@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import Script from 'next/script';
-import { Geist, Libre_Baskerville } from 'next/font/google';
+import { Bricolage_Grotesque, Geist, Libre_Baskerville } from 'next/font/google';
 import Providers from './providers';
 import { getSiteUrl } from '../lib/siteUrl';
 
@@ -15,6 +15,14 @@ const libreBaskerville = Libre_Baskerville({
   weight: ['400', '700'],
 });
 
+// The app's own typeface (and forkhr.com's), for the public pages. The branded company
+// boards keep Geist and Libre Baskerville through the global stylesheets.
+const bricolage = Bricolage_Grotesque({
+  subsets: ['latin'],
+  variable: '--font-bricolage',
+  axes: ['opsz'],
+});
+
 import 'react-datepicker/dist/react-datepicker.css';
 
 import '../utilities/Common.css';
@@ -23,6 +31,7 @@ import '../utilities/Sizes.css';
 import '../utilities/Text.css';
 import '../utilities/ReactDatepicker.css';
 import '../index.css';
+import '../components/jobs/jobs.css';
 
 import SiteHeader from './SiteHeader';
 import SiteFooter from './SiteFooter';
@@ -75,7 +84,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${libreBaskerville.variable}`}>
+    <html lang="en" className={`${geistSans.variable} ${libreBaskerville.variable} ${bricolage.variable}`}>
       <body suppressHydrationWarning>
         <Providers>
           <Suspense>

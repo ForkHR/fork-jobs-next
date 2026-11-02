@@ -1,8 +1,14 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, Dropdown, InputSearch } from '../../components';
+import SearchBox from '../../components/jobs/SearchBox';
+
+const SORTS = [
+  ['jobs', 'Most openings'],
+  ['name', 'A to Z'],
+];
 
 export default function BoardsSearchFilters({ initialValues, totalResults }) {
   const router = useRouter();
@@ -18,7 +24,8 @@ export default function BoardsSearchFilters({ initialValues, totalResults }) {
       const vals = { q, sort, ...overrides };
       if (vals.q) params.set('q', vals.q);
       if (vals.sort && vals.sort !== 'jobs') params.set('sort', vals.sort);
-      router.push(`/boards?${params.toString()}`, { scroll: false });
+      const qs = params.toString();
+      router.push(`/boards${qs ? `?${qs}` : ''}`, { scroll: false });
     },
     [q, sort, router]
   );
@@ -39,62 +46,34 @@ export default function BoardsSearchFilters({ initialValues, totalResults }) {
     setSort(searchParams.get('sort') || 'jobs');
   }, [searchParams]);
 
+  const n = Number(totalResults) || 0;
+
   return (
-    <div className="jobs-filters">
-      <InputSearch
-        placeholder="Search company name"
-        value={q}
-        onChange={(e) => handleSearch(e.target.value)}
-        clearable
-        className="mb-2"
-      />
+    <div className="jb-toolbar">
+      <SearchBox value={q} onChange={handleSearch} placeholder="Search by company name" label="Search companies" />
 
-      <div className="jobs-filters__row">
-        <div className="fs-12 weight-500 px-2">
-          {totalResults} results for {q ? `"${q}"` : 'all boards'}
+      <div className="jb-toolbar__row">
+        <div className="jb-chips" role="group" aria-label="Sort">
+          {SORTS.map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              className={`jb-chip${sort === value ? ' jb-chip--on' : ''}`}
+              aria-pressed={sort === value}
+              onClick={() => handleSort(value)}
+            >
+              {label}
+            </button>
+          ))}
         </div>
-        <Dropdown
-          widthUnset
-          closeOnSelect
-          label={sort === 'jobs' ? 'Most Jobs' : sort === 'name' ? 'Name' : 'Sort'}
-        >
-          <Button
-            variant="text"
-            fullWidth
-            label="Most jobs"
-            className="w-100 justify-start"
-            borderRadius="md"
-            type={sort === 'jobs' ? 'brand' : 'secondary'}
-            onClick={() => {
-              handleSort('jobs');
-            }}
-          />
-          <Button
-            variant="text"
-            fullWidth
-            label="Name"
-            className="w-100 justify-start"
-            borderRadius="md"
-            type={sort === 'name' ? 'brand' : 'secondary'}
-            onClick={() => {
-              handleSort('name');
-            }}
-          />
-        </Dropdown>
+        {n > 0 && (
+          <p className="jb-results" aria-live="polite">
+            <b>{n.toLocaleString('en-US')}</b> {n === 1 ? 'company' : 'companies'}
+            {q ? ` for “${q}”` : ''}
+            {q && <Link href="/boards">Clear</Link>}
+          </p>
+        )}
       </div>
-
-      <style jsx>{`
-        .jobs-filters {
-          margin-bottom: 12px;
-        }
-        .jobs-filters__row {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 12px;
-          flex-wrap: wrap;
-        }
-      `}</style>
     </div>
   );
 }

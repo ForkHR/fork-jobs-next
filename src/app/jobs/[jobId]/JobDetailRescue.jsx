@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getListingByIdClient } from '../../../lib/clientJobBoard';
+import EmptyState from '../../../components/jobs/EmptyState';
+import { DetailPageSkeleton } from '../../../components/jobs/Skeletons';
 
 // Rendered when the server-side listing fetch failed for a non-404 reason.
 // Resolves the listing from the visitor's browser and forwards them to the
@@ -29,22 +31,24 @@ export default function JobDetailRescue({ jobId }) {
         if (!cancelled) setFailed(true);
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [jobId, router]);
 
+  if (!failed) return <DetailPageSkeleton />;
+
   return (
-    <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '40vh', gap: 8, color: '#8A8480', fontSize: 14, textAlign: 'center', padding: 24 }}>
-      {failed ? (
-        <>
-          <p style={{ fontSize: 16, fontWeight: 500, color: '#2A2623', margin: 0 }}>This job isn’t available right now</p>
-          <p style={{ margin: 0 }}>It may have been filled or removed.</p>
-          <Link href="/jobs" style={{ color: '#2A2623', textDecoration: 'underline', textDecorationColor: '#CCC5B6' }}>
-            Browse open jobs
-          </Link>
-        </>
-      ) : (
-        'Loading…'
-      )}
+    <main className="jb jb-main">
+      <div className="jb-wrap jb-wrap--narrow">
+        <div className="jb-section">
+          <EmptyState title="This job isn’t available right now" text="It may have been filled or taken down by the business.">
+            <Link href="/jobs" className="jb-btn jb-btn--ink jb-btn--sm">
+              Browse open jobs
+            </Link>
+          </EmptyState>
+        </div>
+      </div>
     </main>
   );
 }

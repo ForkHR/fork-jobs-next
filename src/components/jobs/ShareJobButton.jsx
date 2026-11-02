@@ -1,48 +1,35 @@
 'use client';
 
 import { useState } from 'react';
+import { CheckIcon, ShareIcon } from './icons';
 
-export default function ShareJobButton({ jobUrl, jobTitle }) {
+/** Share a job: the native share sheet where there is one, else the link goes to the clipboard. */
+export default function ShareJobButton({ jobUrl, jobTitle, className = '' }) {
   const [copied, setCopied] = useState(false);
 
   const handleShare = async (e) => {
     e.preventDefault();
-
-    if (navigator.share) {
+    if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({ title: jobTitle, url: jobUrl });
         return;
       } catch {
-        // User cancelled or share failed — fall through to clipboard
+        // Cancelled or unsupported for this payload: fall through to the clipboard.
       }
     }
-
     try {
       await navigator.clipboard.writeText(jobUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Last resort
       window.prompt('Copy this link:', jobUrl);
     }
   };
 
   return (
-    <button
-      onClick={handleShare}
-      style={{
-        color: '#8A8480',
-        textDecoration: 'underline',
-        textDecorationColor: '#CCC5B6',
-        background: 'none',
-        border: 'none',
-        padding: 0,
-        font: 'inherit',
-        fontSize: 14,
-        cursor: 'pointer',
-      }}
-    >
-      {copied ? 'Link copied!' : 'Share this job'}
+    <button type="button" onClick={handleShare} className={`jb-share${copied ? ' jb-share--done' : ''}${className ? ` ${className}` : ''}`}>
+      {copied ? <CheckIcon size={16} /> : <ShareIcon size={16} />}
+      {copied ? 'Link copied' : 'Share this job'}
     </button>
   );
 }

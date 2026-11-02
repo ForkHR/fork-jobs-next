@@ -1,8 +1,12 @@
-import Link from 'next/link';
 import { searchJobBoardCompaniesCached } from '../../lib/jobBoardData';
 import { getSiteUrl } from '../../lib/siteUrl';
+import { getPublicS3, itemsOf } from '../../lib/jobFormat';
 import BoardsSearchFilters from './BoardsSearchFilters';
 import BoardsClientFallback from './BoardsClientFallback';
+import CompanyCard from '../../components/jobs/CompanyCard';
+import Breadcrumb from '../../components/jobs/Breadcrumb';
+import Pagination from '../../components/jobs/Pagination';
+import { EmployerNote } from '../../components/jobs/EmployerBand';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -56,14 +60,8 @@ export default async function BoardsPage({ searchParams }) {
   let pages = 1;
 
   try {
-    const res = await searchJobBoardCompaniesCached({
-      q,
-      page,
-      limit: LIMIT,
-      sort,
-    });
-
-    items = Array.isArray(res?.items) ? res.items : [];
+    const res = await searchJobBoardCompaniesCached({ q, page, limit: LIMIT, sort });
+    items = itemsOf(res);
     total = res?.total || items.length;
     pages = res?.pages || Math.ceil(total / LIMIT) || 1;
   } catch {
@@ -71,7 +69,7 @@ export default async function BoardsPage({ searchParams }) {
   }
 
   const siteUrl = getSiteUrl();
-  const publicS3 = process.env.NEXT_PUBLIC_PUBLIC_S3_API_URL || process.env.PUBLIC_S3_API_URL;
+  const publicS3 = getPublicS3();
 
   const buildPageUrl = (p) => {
     const params = new URLSearchParams();
@@ -91,158 +89,58 @@ export default async function BoardsPage({ searchParams }) {
     ],
   };
 
-  const itemListJsonLd = items.length > 0
-    ? {
-        '@context': 'https://schema.org',
-        '@type': 'ItemList',
-        itemListElement: items.map((company, idx) => ({
-          '@type': 'ListItem',
-          position: idx + 1,
-          url: `${siteUrl}/boards/${company?.publicUrl || company?._id}`,
-          name: company?.name,
-        })),
-      }
-    : null;
+  const itemListJsonLd =
+    items.length > 0
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          itemListElement: items.map((company, idx) => ({
+            '@type': 'ListItem',
+            position: idx + 1,
+            url: `${siteUrl}/boards/${company?.publicUrl || company?._id}`,
+            name: company?.name,
+          })),
+        }
+      : null;
 
   return (
-    <main style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", 
-        maxWidth: 900,
-        width: '100%',
-        margin: '0 auto', }} className="animation-fade-in"
-    >
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+    <main className="jb jb-main">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {itemListJsonLd && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       )}
-      {/* Breadcrumb */}
-      <nav style={{ padding: '24px 32px 0'}}>
-          <ol style={{ display: 'flex', gap: 8, listStyle: 'none', padding: 0, margin: 0, fontSize: 13, color: '#A9A49E' }}>
-          <li><Link href="/" style={{ color: '#8A8480', textDecoration: 'none' }}>Home</Link></li>
-          <li>/</li>
-          <li style={{ color: '#2A2623', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 200 }}>
-              Boards
-          </li>
-          </ol>
-      </nav>
-      <div style={{ padding: '24px 24px 64px'}}>
-        <BoardsSearchFilters initialValues={{ q, sort }} totalResults={total} />
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {items.map((company) => {
-            const logoUrl =
-              company?.logo && publicS3
-                ? `${String(publicS3).replace(/\/+$/, '')}/${company.logo}`
-                : null;
-            const boardSlug = company?.publicUrl || company?._id;
-
-            return (
-              <Link
-                key={company._id}
-                href={`/boards/${boardSlug}`}
-                className="bg-tertiary-hover"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 12,
-                  padding: 20,
-                  background: '#fff',
-                  border: '1px solid #d4d4d4',
-                  borderRadius: 24,
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  transition: 'border-color 0.2s, box-shadow 0.2s',
-                }}
-              >
-                {logoUrl ? (
-                  <img
-                    src={logoUrl}
-                    alt={`${company.name} logo`}
-                    width={40}
-                    height={40}
-                    style={{ borderRadius: 10, objectFit: 'cover', border: '1px solid #d4d4d4', flexShrink: 0 }}
-                    loading="lazy"
-                  />
-                ) : (
-                  <div
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
-                      background: '#ebebeb',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: 16,
-                      fontWeight: 700,
-                      color: '#A9A49E',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {company?.name?.charAt(0) || '?'}
-                  </div>
-                )}
-                <div>
-                  <div style={{ fontSize: 15, fontWeight: 600, color: '#2A2623' }}>{company.name}</div>
-                  <div style={{ fontSize: 13, color: '#8A8480' }}>
-                    {company.jobsCount} open {company.jobsCount === 1 ? 'position' : 'positions'}
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
+      <div className="jb-wrap jb-wrap--narrow">
+        <div className="jb-pagehead">
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Companies' }]} />
+          <div className="jb-pagehead__row">
+            <div>
+              <h1>Company boards</h1>
+              <p className="jb-lede">
+                Every business hiring on Fork runs its own board. Open one to see all of its positions and apply
+                directly.
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Empty SSR result: retry from the visitor's browser (handles the
-            Cloudflare challenge on server-side requests). */}
-        {items.length === 0 && (
-          <BoardsClientFallback q={q} sort={sort} publicS3={publicS3 || ''} />
+        <BoardsSearchFilters initialValues={{ q, sort }} totalResults={total} />
+
+        {items.length > 0 ? (
+          <div className="jb-grid jb-grid--3">
+            {items.map((company) => (
+              <CompanyCard key={company._id} company={company} publicS3={publicS3} />
+            ))}
+          </div>
+        ) : (
+          /* Empty SSR result: retry from the visitor's browser (handles the Cloudflare
+             challenge on server-side requests). */
+          <BoardsClientFallback q={q} sort={sort} publicS3={publicS3} />
         )}
 
-        {pages > 1 && (
-          <nav style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 32 }} aria-label="Pagination">
-            {page > 1 && (
-              <Link
-                href={buildPageUrl(page - 1)}
-                style={{
-                  padding: '8px 16px',
-                  fontSize: 14,
-                  fontWeight: 500,
-                  color: '#2A2623',
-                  border: '1px solid #d4d4d4',
-                  borderRadius: 8,
-                  textDecoration: 'none',
-                }}
-              >
-                ← Previous
-              </Link>
-            )}
-            <span style={{ padding: '8px 16px', fontSize: 14, color: '#8A8480' }}>
-              Page {page} of {pages}
-            </span>
-            {page < pages && (
-              <Link
-                href={buildPageUrl(page + 1)}
-                style={{
-                  padding: '8px 16px',
-                  fontSize: 14,
-                  fontWeight: 500,
-                  color: '#2A2623',
-                  border: '1px solid #d4d4d4',
-                  borderRadius: 8,
-                  textDecoration: 'none',
-                }}
-              >
-                Next →
-              </Link>
-            )}
-          </nav>
-        )}
+        <Pagination page={page} pages={pages} hrefFor={buildPageUrl} />
+
+        <EmployerNote />
       </div>
     </main>
   );
